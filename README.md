@@ -1,7 +1,14 @@
 ```javascript
 
 var linein = require("linein")({
-  host: "http://api.site.com/v1/"
+  host: "http://api.site.com/v1/",
+  mapResponse: function(response, callback) {
+    if(response.result) {
+      callback(null, response.result);
+    } else {
+      callback(response.error);
+    }
+  }
 });
 
 var students = linein.collection("students", {
