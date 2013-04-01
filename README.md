@@ -11,26 +11,30 @@ var linein = require("linein")({
   }
 });
 
-var students = linein.collection("students", {
-  name: "string",
-  email: "string"
+
+linen.register({
+  students: {
+    schema: {
+      name: "string",
+      email: "string"
+    }
+  },
+  classes: {
+    schema: {
+      students: [{ $ref: "students" }] //classes/:class/students
+    }
+  },
+  teacher: {
+    schema: {
+      classes: [{ $ref: "classes" }]
+    }
+  }
 });
 
-var classes = linein.collection("classes", {
-  students: [ { $ref: "students" } ] //classes/:class/students
-});
+var teacher = linen.map("teacher").item();
 
 
-var teacher = linein.item("teacher", {
-  classes: [ { $ref: "classes" } ] //teacher/classes
-});
-
-
-teacher.fetch(function() {
-  teacher.classes.fetch(function() {
-    console.log(teacher.classes.at(0)); //something
-  });
-});
+teacher.classes.at(0).students.at(1).name;
 
 ```
 
@@ -41,6 +45,7 @@ teacher.fetch(function() {
 ### linein linein(options)
 
 - `host` - the API host
+- `map`  - 
 
 ### collection linein.collection(name, schema)
 
