@@ -102,8 +102,11 @@ module.exports = class
       if _id = currentItem.get "_id"
         paths.push _id
 
+      # inherit the paths? something like people/craig/friends/sam
       if croute.inherit is true
         paths.push croute.collectionName
+
+      # don't inherit the path? something like people/craig/friends -> /people/sam
       else
         # add the collection name
         paths.push croute.path
