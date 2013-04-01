@@ -1,7 +1,7 @@
 mannequin = require "mannequin"
-Route     = require "./route"
 ModelPlugin = require "./modelPlugin"
 outcome = require "outcome"
+Resource = require "./resource"
 
 class Linen
   
@@ -11,73 +11,53 @@ class Linen
   constructor: (options) ->
 
     @schemas = mannequin.dictionary()
-    @transport = options.transport
-    @host = options.host
 
+    @_schemasByCollectionName = {}
+    @resource = new Resource options, @
 
-    for key of options.schemas
-      ModelPlugin.plugin @, @schemas.register key, options.schemas[key]
+    if options.schemas
+      @_registerSchemas options.schemas
 
-    # maps the routes based on the schema path
-    @_route = new Route options
-    @_transport = options.transport
-
+    @_registerRoutes options.routes
 
   ###
   ###
 
-  item: (path, query = {}) ->
-    modelBuilder = @_modelBuilderByPath path
-    modelBuilder.linenBuilder.createItem path, query
-
-  ###
-  ###
-
-  collection: (path, query = {}) ->
-    modelBuilder = @_modelBuilderByPath path
-    modelBuilder.linenBuilder.createCollection path, query
+  collection: (collectionName, query = {}) ->
+    @_schemasByCollectionName[collectionName].createCollection collectionName, { query: query }
 
   ###
   ###
 
   _request: (options, next) ->
-    ro = options.item.requestOptions
-
-    # remove root path
-    route = @_route.route(ro.path)
-    path = route.path(ro).substr(1)
-
-    o = outcome.e next
-
-    @transport.request {
-      host: @host,
-      path: path,
-      method: options.method,
-      data: options.data or {}
-    }, o.s (response) ->
-      route.mapResponse response, o.s (response) ->
-        if options.one
-          next null, route.mapItem response
-        else
-          next null, route.mapCollection response
-
-
-    
-
+    @resource.request options, next
 
 
   ###
   ###
 
-  _modelBuilderByPath: (path) -> @schemas.modelBuilder @_route.route(path).schemaName
+  _registerSchemas: (schemas) -> 
+    for key of schemas
+      @_registerSchema key, schemas[key]
 
+  ###
+  ###
 
+  _registerRoutes: (routes) ->
+    for collectionName of routes
+      route = routes[collectionName]
+      builder = @_schemasByCollectionName[collectionName] = @_registerSchema(route.name, route.schema)
+      delete route.schema
+      builder.route = route
+      builder.route.root = true
+
+  ###
+  ###
+
+  _registerSchema: (name, schema) -> 
+    ModelPlugin.plugin @, @schemas.register name, schema
 
 
 
 module.exports = (options) -> new Linen options
 
-
-
-
-module.exports.Route = Route

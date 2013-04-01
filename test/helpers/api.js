@@ -94,47 +94,51 @@ router.on({
   },
   "pull -method=GET locations/:location": function(req, res) {
     res.end(vine.result(sift({ _id: req.params.location }, collections.locations).shift()));
+  },
+  "pull -method=GET people/:person/friends": function(req, res) {
+    var person = sift({ _id: req.params.person }, collections.people).shift();
+    var friends = sift({ _id: {$in: person.friends }}, collections.people);
+    res.end(vine.result(friends));
   }
 });
 
 
 module.exports = linen({
 
-  schemas: {
-    "person": {
-      "first_name": "string",
-      "last_name": "string",
-      "location": { $ref: "location", $path: "locations" },
-      "friends": [{ $ref: "person", $path: "people" }],
-      "hobbies": [{ $ref: "hobby", $static: true }]
+  routes: {
+    "people": {
+      "name": "person",
+      "schema": {
+        "first_name": "string",
+        "last_name": "string",
+        "location": { $ref: "location", $route: { path: "locations" } },
+        "friends": [{ $ref: "person", $route: { path: "people", inherit: false } }],
+        "hobbies": [{ $ref: "hobby", $route: { static: true, inherit: false } }]
+      }
     },
-    "hobby": {
-      "name": "string"
+    "hobbies": {
+      "name": "hobby",
+      "schema": {
+        "name": "string"
+      }
     },
-    "location": {
-      "city": "string",
-      "state": "string",
-      "zip": { $type: "number", $is: /\d{5}/ }
+    "locations": {
+      "name": "location",
+      "schema": {
+        "city": "string",
+        "state": "string",
+        "zip": { $type: "number", $is: /\d{5}/ }
+      }
     }
   },
+
+
   mapResponse: function(response, callback) {
     var data = response.data;
     if(data.errors) {
       callback(data.errors[0]);
     } else {
       callback(null, _clone(data.result));
-    }
-  },
-
-  routes: {
-    "people": {
-      "schema": "person",
-    },
-    "hobbies": {
-      "schema": "hobby"
-    },
-    "locations": {
-      "schema": "location"
     }
   },
 
@@ -145,6 +149,8 @@ module.exports = linen({
       if(!/PUT|PATCH|DELETE|POST|GET/.test(String(options.method))) {
         return callback(new Error("method " + options.method + " doesn't exist"));
       }
+
+      console.log("GET %s", options.path)
 
       router.
       request(options.path).

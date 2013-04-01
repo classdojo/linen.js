@@ -4,6 +4,7 @@ dref = require "dref"
 outcome = require "outcome"
 async = require "async"
 _ = require "underscore"
+Collection = require("./collection")
 
 class ModelPlugin
   
@@ -12,121 +13,16 @@ class ModelPlugin
 
   constructor: (@linen, @modelBuilder) ->
     @schema = modelBuilder.schema
+    @route = {}
     @_setup()
 
   ###
   ###
 
-  createItem: (path, data = {}) ->
-    data.requestOptions = { path: path }
-    model = new @modelClass data
-    model.fetch()
-    model
-
-  ###
-  ###
-
   createCollection: (path, options = {}) ->
-    collection = new Collection()
-    collection._fetched = false
-    modelClass = @modelClass
-    self = @
+    options.modelClass = @modelClass
+    return new Collection path, @, options
 
-    # is this a virtual collection? i.e: not stored in the item doc
-    isVirtual = if options.definition then options.definition?.options?.$isVirtual else true
-
-    # is it a static collection? o.e: reference to objects are in collection already
-    isStatic = options.definition?.$isStatic
-
-    oldReset = collection.reset
-    collection.reset = (source) ->
-
-      if source.__isCollection
-        source = source.source()
-
-      if not isStatic and not isVirtual
-        @_fetchSource = source
-        source = []
-
-      oldReset.call @, source
-
-    collection.requestOptions = { path: path, params: options.params or {}, query: options.query or {} }
-    
-    collection.transform().cast(modelClass).map (itemOrId) =>
-
-      if typeof itemOrId is "object"
-        item = itemOrId
-      else
-        item = { _id: itemOrId }
-
-      item
-
-    collection.transform().postMap (item) =>
-      item.requestOptions = { path: path }
-      item
-
-
-    # do NOT remove - this could be a bad thing
-    # saves all the items in the collection
-    collection.save = (next) ->
-      async.forEach @source(), ((item, next) ->
-        item.save next
-      ), next
-
-    oldBind = collection.bind
-    collection.bind = () ->
-      @fetch()
-      oldBind.apply @, arguments
-
-    collection.item = (data = {}) ->
-      isNew = not data._id
-      console.log options
-      # id MUST be present - this will be replaced
-      data._id = data._id or Math.random() + "_" + Date.now()
-      model = new modelClass data
-      model._isNew = isNew
-      p = null
-      model.requestOptions = { path: options.definition?.key or path }
-      model
-
-
-    collection.fetch = (callback = (() ->)) ->
-      @once "loaded", callback
-      return if @_loading 
-      @_loading = true
-
-      onResult = () =>
-        @_loading = false
-        @emit "loaded"
-
-      return onResult() if isStatic
-
-      if not isVirtual
-        @_fetchReference onResult
-      else
-        @_fetchVirtual onResult
-
-
-    collection._fetchReference = (next) ->
-      async.forEach @_fetchSource, ((_id, next) =>
-        if ~(i = @indexOf({ _id: _id }))
-          item = @at i
-        else
-          item = @_transform { _id: _id }
-
-        item.fetch outcome.e(next).s () =>
-          if not ~i
-            @push item
-          next()
-      ), next
-
-    collection._fetchVirtual = (callback) ->
-      self._fetch { method: "GET", item: @ }, outcome.e(callback).s (source) =>
-        @reset source
-        callback()
-
-
-    collection
 
   ###
   ###
@@ -135,10 +31,10 @@ class ModelPlugin
 
     schemaName     = definition.options.$ref
     collectionName = definition.key
+    route = _.extend {}, @route, definition.options.$route or {}
 
-    path = definition.options.$path or [item.requestOptions.path, definition.key].join(".")
-
-    @createCollection path, { definition: definition }
+    # copy the definition properties over to the collection
+    @createCollection collectionName, route
 
   ###
   ###
@@ -166,13 +62,20 @@ class ModelPlugin
       # handle it accordingly
       if typeof data is "string"
         data = { _id: data }
-        @requestOptions = {}
       else
         data = data
-        @requestOptions = data.requestOptions or {}
-        delete data.requestOptions
 
       oldInitData.call @, data
+
+    modelBuilder.methods.route = (options) ->
+
+      if arguments.length
+        @_route = _.extend @_route or {}, options
+        return @
+
+
+      _.extend {}, @_route, @definition?.options.$route or {}
+
 
 
     oldSet = @modelClass.prototype._set
@@ -197,11 +100,14 @@ class ModelPlugin
       @_fetch outcome.e(next).s (result) =>
         @_loading = false
 
+
     modelBuilder.methods._fetch = cstep (next) ->
 
-      @requestOptions[name] = if @isNew() then undefined else @get "_id"
-      @requestOptions.path = @ownerDefinition?.options.$path or @requestOptions.path or name
-      
+      request = {
+        method: "GET",
+        item: @
+      }
+
       self._fetch { method: "GET", item: @, one: true }, outcome.e(next).s (result) =>
         @hydrate result
         @emit "loaded"

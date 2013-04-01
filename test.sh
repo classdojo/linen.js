@@ -1,1 +1,1 @@
-mocha --ignore-leaks
+mocha --ignore-leaks --timeout 500
