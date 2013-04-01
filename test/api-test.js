@@ -72,7 +72,6 @@ describe("linen", function() {
       }
     });
   });
-  return;
 
 
   it("cannot add friend to craig collection", function(next) {
@@ -85,6 +84,8 @@ describe("linen", function() {
     expect(err).not.to.be(undefined);
     next();
   });
+
+  return;
 
   it("can add jake as a person", function(next) {
     items.people.item({name:"craig"}).save(next);
