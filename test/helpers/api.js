@@ -2,7 +2,9 @@
 var sift = require("sift"),
 _cid = 0,
 _ = require("underscore"),
-outcome = require("outcome");
+outcome = require("outcome"),
+beanpoll = require("beanpoll"),
+vine = require("vine");
 
 outcome.logAllErrors(true)
 
@@ -19,7 +21,7 @@ var collections = {
       _id: "sam", 
       first_name: "Sam",
       last_name: "C",
-      location: "sf",
+      location: "pa",
       friends: ["craig", "liam", "frank"]
     },
     {
@@ -63,11 +65,37 @@ var collections = {
       "name": "Minneapolis",
       "state": "MN",
       "zip": 55124
+    },
+    {
+      "_id": "pa",
+      "name": "Palo Alto",
+      "state": "CA",
+      "zip": 99999
     }
   ]
 }
 
 linen = require("../../");
+
+var router = beanpoll.router();
+
+router.on({
+  "pull -method=GET people": function(req, res) {
+
+  },
+  "pull -method=POST people": function(req, res) {
+
+  },
+  "pull -method=GET people/:person": function(req, res) {
+    res.end(vine.result(sift({ _id: req.params.person }, collections.people).shift()));
+  },
+  "pull -method=PUT people/:person": function(req, res) {
+
+  },
+  "pull -method=GET locations/:location": function(req, res) {
+    res.end(vine.result(sift({ _id: req.params.location }, collections.locations).shift()));
+  }
+});
 
 
 module.exports = linen({
@@ -76,9 +104,9 @@ module.exports = linen({
     "person": {
       "first_name": "string",
       "last_name": "string",
-      "location": { $ref: "location", $map: "location" },
-      "friends": [ { $ref: "person", $route: "people" }],
-      "hobbies": [ { $ref: "hobby" }]
+      "location": { $ref: "location", $path: "locations" },
+      "friends": [{ $ref: "person", $path: "people" }],
+      "hobbies": [{ $ref: "hobby", $static: true }]
     },
     "hobby": {
       "name": "string"
@@ -89,6 +117,14 @@ module.exports = linen({
       "zip": { $type: "number", $is: /\d{5}/ }
     }
   },
+  mapResponse: function(response, callback) {
+    var data = response.data;
+    if(data.errors) {
+      callback(data.errors[0]);
+    } else {
+      callback(null, data.result);
+    }
+  },
 
   routes: {
     "people": {
@@ -97,7 +133,7 @@ module.exports = linen({
     "hobbies": {
       "schema": "hobby"
     },
-    "location": {
+    "locations": {
       "schema": "location"
     }
   },
@@ -110,6 +146,11 @@ module.exports = linen({
         return callback(new Error("method " + options.method + " doesn't exist"));
       }
 
+      router.
+      request(options.path).
+      tag({ method: options.method }).
+      pull(callback);
+      return;
 
       var items = collections[options.collection],
       item;

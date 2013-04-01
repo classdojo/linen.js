@@ -10,15 +10,10 @@ describe("linen", function() {
 
     //people
     items.craig  = api.item("people", { _id: "craig" });
-
-    return;
-
-    //people/:craig/friends
-
-    items.people = api.route("person").collection();
+    items.people = api.collection("people");
     items.craigsFriends = items.craig.get("friends");
-    items.tim  = api.route("person").item({ first_name: "tim" })
-    items.timsFriends = items.tim.friends;
+    //items.tim = api.collection("people").findOne({ first_name: "tim" })
+    //items.timsFriends = items.tim.friends;
   });
 
   it("can fetch craig", function(next) {
@@ -31,8 +26,27 @@ describe("linen", function() {
 
   it("can fetch craig's friends", function(next) {
     items.craigsFriends.fetch(function() {
-      items.craigsFriends.at(0).get("location").fetch();
-      expect(items.craigsFriends.at(0).get("location.city")).to.be("sf");
+      items.craigsFriends.first().get("location").fetch();
+      expect(items.craigsFriends.first().get("location.name")).to.be("Palo Alto");
+      next();
+    });
+  });
+
+  it("can fetch craig's first friend's friends", function(next) {
+    items.craigsFriends.at(0).get("friends").fetch(function() {
+      var craigsFirstFriendsFriend = items.craigsFriends.at(0).get("friends").last();
+      expect(craigsFirstFriendsFriend.get("first_name")).to.be("Frank");
+      expect(craigsFirstFriendsFriend.get("last_name")).to.be("C");
+      next();
+    });
+  });
+
+  it("can find craig's frist friend's friend's friends", function(next) {
+
+    var i = 0;
+    items.craigsFriends.first().get("friends").last().get("friends").bind(function(command, item) {
+      expect(item.get("first_name")).not.to.be(undefined);
+      if(i++ > 1)
       next();
     });
   })

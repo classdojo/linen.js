@@ -26,13 +26,12 @@ module.exports = class Route
       @_routes[route] = new Route options.routes[route], @, route
 
 
-    @_addMethod property for property in ["routeRequestOptions", "routeResponse", "routeCollection", "routeItem", "routeItemPath", "routeCollectionPath"]
+    @_addMethod property for property in ["mapRequestOptions", "mapResponse", "mapCollection", "mapItem", "mapItemPath", "mapCollectionPath"]
 
   ###
   ###
 
-  route: (path = "") ->  
-    console.log @_routes
+  route: (path = "") -> 
 
     # deep search for a route
     pathParts = path.split(".")
@@ -71,9 +70,9 @@ module.exports = class Route
       return ref.path options
 
     if item
-      pathParts.push @_option("routeItemPath").call @, item
+      pathParts.push @_option("mapItemPath").call @, item
     else
-      pathParts.push @_option("routeCollectionPath").call @, item
+      pathParts.push @_option("mapCollectionPath").call @, item
 
 
     path.normalize pathParts.join "/"
@@ -81,7 +80,8 @@ module.exports = class Route
   ###
   ###
 
-  _option: (property) -> @options[property] or @parent?._option(property)
+  _option: (property) -> 
+    @options[property] or @parent?._option(property)
 
   ###
   ###
@@ -97,16 +97,16 @@ module.exports = class extends Route
   ###
   ###
 
-  constructor: (options) ->
-
+  constructor: (options = {}) ->
     _.defaults options, {
-      routeRequestOptions: @_defaultRouteRequestOptions,
-      routeResponse: @_defaultRouteResponse,
-      routeCollection: @_defaultRouteCollection,
-      routeItem: @_defaultRouteItem,
-      routeItemPath: @_routeDefaultItemPath,
-      routeCollectionPath: @_routeDefaultCollectionPath,
+      mapRequestOptions: @_defaultRouteRequestOptions,
+      mapResponse: @_defaultRouteResponse,
+      mapCollection: @_defaultRouteCollection,
+      mapItem: @_defaultRouteItem,
+      mapItemPath: @_mapDefaultItemPath,
+      mapCollectionPath: @_mapDefaultCollectionPath,
     }
+
 
     super options
 
@@ -133,12 +133,12 @@ module.exports = class extends Route
   ###
   ###
 
-  _routeDefaultItemPath: (item) -> [@_path, item].join("/")
+  _mapDefaultItemPath: (item) -> [@_path, item].join("/")
 
   ###
   ###
 
-  _routeDefaultCollectionPath: () -> @_path
+  _mapDefaultCollectionPath: () -> @_path
 
 
 

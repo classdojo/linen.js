@@ -2,6 +2,8 @@ Collection = require("bindable").Collection
 cstep = require "cstep"
 dref = require "dref"
 outcome = require "outcome"
+async = require "async"
+_ = require "underscore"
 
 class ModelPlugin
   
@@ -26,7 +28,26 @@ class ModelPlugin
 
   createCollection: (path, options = {}) ->
     collection = new Collection()
+    collection._fetched = false
     self = @
+
+    # is this a virtual collection? i.e: not stored in the item doc
+    isVirtual = options.definition?.$isVirtual
+
+    # is it a static collection? o.e: reference to objects are in collection already
+    isStatic = options.definition?.$isStatic
+
+    oldReset = collection.reset
+    collection.reset = (source) ->
+
+      if source.__isCollection
+        source = source.source()
+
+      if not isStatic
+        @_fetchSource = source
+        source = []
+
+      oldReset.call @, source
 
     collection.requestOptions = { path: path, params: options.params or {}, query: options.query or {} }
     
@@ -34,15 +55,13 @@ class ModelPlugin
 
       if typeof itemOrId is "object"
         item = itemOrId
-        # @_noFetch = not @_fetched and true
       else
         item = { _id: itemOrId }
-        collection.__fetchRef = true
 
       item
 
     collection.transform().postMap (item) =>
-      item.requestOptions = { path: path, itemId: item._id }
+      item.requestOptions = { path: path }
       item
 
 
@@ -53,27 +72,42 @@ class ModelPlugin
         item.save next
       ), next
 
-    collection.fetch = cstep (callback) ->
+    oldBind = collection.bind
+    collection.bind = () ->
+      @fetch()
+      oldBind.apply @, arguments
 
-      # source has items?
-      if @length()
+    collection.fetch = (callback = (() ->)) ->
+      @once "loaded", callback
+      return if @_loading 
+      @_loading = true
 
-        # were the items filled with ID's?
-        if @__fetchRef 
-          @_fetchRef callback
+      onResult = () =>
+        @_loading = false
+        @emit "loaded"
 
+      return onResult() if isStatic
+
+      if not isVirtual
+        @_fetchReference onResult
       else
-        @_fetchSub callbac
+        @_fetchVirtual onResult
 
 
-    collection._fetchRef = (next) ->
-      async.forEach @source(), ((item, next) ->
-        item.fetch next
+    collection._fetchReference = (next) ->
+      async.forEach @_fetchSource, ((_id, next) =>
+        if ~(i = @indexOf({ _id: _id }))
+          item = @at i
+        else
+          item = @_transform { _id: _id }
+
+        item.fetch outcome.e(next).s () =>
+          if not ~i
+            @push item
+          next()
       ), next
 
-    collection._noFetch = (callback) ->
-
-    collection._fetchSub = (callback) ->
+    collection._fetchVirtual = (callback) ->
       self._fetch { method: "GET", item: @ }, callback
 
 
@@ -87,18 +121,15 @@ class ModelPlugin
     schemaName     = definition.options.$ref
     collectionName = definition.key
 
-    path = definition.options.$route or [item.requestOptions.path, definition.key].join(".")
+    path = definition.options.$path or [item.requestOptions.path, definition.key].join(".")
 
-    console.log path
-    @createCollection path
+    @createCollection path, { definition: definition }
 
   ###
   ###
 
   _fetch: (options, callback) ->
     @linen._request options, callback
-
-
 
   ###
   ###
@@ -123,11 +154,10 @@ class ModelPlugin
         @requestOptions = {}
       else
         data = data
-        @requestOptions = data.requestOptions
+        @requestOptions = data.requestOptions or {}
         delete data.requestOptions
 
-
-      oldInitData.apply @, arguments
+      oldInitData.call @, data
 
 
     oldSet = @modelClass.prototype._set
@@ -153,14 +183,17 @@ class ModelPlugin
         @_loading = false
 
     modelBuilder.methods._fetch = cstep (next) ->
+
       @requestOptions[name] = @get "_id"
-      self._fetch { method: "GET", item: @ }, outcome.e(next).s (result) =>
+      @requestOptions.path = @ownerDefinition?.options.$path or @requestOptions.path or name
+      
+      self._fetch { method: "GET", item: @, one: true }, outcome.e(next).s (result) =>
         @hydrate result
         @emit "loaded"
         next()
 
 
-    modelBuilder.methods.isNew = () -> !get "_id"
+    modelBuilder.methods.isNew = () -> not get "_id"
 
     modelBuilder.pre "save", cstep (next) ->
       @validate next

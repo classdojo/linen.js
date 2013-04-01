@@ -1,6 +1,6 @@
 {
   "name": "linen",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "```javascript",
   "main": "./lib/index.js",
   "scripts": {
@@ -14,9 +14,7 @@
     "mocha": "1.8.x",
     "expect.js": "0.2.x",
     "sift": "0.0.9",
-    "vine":"0.1.x",
-    "express":"3.1.x",
-    "request":"2.16.x"
+    "vine": "0.1.x"
   },
   "author": "",
   "license": "BSD",
@@ -28,10 +26,11 @@
     "underscore": "1.4.x",
     "outcome": "0.0.x",
     "isa": "0.1.x",
-    "request": "2.16.x",
     "bindable": "0.2.x",
     "toarray": "0.0.x",
     "cstep": "0.0.x",
-    "dref": "0.0.x"
+    "dref": "0.0.x",
+    "hoist": "0.0.x",
+    "beanpoll": "0.2.x"
   }
 }
