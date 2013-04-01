@@ -24,6 +24,12 @@ describe("linen", function() {
     });
   });
 
+  //even when friends is present, linen collections should remove the references
+  //until they're FULLY loaded.
+  it("craig's friends collection is empty", function() {
+    expect(items.craigsFriends.length()).to.be(0);
+  })
+
   it("can fetch craig's friends", function(next) {
     items.craigsFriends.fetch(function() {
       items.craigsFriends.first().get("location").fetch();
@@ -43,11 +49,13 @@ describe("linen", function() {
 
   it("can find craig's frist friend's friend's friends", function(next) {
 
+    //bind should ONLY be called once 
+
     var i = 0;
     items.craigsFriends.first().get("friends").last().get("friends").bind(function(command, item) {
       expect(item.get("first_name")).not.to.be(undefined);
       if(i++ > 1)
       next();
     });
-  })
+  });
 });
