@@ -81,7 +81,7 @@ var router = beanpoll.router();
 
 router.on({
   "pull -method=GET people": function(req, res) {
-
+    res.end(vine.result(collections.people));
   },
   "pull -method=POST people": function(req, res) {
 

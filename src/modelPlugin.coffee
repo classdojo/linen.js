@@ -29,10 +29,11 @@ class ModelPlugin
   createCollection: (path, options = {}) ->
     collection = new Collection()
     collection._fetched = false
+    modelClass = @modelClass
     self = @
 
     # is this a virtual collection? i.e: not stored in the item doc
-    isVirtual = options.definition?.$isVirtual
+    isVirtual = if options.definition then options.definition?.options?.$isVirtual else true
 
     # is it a static collection? o.e: reference to objects are in collection already
     isStatic = options.definition?.$isStatic
@@ -43,7 +44,7 @@ class ModelPlugin
       if source.__isCollection
         source = source.source()
 
-      if not isStatic
+      if not isStatic and not isVirtual
         @_fetchSource = source
         source = []
 
@@ -51,7 +52,7 @@ class ModelPlugin
 
     collection.requestOptions = { path: path, params: options.params or {}, query: options.query or {} }
     
-    collection.transform().map (itemOrId) =>
+    collection.transform().cast(modelClass).map (itemOrId) =>
 
       if typeof itemOrId is "object"
         item = itemOrId
@@ -76,6 +77,18 @@ class ModelPlugin
     collection.bind = () ->
       @fetch()
       oldBind.apply @, arguments
+
+    collection.item = (data = {}) ->
+      isNew = not data._id
+      console.log options
+      # id MUST be present - this will be replaced
+      data._id = data._id or Math.random() + "_" + Date.now()
+      model = new modelClass data
+      model._isNew = isNew
+      p = null
+      model.requestOptions = { path: options.definition?.key or path }
+      model
+
 
     collection.fetch = (callback = (() ->)) ->
       @once "loaded", callback
@@ -108,7 +121,9 @@ class ModelPlugin
       ), next
 
     collection._fetchVirtual = (callback) ->
-      self._fetch { method: "GET", item: @ }, callback
+      self._fetch { method: "GET", item: @ }, outcome.e(callback).s (source) =>
+        @reset source
+        callback()
 
 
     collection
@@ -184,7 +199,7 @@ class ModelPlugin
 
     modelBuilder.methods._fetch = cstep (next) ->
 
-      @requestOptions[name] = @get "_id"
+      @requestOptions[name] = if @isNew() then undefined else @get "_id"
       @requestOptions.path = @ownerDefinition?.options.$path or @requestOptions.path or name
       
       self._fetch { method: "GET", item: @, one: true }, outcome.e(next).s (result) =>
@@ -193,7 +208,7 @@ class ModelPlugin
         next()
 
 
-    modelBuilder.methods.isNew = () -> not get "_id"
+    modelBuilder.methods.isNew = () -> @_isNew
 
     modelBuilder.pre "save", cstep (next) ->
       @validate next

@@ -16,6 +16,13 @@ describe("linen", function() {
     //items.timsFriends = items.tim.friends;
   });
 
+  it("can fetch all the people", function(next) {
+    items.people.fetch(function() {
+      expect(items.people.at(1).get("first_name")).to.be("Sam");
+      next();
+    })
+  })
+
   it("can fetch craig", function(next) {
     items.craig.fetch(function() {
       expect(items.craig.get("first_name")).to.be("craig");
@@ -52,10 +59,21 @@ describe("linen", function() {
     //bind should ONLY be called once 
 
     var i = 0;
-    items.craigsFriends.first().get("friends").last().get("friends").bind(function(command, item) {
+    var binding = items.craigsFriends.first().get("friends").last().get("friends").bind();
+    binding.to(function(command, item) {
       expect(item.get("first_name")).not.to.be(undefined);
-      if(i++ > 1)
-      next();
+      if(i++ > 1) {
+        next();
+      }
     });
   });
+
+  it("craig can add a new friend", function(next) {
+    var jake = items.craigsFriends.item({name:"jake"});
+    //console.log(jake.requestOptions)
+    next();
+  });
+
+
+
 });
