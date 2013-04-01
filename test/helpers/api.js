@@ -122,7 +122,7 @@ module.exports = linen({
     if(data.errors) {
       callback(data.errors[0]);
     } else {
-      callback(null, data.result);
+      callback(null, _clone(data.result));
     }
   },
 
@@ -152,42 +152,6 @@ module.exports = linen({
       pull(callback);
       return;
 
-      var items = collections[options.collection],
-      item;
-
-      if(!items) {
-        return callback(new Error("collection " + options.collection + " doesn't exist - route " + options.path));
-      }
-
-      if(_.keys(options.query).length) {
-        items = sift(options.query, items);
-      }
-
-      if(options.itemId) {
-        item = sift({ _id: options.itemId }, items).pop()
-      } else {
-        return callback(null, _clone(items));
-      }
-
-      if(!item) {
-        return callback(new Error("item " + options.itemId + " doesn't exist"));
-      }
-
-      //simulate CRUD methods
-      if(options.method == "POST") {
-        options.data._id = ++_cid;
-        items.push(options.data);
-      } else 
-      if(options.method == "PUT") {
-        for(key in options.data) {
-          item[key] = options.data[key];
-        }
-      } else
-      if(options.method == "DELETE") {
-        items.splice(items.indexOf(item), 1);
-      }
-
-      callback(null, _clone(item))
     }
   }
 });
