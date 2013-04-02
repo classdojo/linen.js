@@ -191,17 +191,27 @@ describe("linen", function() {
       next();
     });
   });
-  return;
 
 
   it("can successfuly move one friend to another friend", function(next) {
-    var mitch = items.people.item("mitch"),
-    craig = items.people.item("craig");
+    var samFriends = items.people.item("sam").get("friends"),
+    mitchFriends = items.people.item("mitch").get("friends"),
+    o = outcome.e(next),
+    removedFriend;
 
-    async.forEach([mitch, craig], function(person, next) {
-      person.fetch(next);
-    }, outcome.e(next).s(function() {
+    function reloadFriends(next) {
+      async.forEach([samFriends, mitchFriends], function(friends, next) {
+        friends.fetch(next);
+      }, next);
+    }
 
+    reloadFriends(o.s(function() {
+      mitchFriends.push(removedFriend = samFriends.shift());
+      reloadFriends(o.s(function() {
+        expect(mitchFriends.indexOf(removedFriend)).not.to.be(-1);
+        expect(samFriends.indexOf(removedFriend)).to.be(-1);
+        next();
+      }));
     }));
   });
 
