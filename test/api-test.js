@@ -1,6 +1,8 @@
 
 var expect = require("expect.js"),
-api = require("./helpers/api");
+api = require("./helpers/api"),
+async = require("async"),
+outcome = require("outcome");
 
 describe("linen", function() {
 
@@ -183,8 +185,24 @@ describe("linen", function() {
   });
 
 
-  it("can successfuly move one friend to another friend", function() {
-    
+  it("can fetch a person's friends before the person is loaded", function(next) {
+    var people = items.people.item("mitch").get("friends").fetch(function() {
+      expect(people.length()).not.to.be(0);
+      next();
+    });
+  });
+  return;
+
+
+  it("can successfuly move one friend to another friend", function(next) {
+    var mitch = items.people.item("mitch"),
+    craig = items.people.item("craig");
+
+    async.forEach([mitch, craig], function(person, next) {
+      person.fetch(next);
+    }, outcome.e(next).s(function() {
+
+    }));
   });
 
   return;
