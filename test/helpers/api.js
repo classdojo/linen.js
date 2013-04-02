@@ -156,7 +156,7 @@ module.exports = linen({
       "schema": {
         "first_name": { $type: "string", $required: true },
         "last_name": { $type: "string", $required: true },
-        "location": { $ref: "location", $route: { path: "locations" } },
+        "location": { $ref: "location", $objectKey: "_id", $route: { path: "locations" } },
         "friends": [{ $ref: "person", $route: { path: "people", inherit: false } }],
         "hobbies": [{ $ref: "hobby", $route: { static: true, inherit: false } }]
       }

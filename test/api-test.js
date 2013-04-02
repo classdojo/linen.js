@@ -170,7 +170,16 @@ describe("linen", function() {
 
   it("can successfuly set a new location", function(next) {
     items.craig.set("location", "pa");
-    console.log(items.craig.get("location"))
+    expect(items.craig.get("location._id")).to.be("pa");
+    items.craig.save(function() {
+      items.people.fetch(function() {
+        var craig = items.people.at(items.people.indexOf(items.craig));
+        craig.get("location").fetch(function() {
+          expect(craig.get("location.name")).to.be("Palo Alto");
+          next();
+        })
+      })
+    });
   });
 
 

@@ -24,6 +24,8 @@ module.exports = (builder, Model) ->
       else
         data = data
 
+      @_setupRefs()
+
       super data
 
     ###
@@ -46,7 +48,9 @@ module.exports = (builder, Model) ->
       if not @_update
         @_update = {}
 
-      dref.set @_update, key, value
+      # call @get(key) since the value might have been transformed into
+      # something else
+      dref.set @_update, key, @get key
 
     ###
     ###
@@ -88,6 +92,41 @@ module.exports = (builder, Model) ->
     ###
     ###
 
+    _refs: () ->
+      @schema.refs()
+
+    ###
+    ###
+
+    _setupRefs: () -> 
+      @_refs = {}
+      for ref in @schema.refs()
+        @_refs[ref.key] = ref
+
+
+    ###
+     used for converting model objects into savable pieces - mostly for updating data
+    ###
+
+    _toObject: (data) ->
+      d = {}
+
+      for key of data
+        ref = @_refs[key]
+
+        if not ref?.options.$objectKey
+          v = data[key]
+        else
+          v = dref.get data[key], ref.options.$objectKey
+
+        d[key] = v
+
+
+      d
+
+    ###
+    ###
+
     save: (next) ->
       o = @_o.e next
       @validate o.s () =>
@@ -96,7 +135,7 @@ module.exports = (builder, Model) ->
             @parent.pushNoPersist @
             next.call @
         else
-          @_request { method: "PUT", body: @_update }, next
+          @_request { method: "PUT", body: @_toObject(@_update) }, next
 
       @
 
