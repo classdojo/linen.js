@@ -33,7 +33,7 @@ class ModelPlugin
     schemaName     = definition.options.$ref
     collectionName = definition.key
     route = _.extend {}, @route, definition.options.$route or {}
-    route.modelClass = definition.schema.linenBuilder.modelClass
+    route.modelClass = definition.schemaRef()?.linenBuilder.modelClass
 
     # copy the definition properties over to the collection
     @createCollection collectionName, route
