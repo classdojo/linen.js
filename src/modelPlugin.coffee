@@ -40,12 +40,6 @@ class ModelPlugin
   ###
   ###
 
-  _fetch: (options, callback) ->
-    @linen._request options, callback
-
-  ###
-  ###
-
   _setup: () ->
 
     self = @
