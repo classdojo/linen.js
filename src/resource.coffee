@@ -1,6 +1,6 @@
 toarray = require "toarray"
 outcome = require "outcome"
-verify  = require("verify")()
+async   = require "async"
 
 
 module.exports = class
@@ -13,7 +13,6 @@ module.exports = class
     @transport      = options.transport
     @host           = options.host
 
-
     @_mapPath       = options.mapPath       or @_defaultMapPath
     @_mapResponse   = options.mapResponse   or @_defaultMapResponse
     @_mapItem       = options.mapItem       or @_defaultMapItem
@@ -23,20 +22,18 @@ module.exports = class
   ###
 
   request: (options, callback) ->
-
-    return if not verify.that(options).onError(callback).has("item", "method").success
-
     # spell out what params can be used in the request. 
 
-    method = options.method        # GET, DELETE, PUT, POST
-    item   = options.item          # people.friends
-    params = options.params or {}  # used for the path
-    query  = options.query  or {}  # used for GET query data
-    body   = JSON.parse JSON.stringify options.body   or {}  # used for POST data
-    one    = not options.item.__isCollection
+    method     = options.method        # GET, DELETE, PUT, POST
+    item       = options.item          # people.friends
+    collection = options.collection    # the collection to remove the item from
+    params     = options.params or {}  # used for the path
+    query      = options.query  or {}  # used for GET query data
+    body       = JSON.parse JSON.stringify options.body   or {}  # used for POST data
+    one        = options.one
 
     # map the restful interface
-    path = @_mapPath { method: method, item: item, params: params }
+    path = @_mapPath { method: method, item: item, params: params, collection: collection }
 
     o = outcome.e callback
 
@@ -78,7 +75,19 @@ module.exports = class
 
   _defaultMapPath: (options) -> 
 
-    paths = @_mapPathPart options.item, [], true
+    paths = []
+
+    # collection might not exist - this happens when a model parent is another model
+    if options.collection
+      @_mapPathPart options.collection, options, paths, true
+
+      if options.item
+        paths.unshift options.item.get "_id"
+
+    else if options.item
+      @_mapPathPart options.item, options, paths, true
+
+
     paths = paths.reverse()
 
     return paths.join "/"
@@ -87,7 +96,7 @@ module.exports = class
   ###
   ###
 
-  _mapPathPart: (currentItem, paths, root) -> 
+  _mapPathPart: (currentItem, options, paths, root) -> 
 
     return paths if not currentItem
 
@@ -99,9 +108,10 @@ module.exports = class
       if root
         paths.push croute.collectionName
 
+
       # otherwise skip the collection
       else
-        return @_mapPathPart currentItem.parent, paths
+        return @_mapPathPart currentItem.parent, options, paths
 
     else
 
@@ -118,7 +128,7 @@ module.exports = class
         paths.push croute.path
         return paths
 
-    @_mapPathPart currentItem, paths, false
+    @_mapPathPart currentItem, options, paths, false
 
 
 

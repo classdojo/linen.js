@@ -8,7 +8,7 @@ class Linen
   ###
   ###
 
-  constructor: (options) ->
+  constructor: (@options) ->
 
     @schemas = mannequin.dictionary()
 

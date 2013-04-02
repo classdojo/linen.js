@@ -27,6 +27,9 @@ module.exports = class extends bindable.Collection
 
     @_initCollection()
 
+    @on "insert", @_persistInsert
+    @on "remove", @_persistRemove
+
   ###
   ###
 
@@ -76,6 +79,8 @@ module.exports = class extends bindable.Collection
 
   reset: (source) ->
 
+    @_resetting = true
+
     if source.__isCollection
       source = source.source()
 
@@ -84,7 +89,18 @@ module.exports = class extends bindable.Collection
     if not @_isStatic and typeof source[0] is "string"
       source = []
 
-    super source
+    result = super source
+    @_resetting = false
+    result
+
+  ###
+  ###
+
+  pushNoPersist: (item) ->
+    @_resetting = true
+    @push item
+    @_resetting = false
+
 
   ###
    override bind so that fetch is called each time
@@ -97,6 +113,7 @@ module.exports = class extends bindable.Collection
       super()
     else
       super to
+
 
   ###
   ###
@@ -142,13 +159,46 @@ module.exports = class extends bindable.Collection
   _fetchVirtual: (callback) ->
 
     request = {
-      method: "GET",
-      item: @
+      method: "GET"
     }
 
-    @modelBuilder.linen.resource.request request, outcome.e(callback).s (source) =>
+    @_request request, outcome.e(callback).s (source) =>
       @reset source
       callback()
+
+  ###
+  ###
+
+  _request: (request, callback = (() ->)) ->
+    request.collection = @
+    @modelBuilder.linen.resource.request request, callback
+
+  ###
+  ###
+
+  _persistRemove: (item) ->
+    return if @_resetting
+
+    request = {
+      method: "DELETE",
+      item: item
+    }
+
+    @_request request
+
+  ###
+  ###
+
+  _persistInsert: (item) ->
+    return if @_resetting
+
+    request = {
+      method: "POST",
+      body: item
+    }
+    
+    @_request request
+
 
 
 

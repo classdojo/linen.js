@@ -120,6 +120,23 @@ router.on({
     var person = getPerson(req);
     var friends = findPeople({ _id: {$in: person.friends }});
     res.end(vine.result(friends));
+  },
+  "pull -method=POST people/:person/friends": function(req, res) {
+    var person = getPerson(req),
+    body = req.query.body;
+
+    if(!person) return res.end(vine.error("person does not exist"));
+    person.friends.push(body._id);
+    res.end(vine.result(body));
+  },
+  "pull -method=DELETE people/:person/friends/:friend": function(req, res) {
+    var person = getPerson(req);
+    if(!person) return res.end(vine.error("person does not exist"));
+    var friendIndex;
+    var friend = person.friends[friendIndex = person.friends.indexOf(req.params.friend)]
+    if(!friend) return res.end(vine.error("friend does not exist"));
+    person.friends.splice(friendIndex, 1);
+    vine.result(getPerson({ params: { person: req.params.friend }}))
   }
 });
 
@@ -177,7 +194,7 @@ module.exports = linen({
         return callback(new Error("method " + options.method + " doesn't exist"));
       }
 
-      console.log("GET %s", options.path)
+      console.log("%s %s", options.method, options.path)
 
       router.
       request(options.path).

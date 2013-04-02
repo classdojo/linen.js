@@ -80,6 +80,10 @@ module.exports = (builder, Model) ->
 
     _request: cstep (options, next) ->
       options.item = @
+
+      # if the model parent is NOT a collection, then set the collection to null.
+      options.collection = if @parent?.length then @parent else null
+      options.one = true
       linen.resource.request options, outcome.e(next).s (result) =>
         @hydrate result
         next()
@@ -93,7 +97,7 @@ module.exports = (builder, Model) ->
       @validate o.s () =>
         if @isNew()
           @_request { method: "POST", body: @_update }, o.s () =>
-            @parent.push @
+            @parent.pushNoPersist @
             next.call @
         else
           @_request { method: "PUT", body: @_update }, next

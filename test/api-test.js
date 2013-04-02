@@ -120,15 +120,33 @@ describe("linen", function() {
     expect(items.people.indexOf(items.kramer)).not.to.be(-1);
   });
 
-  it("can successfuly add a new friend", function() {
+  it("can successfuly add a new friend", function(next) {
     items.craigsFriends.push(items.kramer);
+    items.craigsFriends.fetch(function() {
+      expect(items.craigsFriends.indexOf(items.kramer)).not.to.be(-1);
+      next();
+    });
   });
+
+  it("can successfuly remove a friend", function(next) {
+    var lastFriend = items.craigsFriends.last(),
+    lastFriendFriends = lastFriend.get("friends");
+
+    //need to re-fetch since craigsFriends was reset
+    lastFriendFriends.fetch(function() {
+      var count = lastFriendFriends.length();
+      var removedFriend = lastFriendFriends.shift();
+      lastFriendFriends.fetch(function() {
+        expect(lastFriendFriends.length()).to.be(count - 1);
+        expect(lastFriendFriends.indexOf(removedFriend)).to.be(-1);
+        next();
+      });
+    })
+  });
+
 
   it("can successfuly move one friend to another friend", function() {
 
-  });
-
-  it("can successfuly remove a friend", function() {
 
   });
 
