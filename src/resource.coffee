@@ -24,9 +24,7 @@ module.exports = class
 
   request: (options, callback) ->
 
-    if not verify.that(options).onError(callback).has("item", "method").success
-      return
-
+    return if not verify.that(options).onError(callback).has("item", "method").success
 
     # spell out what params can be used in the request. 
 
