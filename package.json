@@ -32,6 +32,7 @@
     "dref": "0.0.x",
     "hoist": "0.0.x",
     "beanpoll": "0.2.x",
-    "verify": "0.0.x"
+    "verify": "0.0.x",
+    "asyngleton": "0.1.x"
   }
 }

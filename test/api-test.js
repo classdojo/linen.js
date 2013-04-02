@@ -49,6 +49,7 @@ describe("linen", function() {
     });
   });
 
+
   it("can fetch craig's first friend's friends", function(next) {
     items.craigsFriends.last().get("friends").fetch(function() {
       var craigsFirstFriendsFriend = items.craigsFriends.last().get("friends").first();
@@ -74,25 +75,34 @@ describe("linen", function() {
   });
 
 
-  it("cannot add friend to craig collection", function(next) {
+  it("cannot fetch friend without an idea", function(next) {
     var err;
-    try {
-      var jake = items.craigsFriends.item({name:"jake"});
-    } catch(e) {
-      err = e;
-    }
-    expect(err).not.to.be(undefined);
-    next();
+    var jake = items.craigsFriends.item({name:"jake"});
+    jake.fetch(function(err) {
+      expect(err).not.to.be(undefined);
+      next()
+    });
+
   });
 
-  return;
+
 
   it("can add jake as a person", function(next) {
     items.people.item({name:"craig"}).save(next);
   });
 
+  return;
+
   it("can add jake as a friend to craig", function() {
     items.craigsFriends.push(items.people.last());
+  });
+
+  it("can update a person", function() {
+
+  });
+
+  it("can remove a person", function() {
+
   })
 
 

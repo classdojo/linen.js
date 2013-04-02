@@ -1,6 +1,7 @@
 bindable = require "bindable"
 async    = require "async"
 outcome  = require "outcome"
+asyngleton = require "asyngleton"
 
 module.exports = class extends bindable.Collection
 
@@ -17,6 +18,7 @@ module.exports = class extends bindable.Collection
 
     @_modelClass = options.modelClass
 
+
     # virtual collections are NOT part of model data, where the collection needs to be fetched remotely
     @_isVirtual  = options.virtual isnt false
 
@@ -28,8 +30,7 @@ module.exports = class extends bindable.Collection
   ###
   ###
 
-  route: () ->
-    @options
+  route: () -> @options
 
   ###
   ###
@@ -42,6 +43,9 @@ module.exports = class extends bindable.Collection
 
     model = new @_modelClass data
     model.route @options
+
+    # set the parent - this is needed to add the model to the collection if it's new, or fetched.
+    model.parent = @
     model
 
   ###
@@ -105,22 +109,14 @@ module.exports = class extends bindable.Collection
   ###
   ###
 
-  fetch: (callback = (() ->)) ->
-    @once "loaded", callback
-    return if @_loading
-    @_loading = true
+  fetch: asyngleton true, (callback) ->
 
-    onResult = () =>
-      @_loading = false
-      @emit "loaded"
-
-    return onResult() if @_isStatic
-
+    return callback() if @_isStatic
 
     if not @_isVirtual 
-      @_fetchReference onResult
+      @_fetchReference callback
     else
-      @_fetchVirtual onResult
+      @_fetchVirtual callback
 
 
   ###

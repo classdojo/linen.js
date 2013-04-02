@@ -32,7 +32,6 @@ class Linen
   _request: (options, next) ->
     @resource.request options, next
 
-
   ###
   ###
 

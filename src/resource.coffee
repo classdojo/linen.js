@@ -35,7 +35,7 @@ module.exports = class
     params = options.params or {}  # used for the path
     query  = options.query or {}   # used for GET query data
     data   = options.content or {} # used for POST data
-    one    = options.one or false  # return ONE item
+    one    = not options.item.__isCollection
 
     # map the restful interface
     path = @_mapPath { method: method, item: item, params: params }
@@ -91,12 +91,20 @@ module.exports = class
 
   _mapPathPart: (currentItem, paths, root) -> 
 
+    return paths if not currentItem
+
     croute = currentItem.route()
 
-    # if the item is a collection, AND it's the first to be mapped, then add the collection name
-    # e.g: people/craig/friends
-    if root and currentItem.__isCollection
-      paths.push croute.collectionName
+    if currentItem.__isCollection
+
+      # is the collection being fetched? might be something like people/craig/friends
+      if root
+        paths.push croute.collectionName
+
+      # otherwise skip the collection
+      else
+        return @_mapPathPart currentItem.parent, paths
+
     else
 
       if _id = currentItem.get "_id"
@@ -111,15 +119,6 @@ module.exports = class
         # add the collection name
         paths.push croute.path
         return paths
-
-
-    currentItem = currentItem.parent
-
-    # skip collections
-    if currentItem and currentItem.__isCollection
-      currentItem = currentItem.parent
-
-    return paths if not currentItem
 
     @_mapPathPart currentItem, paths, false
 
