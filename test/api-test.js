@@ -121,7 +121,7 @@ describe("linen", function() {
   });
 
   it("can successfuly add a new friend", function() {
-
+    items.craigsFriends.push(items.kramer);
   });
 
   it("can successfuly move one friend to another friend", function() {
