@@ -51,9 +51,9 @@ class ModelPlugin
     self = @
 
     modelBuilder = @modelBuilder = @schema.modelBuilder
-    modelBuilder.createCollection = @_modelBuilderCreateCollection
-    name = modelBuilder.name
 
+    # override collection factory
+    modelBuilder.createCollection = @_modelBuilderCreateCollection
 
     @modelClass = createLinenModel(@, modelBuilder.getClass())
     modelBuilder.setClass @modelClass
