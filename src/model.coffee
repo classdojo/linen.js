@@ -24,9 +24,9 @@ module.exports = (builder, Model) ->
       else
         data = data
 
-      @_setupRefs()
-
       super data
+
+      @_setupRefs()
 
     ###
     ###

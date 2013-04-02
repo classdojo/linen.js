@@ -48,6 +48,7 @@ class ModelPlugin
 
     # override collection factory
     modelBuilder.createCollection = @_modelBuilderCreateCollection
+    #modelBuilder._initCollectionItemTransformation = @_initCollectionItemTransformation
 
     @modelClass = createLinenModel(@, modelBuilder.getClass())
     modelBuilder.setClass @modelClass

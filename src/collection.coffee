@@ -17,6 +17,7 @@ module.exports = class extends bindable.Collection
 
 
     @_modelClass = options.modelClass
+    @_modelBuilder = @_modelClass.builder
 
 
     # virtual collections are NOT part of model data, where the collection needs to be fetched remotely
@@ -39,10 +40,14 @@ module.exports = class extends bindable.Collection
   ###
 
   item: (data) ->
+    ###
+    Item = @getModelClass()
+    new Item data
     if typeof data is "string"
       data = { _id: data }
     else 
       data = data
+    ###
 
     model = new @_modelClass data
     model.route @options
@@ -50,6 +55,27 @@ module.exports = class extends bindable.Collection
     # set the parent - this is needed to add the model to the collection if it's new, or fetched.
     model.parent = @
     model
+
+  ###
+  ###
+
+  getModelClass: () ->
+
+    if @_class
+      return @_class
+
+    self = @
+
+    @_class = class extends @_modelClass
+
+      ###
+      ###
+
+      _initData: (data) ->
+        super data
+        @route self.options
+        @parent = self
+
 
   ###
   ###
@@ -62,15 +88,10 @@ module.exports = class extends bindable.Collection
 
   _initTransformations: () ->
 
-    # first cast as a model class item, then check if it's a string. If it is, then it's an ID
-    @transform().cast(@_modelClass).map (itemOrId) =>
-      if typeof itemOrId is "object"
-        item = itemOrId
-      else
-        item = { _id: itemOrId }
 
-
-    @transform().postMap (item) =>
+    @transform().
+    map(@_modelBuilder._castRefClass(@getModelClass())).
+    postMap (item) =>
       item.route @options
       item
 

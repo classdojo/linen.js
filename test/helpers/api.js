@@ -203,7 +203,7 @@ module.exports = linen({
         return callback(new Error("method " + options.method + " doesn't exist"));
       }
 
-      console.log("%s %s", options.method, options.path)
+      //console.log("%s %s", options.method, options.path)
 
       router.
       request(options.path).

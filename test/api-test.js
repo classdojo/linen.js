@@ -26,7 +26,6 @@ describe("linen", function() {
     })
   });
 
-
   it("can fetch craig", function(next) {
     items.craig.fetch(function() {
       expect(items.craig.get("first_name")).to.be("craig");
@@ -214,6 +213,18 @@ describe("linen", function() {
       }));
     }));
   });
+
+
+  it("can create a person from the collection model class", function(next) {
+    var Person = items.people.getModelClass();
+    var person = new Person({ first_name: "Monica", last_name: "Harvancik" });
+    person.save(function() {
+      items.people.fetch(function() {
+        expect(items.people.indexOf(person)).not.to.be(-1);
+        next();
+      })
+    })
+  })
 
   return;
 
