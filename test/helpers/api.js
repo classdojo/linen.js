@@ -111,7 +111,7 @@ router.on({
     res.end(vine.result(getPerson(req)));
   },
   "pull -method=PUT people/:person": function(req, res) {
-
+    console.log("UPDATE");
   },
   "pull -method=GET locations/:location": function(req, res) {
     res.end(vine.result(sift({ _id: req.params.location }, collections.locations).shift()));
@@ -175,6 +175,8 @@ module.exports = linen({
     var data = response.data;
     function next() {
       var args = arguments, self = this;
+
+      //simulate API latency
       setTimeout(function() {
         callback.apply(self, args);
       }, 10);

@@ -165,6 +165,10 @@ describe("linen", function() {
     });
   });
 
+  it("can successfuly set a new location", function() {
+    items.craig.set("location", "")
+  });
+
 
   it("can successfuly move one friend to another friend", function() {
 
