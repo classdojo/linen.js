@@ -1,6 +1,6 @@
 {
   "name": "linen",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "```javascript",
   "main": "./lib/index.js",
   "scripts": {
@@ -14,7 +14,8 @@
     "mocha": "1.8.x",
     "expect.js": "0.2.x",
     "sift": "0.0.9",
-    "vine": "0.1.x"
+    "vine": "0.1.x",
+    "beanpoll": "0.2.x"
   },
   "author": "",
   "license": "BSD",
@@ -31,7 +32,6 @@
     "cstep": "0.0.x",
     "dref": "0.0.x",
     "hoist": "0.0.x",
-    "beanpoll": "0.2.x",
     "verify": "0.0.x",
     "asyngleton": "0.1.x"
   }
