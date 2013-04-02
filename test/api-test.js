@@ -217,16 +217,20 @@ describe("linen", function() {
 
   return;
 
-  it("can add jake as a friend to craig", function() {
-    items.craigsFriends.push(items.people.last());
-  });
-
-  it("can update a person", function() {
+  it("can add a hobby", function() {
 
   });
 
-  it("can remove a person", function() {
+  it("has hobbies", function() {
 
+  });
+
+  it("can update a hobby", function() {
+
+  });
+
+  it("can delete a hobby", function() {
+    
   })
 
 
