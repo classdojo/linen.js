@@ -146,7 +146,7 @@ module.exports = class extends bindable.Collection
       item: @
     }
 
-    @modelBuilder._fetch request, outcome.e(callback).s (source) =>
+    @modelBuilder.linen.resource.request request, outcome.e(callback).s (source) =>
       @reset source
       callback()
 

@@ -15,6 +15,8 @@ module.exports = (builder, Model) ->
 
     _initData: (data) ->
 
+      @_o = outcome.e @
+
 
       # id MAYBE a string - which is an _id. If this is the case, then
       # handle it accordingly
@@ -71,34 +73,42 @@ module.exports = (builder, Model) ->
 
       return next new Error("cannot fetch new model") if @isNew()
 
-      @_request request, outcome.e(next).s (result) =>
-        @hydrate result
-        next null, @
+      @_request request, next
 
     ###
     ###
 
-    _request: (options, next) ->
+    _request: cstep (options, next) ->
       options.item = @
-      linen.resource.request options, next
+      linen.resource.request options, outcome.e(next).s (result) =>
+        @hydrate result
+        next()
       @
 
-
     ###
     ###
 
-    save: cstep (next) ->
-      @validate outcome.e(next).s () =>
+    save: (next) ->
+      o = @_o.e next
+      @validate o.s () =>
         if @isNew()
-          @_request { method: "POST", data: @_update }, next
+          @_request { method: "POST", body: @_update }, o.s () =>
+            @parent.push @
+            next.call @
         else
-          @_request { method: "PUT", data: @_update }, next
+          @_request { method: "PUT", body: @_update }, next
+
+      @
 
     ###
     ###
 
-    remove: cstep (next) ->
-      return next(new Error("cannot remove a new item")) if @isNew()
+    remove: (next = (() ->)) ->
+      if @isNew()
+        next new Error "cannot remove a new item"
+        return @
+
       @_request { method: "DELETE" }, next
+      @
 
 

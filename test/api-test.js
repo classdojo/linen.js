@@ -43,9 +43,10 @@ describe("linen", function() {
 
   it("can fetch craig's friends", function(next) {
     items.craigsFriends.fetch(function() {
-      items.craigsFriends.last().get("location").fetch();
-      expect(items.craigsFriends.last().get("location.name")).to.be("Palo Alto");
-      next();
+      items.craigsFriends.last().get("location").fetch(function() {
+        expect(items.craigsFriends.last().get("location.name")).to.be("Palo Alto");
+        next();
+      });
     });
   });
 
@@ -85,10 +86,50 @@ describe("linen", function() {
 
   });
 
+  it("cannot save an invalid user", function(next) {
+    items.people.item({first_name:"craig"}).save(function(err) {
+      expect(err).not.to.be(undefined);
+      expect(err.message).to.contain("must be present");
+      next();
+    });
+  })
 
+  //test to make sure an error can be handled
+  it("cannot save user that already exists", function(next) {
+    items.peopleCount = items.people.length();
+    items.people.item({first_name:"craig", last_name: "condon"}).save(function(err) {
+      expect(err).not.to.be(undefined)
+      expect(err.message).to.contain("user already exists");
+      next();
+    });
+  });
 
-  it("can add jake as a person", function(next) {
-    items.people.item({name:"craig"}).save(next);
+  //sanity - make sure this number doesn't change
+  it("people collection does NOT have a new item", function() {
+    expect(items.people.length()).to.be(items.peopleCount);
+  });
+
+  it("can successfuly add a new person", function(next) {
+    items.kramer = items.people.item({first_name: "Kramer", last_name: "Weydt" }).save(function(err) {
+      expect(!!err).to.be(false);
+      next();
+    });
+  });
+
+  it("can find the new friend", function() {
+    expect(items.people.indexOf(items.kramer)).not.to.be(-1);
+  });
+
+  it("can successfuly add a new friend", function() {
+
+  });
+
+  it("can successfuly move one friend to another friend", function() {
+
+  });
+
+  it("can successfuly remove a friend", function() {
+
   });
 
   return;

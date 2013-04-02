@@ -31,8 +31,8 @@ module.exports = class
     method = options.method        # GET, DELETE, PUT, POST
     item   = options.item          # people.friends
     params = options.params or {}  # used for the path
-    query  = options.query or {}   # used for GET query data
-    data   = options.content or {} # used for POST data
+    query  = options.query  or {}  # used for GET query data
+    body   = JSON.parse JSON.stringify options.body   or {}  # used for POST data
     one    = not options.item.__isCollection
 
     # map the restful interface
@@ -42,7 +42,7 @@ module.exports = class
 
 
     # make the request
-    @transport.request { host: @host, path: path, method: method, query: query }, o.s (response) =>
+    @transport.request { host: @host, path: path, method: method, query: query, body: body }, o.s (response) =>
       @_mapResponse response, o.s (result) =>
 
         if one

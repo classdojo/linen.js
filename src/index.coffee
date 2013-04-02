@@ -29,12 +29,6 @@ class Linen
   ###
   ###
 
-  _request: (options, next) ->
-    @resource.request options, next
-
-  ###
-  ###
-
   _registerSchemas: (schemas) -> 
     for key of schemas
       @_registerSchema key, schemas[key]
