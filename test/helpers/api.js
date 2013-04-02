@@ -111,7 +111,14 @@ router.on({
     res.end(vine.result(getPerson(req)));
   },
   "pull -method=PUT people/:person": function(req, res) {
-    console.log("UPDATE");
+    
+    var person = getPerson(req);
+    
+    for(var key in req.query.body) {
+      person[key] = req.query.body[key]
+    }
+
+    res.end(vine.result(person));
   },
   "pull -method=GET locations/:location": function(req, res) {
     res.end(vine.result(sift({ _id: req.params.location }, collections.locations).shift()));

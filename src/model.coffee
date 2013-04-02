@@ -17,7 +17,6 @@ module.exports = (builder, Model) ->
 
       @_o = outcome.e @
 
-
       # id MAYBE a string - which is an _id. If this is the case, then
       # handle it accordingly
       if typeof data is "string"
@@ -80,9 +79,6 @@ module.exports = (builder, Model) ->
 
     _request: cstep (options, next) ->
       options.item = @
-
-      # if the model parent is NOT a collection, then set the collection to null.
-      options.collection = if @parent?.length then @parent else null
       options.one = true
       linen.resource.request options, outcome.e(next).s (result) =>
         @hydrate result
@@ -96,7 +92,7 @@ module.exports = (builder, Model) ->
       o = @_o.e next
       @validate o.s () =>
         if @isNew()
-          @_request { method: "POST", body: @_update }, o.s () =>
+          @_request { method: "POST", body: @data }, o.s () =>
             @parent.pushNoPersist @
             next.call @
         else
