@@ -40,21 +40,8 @@ module.exports = class extends bindable.Collection
   ###
 
   item: (data) ->
-    ###
     Item = @getModelClass()
-    new Item data
-    if typeof data is "string"
-      data = { _id: data }
-    else 
-      data = data
-    ###
-
-    model = new @_modelClass data
-    model.route @options
-
-    # set the parent - this is needed to add the model to the collection if it's new, or fetched.
-    model.parent = @
-    model
+    return new Item data
 
   ###
   ###
@@ -75,6 +62,10 @@ module.exports = class extends bindable.Collection
         super data
         @route self.options
         @parent = self
+
+    @_class.collection = @
+
+    @_class
 
 
   ###
