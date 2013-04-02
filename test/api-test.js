@@ -168,8 +168,9 @@ describe("linen", function() {
     });
   });
 
-  it("can successfuly set a new location", function() {
-    items.craig.set("location", "")
+  it("can successfuly set a new location", function(next) {
+    items.craig.set("location", "pa");
+    console.log(items.craig.get("location"))
   });
 
 
