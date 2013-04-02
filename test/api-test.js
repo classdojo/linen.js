@@ -144,6 +144,27 @@ describe("linen", function() {
     })
   });
 
+  it("can update a user, but throws an error", function(next) {
+    var lastPerson = items.people.last();
+    lastPerson.set("last_name", undefined);
+    lastPerson.save(function(error) {
+      expect(error).not.to.be(undefined);
+      expect(error.message).to.contain("present");
+      next();
+    })
+  });
+
+  it("can successfuly update a user", function(next) {
+    var lastPerson = items.people.last();
+    lastPerson.set("last_name", "blarg");
+    lastPerson.save(function() {
+      items.people.fetch(function() {
+        expect(items.people.at(items.people.indexOf(lastPerson)).get("last_name")).to.be("blarg");
+        next();
+      })
+    });
+  });
+
 
   it("can successfuly move one friend to another friend", function() {
 
