@@ -184,8 +184,7 @@ describe("linen", function() {
 
 
   it("can successfuly move one friend to another friend", function() {
-
-
+    
   });
 
   return;

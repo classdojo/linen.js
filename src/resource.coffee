@@ -18,10 +18,20 @@ module.exports = class
     @_mapItem       = options.mapItem       or @_defaultMapItem
     @_mapCollection = options.mapCollection or @_defaultMapCollection
 
+    # throttle the number of simultaneous requests
+    @_cargo         = async.queue @_request, Math.max 3, options.requestLimit or 10
+
   ###
   ###
 
   request: (options, callback) ->
+    @_cargo.push options, callback
+
+    
+  ###
+  ###
+
+  _request: (options, callback) =>
     # spell out what params can be used in the request. 
 
     method     = options.method        # GET, DELETE, PUT, POST
