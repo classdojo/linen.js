@@ -94,6 +94,7 @@ module.exports = class
 
 
   ###
+   TODO - separate collection from item
   ###
 
   _mapPathPart: (currentItem, options, paths, root) -> 
