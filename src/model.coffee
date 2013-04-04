@@ -8,7 +8,7 @@ module.exports = (builder, Model) ->
 
   linen = builder.linen
   
-  class extends Model
+  class LinenModel extends Model
 
     ###
     ###
@@ -64,6 +64,13 @@ module.exports = (builder, Model) ->
     ###
 
     isNew: () -> not @get "_id"
+
+    ###
+    ###
+
+    bind: () ->
+      @fetch()
+      LinenModel.__super__.bind.apply @, arguments
 
     ###
     ###

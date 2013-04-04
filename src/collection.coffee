@@ -3,7 +3,7 @@ async    = require "async"
 outcome  = require "outcome"
 asyngleton = require "asyngleton"
 
-module.exports = class extends bindable.Collection
+module.exports = class Collection extends bindable.Collection
 
   ###
   ###
@@ -121,10 +121,7 @@ module.exports = class extends bindable.Collection
   bind: (to) ->
     @fetch()
 
-    if not arguments.length
-      super()
-    else
-      super to
+    Collection.__super__.bind.apply @, arguments
 
 
   ###
