@@ -53,10 +53,32 @@ module.exports = (builder, Model) ->
       dref.set @_update, key, @get key
 
     ###
+     Hydrates the data and compares the current data to make sure this shit doesn't get overridden.
     ###
 
-    hydrate: (key, value) ->
-      @set.apply @, arguments
+    hydrate: (data) ->
+      for key of data 
+        cv = @get key
+        nv = data[key]
+
+        # is it a bindable it? it's a sub-schema item.
+        if cv 
+          if cv.__isBindable
+            cv = cv.get("_id")
+
+          # is it a collection? skip
+          else if cv.__isCollection
+            delete data[key]
+            continue
+
+
+
+        # no change? don't replace
+        # TODO - might need do deep compare with objects
+        if cv is nv
+          delete data[key]
+
+      @set data
       @_update = {}
       @
 
@@ -68,14 +90,15 @@ module.exports = (builder, Model) ->
     ###
     ###
 
-    bind: () ->
-      @fetch()
-      LinenModel.__super__.bind.apply @, arguments
+    get: () ->
+      @_initFetch()
+      LinenModel.__super__.get.apply @, arguments
 
     ###
     ###
 
     fetch: asyngleton true, (next) ->
+
       request = {
         method: "GET",
         item: @
@@ -84,6 +107,14 @@ module.exports = (builder, Model) ->
       return next new Error("cannot fetch new model") if @isNew()
 
       @_request request, next
+
+    ###
+    ###
+
+    _initFetch: () ->
+      return if @_fetched
+      @_fetched = true
+      @fetch()
 
     ###
     ###

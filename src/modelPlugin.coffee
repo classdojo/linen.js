@@ -24,7 +24,6 @@ class ModelPlugin
     options.modelClass = options.modelClass or @modelClass
     return new Collection path, @, options
 
-
   ###
   ###
 
