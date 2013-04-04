@@ -169,7 +169,8 @@ module.exports = (builder, Model) ->
       o = @_o.e next
       @validate o.s () =>
         if @isNew()
-          @_request { method: "POST", body: @data }, o.s () =>
+          # body = this since we're using toJSON()
+          @_request { method: "POST", body: @ }, o.s () =>
             @parent.pushNoPersist @
             next.call @
         else
