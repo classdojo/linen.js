@@ -130,6 +130,8 @@ describe("linen", function() {
     });
   });
 
+
+
   it("can successfuly remove a friend", function(next) {
     var lastFriend = items.craigsFriends.last(),
     lastFriendFriends = lastFriend.get("friends");
@@ -232,6 +234,14 @@ describe("linen", function() {
     items.craig.get("hobbies").item({ name: "cooking"}).save(function() {
       next();
     })
+  });
+
+  it("can remove a person from the model", function(next) {
+    items.kramer.remove(next);
+  });
+
+  it("kramer doesn't exist in the people's collection", function() {
+    expect(items.people.indexOf(items.kramer)).to.be(-1);
   });
 
   return;

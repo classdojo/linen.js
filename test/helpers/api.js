@@ -143,7 +143,12 @@ router.on({
     var friend = person.friends[friendIndex = person.friends.indexOf(req.params.friend)]
     if(!friend) return res.end(vine.error("friend does not exist"));
     person.friends.splice(friendIndex, 1);
-    vine.result(getPerson({ params: { person: req.params.friend }}))
+    res.end(vine.result(getPerson({ params: { person: req.params.friend }})))
+  },
+  "pull -method=DELETE people/:person": function(req, res) {
+    var person = getPerson(req);
+    collections.people.splice(collections.people.indexOf(person), 1);
+    res.end(vine.result(person));
   }
 });
 

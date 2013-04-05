@@ -184,7 +184,12 @@ module.exports = (builder, Model) ->
         next new Error "cannot remove a new item"
         return @
 
-      @_request { method: "DELETE" }, next
+      @_request { method: "DELETE" }, outcome.e(next).s () =>
+        @removed = true
+        @emit "remove"
+        @dispose()
+        next()
+
       @
 
 

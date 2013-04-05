@@ -186,7 +186,7 @@ module.exports = class Collection extends bindable.Collection
   ###
 
   _persistRemove: (item) ->
-    return if @_resetting
+    return if @_resetting or item.removed
 
     request = {
       method: "DELETE",
@@ -199,14 +199,21 @@ module.exports = class Collection extends bindable.Collection
   ###
 
   _persistInsert: (item) ->
+  
+    # explicitly called .remove() on model
+    item.once "remove", () => @splice @indexOf(item), 1
+
     return if @_resetting
 
     request = {
       method: "POST",
       body: item
     }
+
     
     @_request request
+
+
 
 
 
