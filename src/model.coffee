@@ -71,8 +71,6 @@ module.exports = (builder, Model) ->
             delete data[key]
             continue
 
-
-
         # no change? don't replace
         # TODO - might need do deep compare with objects
         if cv is nv

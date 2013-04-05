@@ -158,7 +158,7 @@ module.exports = linen({
         "last_name": { $type: "string", $required: true },
         "location": { $ref: "location", $objectKey: "_id", $route: { path: "locations" } },
         "friends": [{ $ref: "person", $route: { path: "people", inherit: false } }],
-        "hobbies": [{ $ref: "hobby", $route: { static: true, inherit: false } }]
+        "hobbies": [{ $ref: "hobby", $route: { virtual: true, inherit: true } }]
       }
     },
     "hobbies": {

@@ -99,7 +99,6 @@ module.exports = class
 
 
     paths = paths.reverse()
-
     return paths.join "/"
 
 
@@ -111,6 +110,7 @@ module.exports = class
 
     return paths if not currentItem
 
+
     croute = currentItem.route()
 
     if currentItem.__isCollection
@@ -118,7 +118,6 @@ module.exports = class
       # is the collection being fetched? might be something like people/craig/friends
       if root
         paths.push croute.collectionName
-
 
       # otherwise skip the collection
       else
@@ -128,6 +127,7 @@ module.exports = class
 
       if _id = currentItem.get "_id"
         paths.push _id
+
 
       # inherit the paths? something like people/craig/friends/sam
       if croute.inherit is true
@@ -139,7 +139,7 @@ module.exports = class
         paths.push croute.path
         return paths
 
-    @_mapPathPart currentItem, options, paths, false
+    @_mapPathPart currentItem.parent, options, paths, false
 
 
 

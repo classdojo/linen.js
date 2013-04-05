@@ -8,6 +8,7 @@ describe("linen", function() {
 
   var items = {};
 
+
   it("can create the route mappings", function() {
 
     items.craig = api.collection("people").item("craig");
@@ -226,11 +227,14 @@ describe("linen", function() {
     })
   })
 
-  return;
 
-  it("can add a hobby", function() {
-
+  it("can add a hobby", function(next) {
+    items.craig.get("hobbies").item({ name: "cooking"}).save(function() {
+      next();
+    })
   });
+
+  return;
 
   it("has hobbies", function() {
 
