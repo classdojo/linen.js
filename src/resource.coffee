@@ -1,6 +1,7 @@
 toarray = require "toarray"
 outcome = require "outcome"
 async   = require "async"
+isa     = require "isa"
 
 
 module.exports = class
@@ -128,9 +129,18 @@ module.exports = class
       if _id = currentItem.get "_id"
         paths.push _id
 
+      inherit = croute.inherit
+      inh = false
+
+
+      if isa.array inherit
+        inh = !!~inherit.indexOf options.method.toLowerCase()
+      else
+        inh = !!inherit
+
 
       # inherit the paths? something like people/craig/friends/sam
-      if croute.inherit is true
+      if inh
         paths.push croute.collectionName
 
       # don't inherit the path? something like people/craig/friends -> /people/sam
