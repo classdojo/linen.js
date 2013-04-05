@@ -236,12 +236,16 @@ describe("linen", function() {
     })
   });
 
+  var peopleCount = 0;
+
   it("can remove a person from the model", function(next) {
+    peopleCount = items.people.length()
     items.kramer.remove(next);
   });
 
   it("kramer doesn't exist in the people's collection", function() {
     expect(items.people.indexOf(items.kramer)).to.be(-1);
+    expect(items.people.length()).to.be(peopleCount - 1)
   });
 
   return;
