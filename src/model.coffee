@@ -22,6 +22,7 @@ module.exports = (builder, Model) ->
       @_o = outcome.e @
       super data
       @_setupRefs()
+      this._update = {}
 
 
     ###
@@ -146,6 +147,8 @@ module.exports = (builder, Model) ->
       for key of data
         ref = @_refs[key]
 
+        continue if not ref
+
         if not ref?.options.$objectKey
           v = data[key]
         else
@@ -153,8 +156,7 @@ module.exports = (builder, Model) ->
 
         d[key] = v
 
-
-      d
+      @_toJSON d
 
     ###
     ###
