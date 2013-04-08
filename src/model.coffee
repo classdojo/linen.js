@@ -10,12 +10,7 @@ module.exports = (builder, Model) ->
   
   class LinenModel extends Model
 
-    ###
-    ###
-
-    _initData: (data) ->
-
-      @_o = outcome.e @
+    constructor: (data = {}) ->
 
       # id MAYBE a string - which is an _id. If this is the case, then
       # handle it accordingly
@@ -24,9 +19,10 @@ module.exports = (builder, Model) ->
       else
         data = data
 
+      @_o = outcome.e @
       super data
-
       @_setupRefs()
+
 
     ###
     ###
