@@ -159,7 +159,7 @@ module.exports = (builder, Model) ->
     ###
     ###
 
-    save: (next) ->
+    save: (next = (() ->)) ->
       o = @_o.e next
       @validate o.s () =>
         if @isNew()
