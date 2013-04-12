@@ -23,6 +23,7 @@ module.exports = (builder, Model) ->
       super data
       @_setupRefs()
       this._update = {}
+      this._initialized = true
 
 
     ###
@@ -107,7 +108,7 @@ module.exports = (builder, Model) ->
     ###
 
     _initFetch: () ->
-      return if @_fetched
+      return if @_fetched or not @_initialized
       @_fetched = true
       @fetch()
 
