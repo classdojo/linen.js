@@ -108,7 +108,7 @@ module.exports = (builder, Model) ->
     ###
 
     _initFetch: () ->
-      return if @_fetched or not @_initialized
+      return if @_fetched or not @_initialized or not @data._id
       @_fetched = true
       @fetch()
 

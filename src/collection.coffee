@@ -138,7 +138,7 @@ module.exports = class Collection extends bindable.Collection
 
   fetch: asyngleton true, (callback) ->
 
-    return callback() if @_isStatic
+    return callback() if @_isStatic or (@parent and not @parent.__isCollection and not @parent.data._id)
 
     if not @_isVirtual 
       @_fetchReference callback
