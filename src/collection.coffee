@@ -90,6 +90,12 @@ module.exports = class Collection extends bindable.Collection
   ###
   ###
 
+  clear: () ->
+    @shift() while @length()
+
+  ###
+  ###
+
   reset: (source) ->
 
     @_resetting = true
