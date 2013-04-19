@@ -98,6 +98,7 @@ module.exports = class Collection extends bindable.Collection
 
   reset: (source) ->
 
+
     @_resetting = true
 
     if source.__isCollection
@@ -106,6 +107,8 @@ module.exports = class Collection extends bindable.Collection
     # if the source is NOT static, and NOT virtual (basically, just a list of IDs), then
     # remove the source. Strings are unacceptable since they're not restful
     if (not @_isStatic and typeof source[0] is "string") or not isa.array source
+      source = []
+    else if @_isVirtual and not @_fetching
       source = []
 
     result = super source
@@ -143,6 +146,7 @@ module.exports = class Collection extends bindable.Collection
   ###
 
   fetch: asyngleton true, (callback) ->
+    @_fetching = []
 
     return callback() if @_isStatic or (@parent and not @parent.__isCollection and not @parent.data._id)
 
