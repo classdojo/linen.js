@@ -1,7 +1,7 @@
 toarray = require "toarray"
 outcome = require "outcome"
 async   = require "async"
-isa     = require "isa"
+type = require "type-component"
 
 
 module.exports = class
@@ -133,7 +133,7 @@ module.exports = class
       inh = false
 
 
-      if isa.array inherit
+      if type(inherit) is "array"
         inh = !!~inherit.indexOf options.method.toLowerCase()
       else
         inh = !!inherit

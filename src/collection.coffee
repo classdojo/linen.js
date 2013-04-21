@@ -2,7 +2,7 @@ bindable = require "bindable"
 async    = require "async"
 outcome  = require "outcome"
 asyngleton = require "asyngleton"
-isa = require "isa"
+type = require "type-component"
 
 module.exports = class Collection extends bindable.Collection
 
@@ -106,7 +106,7 @@ module.exports = class Collection extends bindable.Collection
 
     # if the source is NOT static, and NOT virtual (basically, just a list of IDs), then
     # remove the source. Strings are unacceptable since they're not restful
-    if (not @_isStatic and typeof source[0] is "string") or not isa.array source
+    if (not @_isStatic and (type(source[0]) is "string")) or not (type(source) is "array")
       source = []
     else if @_isVirtual and not @_fetching
       source = []
