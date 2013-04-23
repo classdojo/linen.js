@@ -4,7 +4,7 @@
   "description": "```javascript",
   "main": "./lib/index.js",
   "scripts": {
-    "test": "mocha --reporter min --ignore-leaks --timeout 500"
+    "test": "mocha --reporter min --ignore-leaks --timeout 500; karma start"
   },
   "repository": {
     "type": "git",
