@@ -177,7 +177,7 @@ module.exports = (builder, Model) ->
     ###
 
     _buildRequestInfo: (data) ->
-      @builder.buildRequestInfo?(data, @) or data
+      builder.buildRequestInfo?(data, @) or data
 
     ###
     ###
