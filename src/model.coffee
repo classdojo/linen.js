@@ -169,9 +169,15 @@ module.exports = (builder, Model) ->
             @parent.pushNoPersist @
             next.call @
         else
-          @_request { method: "PUT", body: @_toObject(@_update) }, next
+          @_request @_buildRequestInfo({ method: "PUT", body: @_toObject(@_update) }), next
 
       @
+
+    ###
+    ###
+
+    _buildRequestInfo: (data) ->
+      @builder.buildRequestInfo?(data, @) or data
 
     ###
     ###
