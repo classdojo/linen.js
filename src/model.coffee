@@ -15,6 +15,7 @@ module.exports = (builder, Model) ->
       # id MAYBE a string - which is an _id. If this is the case, then
       # handle it accordingly
       if typeof data is "string"
+        @_needsFetching = true
         data = { _id: data }
       else
         data = data
@@ -108,7 +109,7 @@ module.exports = (builder, Model) ->
     ###
 
     _initFetch: () ->
-      return if @_fetched or not @_initialized or not @data._id
+      return if @_fetched or not @_initialized or not @data._id or not @_needsFetching
       @_fetched = true
       @fetch()
 
