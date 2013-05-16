@@ -29,8 +29,9 @@ module.exports = class Collection extends bindable.Collection
 
     @_initCollection()
 
-    @on "insert", @_persistInsert
-    @on "remove", @_persistRemove
+    @on "insert" , @_persistInsert
+    @on "remove" , @_persistRemove
+    @on "reset"  , @_onReset
 
   ###
   ###
@@ -209,11 +210,19 @@ module.exports = class Collection extends bindable.Collection
   ###
   ###
 
+  _onReset: (items) -> 
+    for item in items
+      @_persistInsert item
+
+
+  ###
+  ###
+
   _persistInsert: (item) ->
   
     # explicitly called .remove() on model
     item.once "remove", () => @splice @indexOf(item), 1
-
+    
     return if @_resetting
 
     request = {
