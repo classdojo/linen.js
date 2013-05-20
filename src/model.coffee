@@ -94,7 +94,7 @@ module.exports = (builder, Model) ->
     ###
     ###
 
-    fetch: asyngleton true, (next) ->
+    fetch: asyngleton 1000 * 5, (next) ->
 
       request = {
         method: "GET",

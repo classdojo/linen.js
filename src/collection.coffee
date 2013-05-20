@@ -146,7 +146,7 @@ module.exports = class Collection extends bindable.Collection
   ###
   ###
 
-  fetch: asyngleton true, (callback) ->
+  fetch: asyngleton 5, (callback) ->
     @_fetching = []
 
     return callback() if @_isStatic or (@parent and not @parent.__isCollection and not @parent.data._id)
