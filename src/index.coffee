@@ -1,56 +1,28 @@
-mannequin = require "mannequin"
-ModelPlugin = require "./modelPlugin"
-outcome = require "outcome"
-Resource = require "./resource"
+Schema  = require "./schema"
+Schemas = require "./schemas"
 
 class Linen
   
   ###
   ###
 
-  constructor: (@options) ->
-
-    @schemas = mannequin.dictionary()
-
-    @_schemasByCollectionName = {}
-    @resource = new Resource options, @
-
-    if options.schemas
-      @_registerSchemas options.schemas
-
-    @_registerRoutes options.routes
+  constructor: (options = {}) ->
+    @schemas   = new Schemas @
+    @transport = options.transport
 
   ###
   ###
 
-  collection: (collectionName, query = {}) ->
-    @_schemasByCollectionName[collectionName].createCollection collectionName, { query: query }
+  getSchema: (schemaName)    -> @schemas.get schemaName
+  addSchema: (schemaOptions) -> @schemas.add schemaOptions
 
   ###
   ###
 
-  _registerSchemas: (schemas) -> 
-    for key of schemas
-      @_registerSchema key, schemas[key]
-
-  ###
-  ###
-
-  _registerRoutes: (routes) ->
-    for collectionName of routes
-      route = routes[collectionName]
-      builder = @_schemasByCollectionName[collectionName] = @_registerSchema(route.name, route.schema)
-      delete route.schema
-      builder.route = route
-      builder.route.root = true
-
-  ###
-  ###
-
-  _registerSchema: (name, schema) -> 
-    ModelPlugin.plugin @, @schemas.register name, schema
+  model      : (schemaName) -> @schemas.model schemaName
+  collection : (schemaName) -> @schemas.collection schemaName
 
 
 
-module.exports = (options) -> new Linen options
 
+module.exports = () -> new Linen()

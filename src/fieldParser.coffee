@@ -1,0 +1,92 @@
+Field  = require "./field"
+Fields = require "./fields"
+type   = require "type-component"
+verify = require("verify")()
+toarray = require "toarray"
+
+###
+ parses a schema definition
+###
+
+class Parser
+
+  ###
+  ###
+
+  constructor: () ->
+
+  ###
+  ###
+
+  parse: (schema, definition) ->
+    fields = new Fields schema
+    @_parseFields definition, fields, []
+    fields
+
+  ###
+  ###
+
+  _parseFields: (options, fields, path) ->
+    ops = {}
+
+    # fields:
+    #   name: "string"
+
+    if (t = type(options)) is "string"
+      ops.$type = options
+    else if t is "array"
+      ops.$multi = true
+      ops = options[0]
+    else
+      ops = options
+
+
+    # if $type or $ref isn't defined, then it's something like:
+    #
+    # fields:
+    #   name:
+    #     first: "string"
+    #     last: "string"
+
+    if not ops.$type and not ops.$ref
+      for key of ops
+        @_parseFields ops[key], fields, path.concat key
+    else
+      test = @_getValueTester ops
+
+      fops = 
+        ref      : ops.$ref
+        test     : test
+        multi    : ops.$multi
+        property : path.join(".")
+        default  : ops.$default
+        map      : ops.$map
+        save     : ops.$save
+
+      fields.add new Field fields, fops
+
+
+  ###
+  ###
+
+  _getValueTester: (ops) ->
+
+    return ops.$test if ops.$test
+
+    if ops.$type
+      ops.$is = ops.$type
+      delete ops.$type
+
+    tester = verify.tester()
+
+    for key of ops
+      k = key.substr(1)
+      if !!tester[k]
+        tester[k].apply tester, toarray ops[key]
+
+
+    (value) => tester.test value
+
+
+
+module.exports = new Parser()
