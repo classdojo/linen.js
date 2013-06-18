@@ -35,9 +35,9 @@ linen.addSchema({
   fields: {
     "people": [{ 
       $ref: "person",
-      $fetch: function(options, next) {
-        console.log(options);
-      }
+      $fetch: api.route({
+        path: "/people"
+      })
     }]
   }
 })

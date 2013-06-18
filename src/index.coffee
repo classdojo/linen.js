@@ -19,8 +19,7 @@ class Linen
   ###
   ###
 
-  model      : (schemaName) -> @schemas.model schemaName
-  collection : (schemaName) -> @schemas.collection schemaName
+  model      : (schemaName, data) -> @schemas.model schemaName, data
 
 
 

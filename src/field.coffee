@@ -8,33 +8,24 @@ class Field
   ###
   ###
 
-  constructor: (@fields, options) ->
+  constructor: (@fields, @options) ->
     @schema    = @fields.schema
     @linen     = @schema.linen
     @property  = options.property
-    @_required = options.required
-    @_map      = options.map
-    @_multi    = options.multi
-    @_ref      = options.ref
-    @_default  = options.default
-    @_test     = options.test 
-    @_fetch    = options.fetch
-    @get       = options.get
-    @set       = options.set
     @bind      = options.bind
 
   ###
+   virtual might be remove, or local
   ###
 
-  isVirtual: () -> @_refVirtual() or !!@_fetch or !!@_get or !!@_set
-
+  isVirtual: () -> @_refVirtual() or !!@options.fetch or !!@options.get or !!@options.set
 
   ###
   ###
 
   _refVirtual: () ->
-    return false unless @_ref
-    return @linen.schemas.get(@_ref).isVirtual()
+    return false unless @options.ref
+    return @linen.schemas.get(@options.ref).isVirtual()
 
   ###
   ###
@@ -46,7 +37,7 @@ class Field
 
     # if this field is a collection, then make sure the value
     # is a collection as wella
-    if @_multi
+    if @options.multi
       unless value?.__isCollection
         error = new comerr.Invalid "#{@property} must be a collection"
       else
@@ -55,14 +46,14 @@ class Field
       values = [value]
 
     for v in values
-      if not @_test(v) and (v isnt undefined or @_required)
+      if not @options.test(v) and (v isnt undefined or @options.required)
         error = new comerr.Invalid "'#{@property}' is invalid", { field: @ }
 
-      if @_ref and not (v?.__isModel and v.schema.name is @_ref)
+      if @options.ref and not (v?.__isModel and v.schema.name is @options.ref)
         
-        error = new comerr.Invalid "'#{@property}' must be type #{@_ref}"
+        error = new comerr.Invalid "'#{@property}' must be type #{@options.ref}"
 
-      else if @_ref
+      else if @options.ref
         error = v.validate()
         return error if error?
 
@@ -71,7 +62,16 @@ class Field
   ###
   ###
 
-  fetch: (modelOrCollection, next) ->
+  fetch: (payload, next = () ->) ->
+
+    # ignore fetch if options.fetch doesn't exist - not a 
+    # virtual field
+    return next() unless @options.fetch
+
+    @options.fetch payload, next
+
+
+    
 
 
 
@@ -80,20 +80,22 @@ class Field
 
   save: (payload, next) ->
 
-    model = payload.model
-    err   = @validate payload.model
+    model = payload.target
+    err   = @validate payload.target
 
     return next(err) if err?
 
     # is it a reference? call .save() on the ref
-    if @_ref
+    if @options.ref
       value = model.get @property
       if value?.hasChanged()
         value.save next
       else
         return next()
+
+    # otherwise make sure this field has changed before saving it
     else
-      return next() if not model.changed()[@property] or not @_fetch
+      return next() unless payload.changed[@property]
       @fetch model, next
 
 
@@ -105,12 +107,12 @@ class Field
 
     def = @_getDefault value
 
-    if @_map 
-      def = @_map value
+    if @options.map 
+      def = @options.map value
 
 
     # return a collection if multiple
-    return new Collection(@) if @_multi
+    return new Collection(@) if @options.multi
 
     return def
 
@@ -119,11 +121,13 @@ class Field
 
   map: (value) ->
 
-    return value if @_multi
+    return value if @options.multi and value.__isCollection
 
-    if @_ref
-      return value if @_ref.__isModel
-      return @linen.model @_ref, value
+    if @options.ref
+      return value if value.__isModel
+      model = @linen.model @options.ref, value
+      model.field = @
+      return model
 
     value
 
@@ -131,9 +135,11 @@ class Field
   ###
 
   _getDefault: (value) ->  
-    return value unless @_default
-    return @_default.call(@) if type(@_default) is "function"
-    return @_default
+    return value unless @options.default
+    return @options.default.call(@) if type(@options.default) is "function"
+    return @options.default
+
+
 
 
 

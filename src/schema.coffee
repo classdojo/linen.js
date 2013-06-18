@@ -11,6 +11,7 @@ class Schema
   constructor: (@linen, options = {}) ->
     @name    = options.name
     @__fetch = options.fetch
+    options.fields._id = "string"
     @fields  = parser.parse @, options.fields
 
   ###
@@ -84,7 +85,7 @@ class Schema
 
   _save: (payload, next) ->
     callstack = flatstack()
-    model = payload.model
+    model = payload.target
 
     # filter out the keys which are NOT virtual
     changed = payload.changed
@@ -113,7 +114,7 @@ class Schema
 
   _delete: (payload, next) ->
 
-    unless payload.model.has("_id")
+    unless payload.target.has("_id")
       return next(comerr.Invalid("_id must be present when deleting a model"))
 
     @_fetch payload, next

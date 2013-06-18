@@ -1,4 +1,5 @@
 bindable = require "bindable"
+Payload  = require "./payload"
 
 class Collection extends bindable.Collection
   
@@ -12,6 +13,12 @@ class Collection extends bindable.Collection
 
   constructor: (@field) ->
     super()
+
+    @transform().map (model) ->
+      return field.map model
+
+
+
 
   ###
   ###
@@ -27,12 +34,21 @@ class Collection extends bindable.Collection
 
   fetch: (next = ()->) ->
     return next() unless @field.isVirtual()
-    @field.fetch @, next
+    @field.fetch new Payload(@, "GET"), (err, models) =>
+      return next(err) if err?
+      @__reset models
 
   ###
   ###
 
   save: () ->
+
+  ###
+  ###
+
+  __reset: (models) -> 
+    @source models
+
 
 
 

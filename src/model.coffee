@@ -15,7 +15,6 @@ class Model extends bindable.Object
   constructor: (@schema) ->
     super {}
     @_changed = {}
-    @_bindFields()
 
   ###
   ###
@@ -125,21 +124,23 @@ class Model extends bindable.Object
 
   _bindFields: () ->
     @_ignoreFetch = true
-    for fieldName in @schema.fields.names() then do (fieldName) =>
-      field = @schema.fields.get(fieldName)
+    for field in @schema.fields.toArray() then do (field) =>
+
+      fieldName = field.property
+      fops      = field.options
 
       @bind(fieldName).to (newValue, oldValue) => 
         @_changed[fieldName] = { key: fieldName, nv: newValue, ov: oldValue }
-        if field.set
-          field.set @, newValue, oldValue
+        if fops.set
+          fops.set @, newValue, oldValue
 
-      if field.get
-        @set field.property, field.get @
+      if fops.get
+        @set field.property, fops.get @
 
-      if field.bind
-        for property in field.bind then do (property) =>
+      if fops.bind
+        for property in fops.bind then do (property) =>
           @bind(property).to () =>
-            @set field.property, field.get @
+            @set fieldName, fops.get @
 
     @_ignoreFetch = false
 

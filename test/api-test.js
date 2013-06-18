@@ -4,7 +4,6 @@ var schemas = require("./helpers/schemas");
 describe("linen", function() {
 
   var items = {};
-  return;
 
 
   it("can create the route mappings", function() {
@@ -13,8 +12,8 @@ describe("linen", function() {
     items.craigsFriends = items.craig.get("friends");
   });
 
-  it("can fetch all the people", function(next) {
-    items.people.fetch(function() {
+  it("can fetch all the people", function() {
+    items.people.fetch(function(err) {
       expect(items.people.at(1).get("first_name")).to.be("Sam");
       next();
     })
