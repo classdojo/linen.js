@@ -1,3 +1,5 @@
+PayloadData = require "./payloadData"
+
 ###
  payload data persisted to the server
 ###
@@ -8,28 +10,25 @@ class Payload
   ###
 
   constructor: (@model, @parent) ->
-    @keys  = @model.flushChangedKeys()
+
+    # only the keys which are defined in the model schema
+    # TODO - this should be in the model
+    @keys  = @model.flushChanged().map((changed) ->
+      changed.key
+    ).filter (key) ->
+      !!model.schema.fields.get(key)
+
     @isNew = @model.isNew()
-
-
-  ###
-  ###
-
-  removeKey: (key) ->
-    i = @keys.indexOf key
-    if ~i
-      @keys.splice i, 1
-
-  ###
-  ###
-
-  pluck: () ->
-
 
   ###
   ###
 
   child: (model) -> new Payload model, @
+
+  ###
+  ###
+
+  data: (field) -> new PayloadData @, field
 
 
 

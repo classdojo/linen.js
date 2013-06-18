@@ -25,6 +25,7 @@
     "comerr": "0.0.x",
     "underscore": "1.4.x",
     "hoist": "0.0.x",
-    "async": "~0.2.9"
+    "async": "~0.2.9",
+    "flatstack": "0.0.3"
   }
 }

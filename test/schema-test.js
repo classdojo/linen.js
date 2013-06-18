@@ -9,20 +9,13 @@ describe("schema", function() {
       name: "address",
       fields: {
         city  : "string",
-        state : "string",
+        state : { $is: /^\w{2}$/ },
         zip   : { 
           $type: "string", 
           $test: function(v) {
             return String(v) != "99999";
-          },
-          $save: function(payload, next) {
-            console.log(payload);
-            next();
           }
         }
-      },
-      save: function(options, next) {
-        console.log(options);
       }
     });
 
@@ -30,15 +23,7 @@ describe("schema", function() {
       name: "person",
       fields: {
         name: "string",
-        address: { $ref: "address" },
-        test: {
-          $get: function(model) {
-
-          },
-          $set: function(model) {
-
-          }
-        }
+        address: { $ref: "address" }
       }
     }),
     personModel,
@@ -72,8 +57,18 @@ describe("schema", function() {
     });
 
     it("can persist the address when it changes", function() {
-      personModel.save(function() {
-        console.log("DONE")
-      }); 
+      personModel.set("name", "jake");
+      expect(Object.keys(personModel._changed)).to.contain("name");
+      personModel.save(); 
+      expect(Object.keys(personModel._changed).length).to.be(0);
     });
+
+
+    it("throws an error if the city is incorrect", function() {
+      personModel.set("address.state", "MNS");
+      expect(personModel.validate()).not.to.be(undefined);
+      personModel.set("address.state", "MN");
+      expect(personModel.validate()).to.be(undefined);
+    })
+
 })

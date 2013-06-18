@@ -11,9 +11,10 @@ class Model extends bindable.Object
   ###
   ###
 
-  constructor: (@schema, data = {}) ->
-    super data
-    @_changed = unless data._id then Object.keys(@_clone(data)) else []
+  constructor: (@schema) ->
+    super {}
+    @_changed = {}
+    @_bindFields()
 
   ###
   ###
@@ -23,30 +24,18 @@ class Model extends bindable.Object
   ###
   ###
 
-  changed: () -> !!@_changed.length
+  hasChanged: () -> !!Object.keys @_changed
 
   ###
   ###
 
-  changedKeys: () -> @_changed
-
-  ###
-  ###
-
-  flushChangedKeys: () ->
+  flushChanged: () ->
     ch = @_changed
-    @_changed = []
-    ch
-
-  ###
-  ###
-
-  _set: (key, value) ->
-
-    unless ~@_changed.indexOf key
-      @_changed.push key
-
-    super key, value
+    @_changed = {}
+    changed = []
+    for key of ch
+      changed.push ch[key]
+    changed
 
   ###
   ###
@@ -57,7 +46,8 @@ class Model extends bindable.Object
   ###
 
   bind: (property) ->
-    binding = @bind arguments...
+    binding = super arguments...
+    return binding if @_ignoreFetch
     @_fetch property
     binding
 
@@ -86,6 +76,16 @@ class Model extends bindable.Object
   ###
 
   _fetch: (property) -> @schema.fetch @, [property]
+
+  ###
+  ###
+
+  _bindFields: () ->
+    @_ignoreFetch = true
+    for fieldName in @schema.fields.names() then do (fieldName) =>
+      @bind(fieldName).to (newValue, oldValue) =>
+        @_changed[fieldName] = { key: fieldName, nv: newValue, ov: oldValue }
+    @_ignoreFetch = false
 
   
 

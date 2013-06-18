@@ -29,6 +29,7 @@ class Parser
   _parseFields: (options, fields, path) ->
     ops = {}
 
+
     # fields:
     #   name: "string"
 
@@ -48,7 +49,7 @@ class Parser
     #     first: "string"
     #     last: "string"
 
-    if not ops.$type and not ops.$ref
+    unless @_hasOps ops
       for key of ops
         @_parseFields ops[key], fields, path.concat key
     else
@@ -79,6 +80,7 @@ class Parser
 
     tester = verify.tester()
 
+
     for key of ops
       k = key.substr(1)
       if !!tester[k]
@@ -86,6 +88,15 @@ class Parser
 
 
     (value) => tester.test value
+
+
+  ###
+  ###
+
+  _hasOps: (options) ->
+    for key of options
+      return true if key.substr(0, 1) is "$"
+    return false
 
 
 

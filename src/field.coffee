@@ -1,6 +1,6 @@
-Collection = require "./collection"
-Model      = require "./model"
-comerr     = require "comerr"
+Collection  = require "./collection"
+Model       = require "./model"
+comerr      = require "comerr"
 
 class Field
   
@@ -19,6 +19,18 @@ class Field
     @_test     = options.test 
     @_save     = options.save
 
+  ###
+  ###
+
+  isVirtual: () -> @_refVirtual() or !!@_save or !!@_get or !!@_set
+
+
+  ###
+  ###
+
+  _refVirtual: () ->
+    return false unless @_ref
+    return @linen.schemas.get(@_ref).isVirtual()
 
   ###
   ###
@@ -65,13 +77,13 @@ class Field
     # is it a reference? call .save() on the ref
     if @_ref
       value = model.get @property
-      if value?.changed()
+      if value?.hasChanged()
         value.schema.save payload.child(value), next
       else
         return next()
     else
       return next() if not ~payload.keys.indexOf(@property) or not @_save
-      @_save payload, next
+      @_save payload.data([@property]), next
 
 
   ###

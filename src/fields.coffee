@@ -6,7 +6,7 @@ class Fields
   ###
 
   constructor: (@schema) ->
-    @_fields   = {}
+    @_fields = {}
 
   
   ###
@@ -47,7 +47,9 @@ class Fields
 
     d = JSON.parse JSON.stringify data
     for fieldName of @_fields
-      d[fieldName] =  @_fields[fieldName].map d[fieldName]
+      v = @_fields[fieldName].map d[fieldName]
+      if v?
+        d[fieldName] = v
 
     d
 
@@ -55,7 +57,7 @@ class Fields
   ###
 
   save: (payload, next) ->
-  
+
     # 1. find all the virtual values that aren't actually
     # apart from the model, and save them individually 
     # 2. save the remaining data as the model

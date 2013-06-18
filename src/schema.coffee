@@ -1,6 +1,7 @@
-type    = require "type-component"
-parser  = require "./fieldParser"
-Model   = require "./model"
+type      = require "type-component"
+parser    = require "./fieldParser"
+Model     = require "./model"
+flatstack = require "flatstack"
 
 class Schema
   
@@ -8,9 +9,17 @@ class Schema
   ###
 
   constructor: (@linen, options = {}) ->
-    @name = options.name
-    @_fields = parser.parse @, options.fields
+    @name   = options.name
+    @_fetch = options.fetch
+    @fields = parser.parse @, options.fields
 
+  ###
+  ###
+
+  isVirtual: () -> !!@_fetch
+
+  ###
+  ###
 
   model: (data) ->
     d = {}
@@ -23,36 +32,64 @@ class Schema
 
     # return the new model, along with the
     # correct, mapped data
-    new Model @, @_fields.map d
+    m = new Model @
+    m.reset @fields.map d
+
+    unless m.isNew()
+      m.flushChanged()
+
+    m
+
 
   ###
   ###
 
   validate: (model) -> 
-    @_fields.validate model
+    @fields.validate model
 
   ###
   ###
 
-  save: (model, next) -> 
+  save: (payload, next) -> 
 
-    # first save the virtual fields
-    @_fields.save model, (err) =>
-      return next(err) if err?
-      console.log "SEV"
+    callstack = flatstack()
 
+    # filter out the keys which are NOT virtual
+    usableKeys = payload.keys.filter (key) =>
+      not @fields.get(key).isVirtual()
+
+
+    if @_fetch and (payload.model.isNew() or usableKeys.length)
+      callstack.push (next) =>
+        @_fetch { method: (if payload.model.isNew() then "POST" else "PUT"), model: payload.model, data: payload.data(usableKeys) }, next
+
+
+    callstack.push (next2) =>
+      # first save the virtual fields
+      @fields.save payload, (err) =>
+        return next(err) if err?
+        next2()
+
+
+    callstack.push () -> next()
 
   ###
   ###
 
-  fetch: (model, properties) ->
+  fill: (model, properties) ->
 
     unless properties
-      properties = @_fields.names()
+      properties = @fields.names()
 
     for property in properties
-      field = @_fields.get property
-      field.fetch model
+      field = @fields.get property
+      field?.fetch model
+
+  ###
+  ###
+
+  del: (model, next) ->
+    @_fetch { method: "DELETE", model: model }, next
 
 
 module.exports = Schema
