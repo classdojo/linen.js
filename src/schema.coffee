@@ -38,7 +38,6 @@ class Schema
     unless m.isNew()
       m.flushChanged()
 
-
     m
 
   ###
@@ -52,59 +51,82 @@ class Schema
   validate: (model) -> 
     @fields.validate model
 
+
   ###
   ###
 
-  save: (payload, next) -> 
+  fetch: (payload, next) ->
+    switch payload.method
+      when "GET" 
+        @_get payload, next
+      when "PUT" 
+        @_save payload, next
+      when "POST" 
+        @_save payload, next
+      when "DELETE" 
+        @_delete payload, next
 
+  ###
+  ###
+
+  _get: (payload, next) ->
+
+
+    # fetch the virtual fields
+    for field in @fields.toArray()
+      continue unless field.isVirtual()
+      field?.fetch payload
+
+    @_fetch payload, next
+
+  ###
+  ###
+
+  _save: (payload, next) ->
     callstack = flatstack()
+    model = payload.model
 
     # filter out the keys which are NOT virtual
-    usableKeys = payload.keys.filter (key) => not @fields.get(key).isVirtual()
+    changed = payload.changed
+    usable  = changed.filter (value) => not @fields.get(value.key).isVirtual()
 
-    if @__fetch and (payload.model.isNew() or usableKeys.length)
+    if (payload.method is "POST" or usableKeys.length)
+      data = {}
+      for item in changed
+        data[item.key] = item.nv
+
       callstack.push (next) =>
-        @_fetch { method: (if payload.model.isNew() then "POST" else "PUT"), model: payload.model, data: payload.data(usableKeys) }, next
+        @_fetch payload, next
 
     callstack.push (next2) =>
+
       # first save the virtual fields
       @fields.save payload, (err) =>
         return next(err) if err?
         next2()
 
-
     callstack.push () -> next()
 
+
   ###
   ###
 
-  fill: (model, properties, next) ->
+  _delete: (payload, next) ->
 
-    unless properties
-      properties = @fields.names()
+    unless payload.model.has("_id")
+      return next(comerr.Invalid("_id must be present when deleting a model"))
 
-    for property in properties
-      field = @fields.get property
-      field?.fetch model
-
-
-    @_fetch { method: "GET", model: model }, next
+    @_fetch payload, next
 
 
   ###
   ###
 
-  del: (model, next) ->
-    @_fetch { method: "DELETE", model: model }, next
-
-  ###
-  ###
-
-  _fetch: (options, next = () ->) ->
+  _fetch: (payload, next = () ->) ->
+    return next() unless @__fetch
     @__fetch options, (err, result) ->
       return next(err) if err?
       options.model.set result
-      options.model.flushChanged()
       next()
 
 

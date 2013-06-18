@@ -1,6 +1,0 @@
-class Transport
-
-  ###
-  ###
-
-  fetcher: ()

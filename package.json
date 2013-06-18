@@ -13,9 +13,11 @@
   "devDependencies": {
     "mocha": "~1.11.0",
     "expect.js": "~0.2.0",
-    "sift": "0.0.9",
-    "vine": "0.1.x",
-    "beanpoll": "0.2.x"
+    "sift": "0.0.12",
+    "vine": "~0.1.1",
+    "beanpoll": "~0.2.19",
+    "outcome": "0.0.18",
+    "underscore": "~1.4.4"
   },
   "author": "",
   "license": "BSD",

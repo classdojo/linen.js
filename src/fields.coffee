@@ -28,7 +28,18 @@ class Fields
   ###
   ###
 
+  fieldsToArray: () ->
+    fields = []
+    for fieldName of @_fields
+      fields.push @get fieldName
+
+    fields
+
+  ###
+  ###
+
   validate: (model) -> 
+
 
     errors = []
 

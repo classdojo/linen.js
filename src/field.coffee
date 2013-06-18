@@ -18,7 +18,7 @@ class Field
     @_ref      = options.ref
     @_default  = options.default
     @_test     = options.test 
-    @_save     = options.save
+    @_fetch    = options.fetch
     @get       = options.get
     @set       = options.set
     @bind      = options.bind
@@ -26,7 +26,7 @@ class Field
   ###
   ###
 
-  isVirtual: () -> @_refVirtual() or !!@_save or !!@_get or !!@_set
+  isVirtual: () -> @_refVirtual() or !!@_fetch or !!@_get or !!@_set
 
 
   ###
@@ -40,6 +40,7 @@ class Field
   ###
 
   validate: (model) ->
+
     value = model.get @property
 
 
@@ -67,6 +68,12 @@ class Field
 
     error
 
+  ###
+  ###
+
+  fetch: (modelOrCollection, next) ->
+
+
 
   ###
   ###
@@ -74,8 +81,7 @@ class Field
   save: (payload, next) ->
 
     model = payload.model
-
-    err = @validate model
+    err   = @validate payload.model
 
     return next(err) if err?
 
@@ -83,12 +89,12 @@ class Field
     if @_ref
       value = model.get @property
       if value?.hasChanged()
-        value.schema.save payload.child(value), next
+        value.save next
       else
         return next()
     else
-      return next() if not ~payload.keys.indexOf(@property) or not @_save
-      @_save payload.data([@property]), next
+      return next() if not model.changed()[@property] or not @_fetch
+      @fetch model, next
 
 
   ###

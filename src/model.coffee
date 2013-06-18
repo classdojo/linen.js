@@ -1,5 +1,6 @@
 bindable = require "bindable"
-Payload  = require "./payload"
+_ = require "underscore"
+Payload = require "./payload"
 
 class Model extends bindable.Object 
 
@@ -29,6 +30,20 @@ class Model extends bindable.Object
   ###
   ###
 
+  changed: () -> @_changed
+
+  ###
+  ###
+
+  changedToArray: () ->
+    cha = []
+    for key of @_changed
+      cha.push @_changed[key]
+    cha
+
+  ###
+  ###
+
   _set: (key, value) ->
     super key, @schema.map key, value
 
@@ -44,17 +59,47 @@ class Model extends bindable.Object
     changed
 
   ###
+   refreshes the model
   ###
 
-  save: (next = () ->)  -> @schema.save new Payload(@), next
+  fetch: (next) -> @_fetch new Payload(@, "GET"), next
 
   ###
+   saves the model - either adds it as a new one, or updates it
+  ###
+
+  save: (next)  -> @_fetch new Payload(@, (if @isNew() then "POST" else "PUT"), @flushChanged()), next
+
+  ###
+   removes the model
+  ###
+
+  remove: (next) -> 
+    @_fetch new Payload(@, "DELETE"), (err) =>
+      return next(err) if err?
+      @emit "delete"
+
+  ###
+   calls .fetch() on schema, and updates this model
+  ###
+
+  _fetch: (payload, next = () ->) ->
+    @schema.fetch payload, (err, result) =>
+      return err if err?
+
+      # result must always be the updated model
+      @set result or {}
+      next()
+
+
+  ###
+   on binding, fetch this model, but don't do it all the time.
   ###
 
   bind: (property) ->
     binding = super arguments...
     return binding if @_ignoreFetch
-    @_fetch property
+    @_throttledFetch()
     binding
 
   ###
@@ -70,18 +115,10 @@ class Model extends bindable.Object
   ###
   ###
 
-  _clone: (data) -> JSON.parse JSON.stringify data
+  _throttledFetch: _.throttle (() ->  
+    @fetch()
+  ), 1000 * 5
 
-  ###
-   refreshes the model
-  ###
-
-  fetch: (next) -> @schema.fill @, [], next
-
-  ###
-  ###
-
-  _fetch: (property) -> @schema.fetch @, [property]
 
   ###
   ###
@@ -98,7 +135,6 @@ class Model extends bindable.Object
 
       if field.get
         @set field.property, field.get @
-
 
       if field.bind
         for property in field.bind then do (property) =>

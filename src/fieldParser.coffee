@@ -62,7 +62,7 @@ class Parser
         property : path.join(".")
         default  : ops.$default
         map      : ops.$map
-        save     : ops.$save
+        fetch    : ops.$fetch
         get      : ops.$get
         set      : ops.$set
         bind     : ops.$bind

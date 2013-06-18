@@ -25,7 +25,9 @@ class Collection extends bindable.Collection
   ###
   ###
 
-  fetch: () ->
+  fetch: (next = ()->) ->
+    return next() unless @field.isVirtual()
+    @field.fetch @, next
 
   ###
   ###
