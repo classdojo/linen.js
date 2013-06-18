@@ -40,19 +40,23 @@ class Fields
     errors.shift()
 
   ###
-   maps the model when initialized for the first time
   ###
 
-  map: (data) ->
-
+  default: (data) ->
     d = JSON.parse JSON.stringify data
     for fieldName of @_fields
-      v = @_fields[fieldName].map d[fieldName]
+      v = @_fields[fieldName].default d[fieldName]
       if v?
         d[fieldName] = v
 
     d
 
+  ###
+  ###
+
+  map: (key, value) ->
+    return value unless (field = @get(key))
+    field.map value
   ###
   ###
 

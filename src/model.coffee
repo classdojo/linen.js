@@ -29,6 +29,12 @@ class Model extends bindable.Object
   ###
   ###
 
+  _set: (key, value) ->
+    super key, @schema.map key, value
+
+  ###
+  ###
+
   flushChanged: () ->
     ch = @_changed
     @_changed = {}
@@ -70,7 +76,7 @@ class Model extends bindable.Object
    refreshes the model
   ###
 
-  fetch: () -> @schema.fetch @
+  fetch: (next) -> @schema.fill @, [], next
 
   ###
   ###
@@ -83,10 +89,23 @@ class Model extends bindable.Object
   _bindFields: () ->
     @_ignoreFetch = true
     for fieldName in @schema.fields.names() then do (fieldName) =>
-      @bind(fieldName).to (newValue, oldValue) =>
+      field = @schema.fields.get(fieldName)
+
+      @bind(fieldName).to (newValue, oldValue) => 
         @_changed[fieldName] = { key: fieldName, nv: newValue, ov: oldValue }
+        if field.set
+          field.set @, newValue, oldValue
+
+      if field.get
+        @set field.property, field.get @
+
+
+      if field.bind
+        for property in field.bind then do (property) =>
+          @bind(property).to () =>
+            @set field.property, field.get @
+
     @_ignoreFetch = false
 
-  
 
 module.exports = Model

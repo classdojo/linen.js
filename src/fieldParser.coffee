@@ -36,8 +36,8 @@ class Parser
     if (t = type(options)) is "string"
       ops.$type = options
     else if t is "array"
-      ops.$multi = true
       ops = options[0]
+      ops.$multi = true
     else
       ops = options
 
@@ -63,6 +63,10 @@ class Parser
         default  : ops.$default
         map      : ops.$map
         save     : ops.$save
+        get      : ops.$get
+        set      : ops.$set
+        bind     : ops.$bind
+
 
       fields.add new Field fields, fops
 

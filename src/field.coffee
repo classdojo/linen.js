@@ -1,6 +1,7 @@
 Collection  = require "./collection"
 Model       = require "./model"
 comerr      = require "comerr"
+type        = require "type-component"
 
 class Field
   
@@ -13,11 +14,14 @@ class Field
     @property  = options.property
     @_required = options.required
     @_map      = options.map
-    @_multi    = options.mutli
+    @_multi    = options.multi
     @_ref      = options.ref
     @_default  = options.default
     @_test     = options.test 
     @_save     = options.save
+    @get       = options.get
+    @set       = options.set
+    @bind      = options.bind
 
   ###
   ###
@@ -54,6 +58,7 @@ class Field
         error = new comerr.Invalid "'#{@property}' is invalid", { field: @ }
 
       if @_ref and not (v?.__isModel and v.schema.name is @_ref)
+        
         error = new comerr.Invalid "'#{@property}' must be type #{@_ref}"
 
       else if @_ref
@@ -90,27 +95,38 @@ class Field
    maps a value based on its type - this happens only once
   ###
 
-  map: (value) ->
+  default: (value) ->
 
-    # grab the default value
     def = @_getDefault value
 
     if @_map 
       def = @_map value
 
+
     # return a collection if multiple
     return new Collection(@) if @_multi
 
-    # return the value if there isn't an object reference
-    return value unless @_ref
-    return @linen.model(@_ref, value)
+    return def
+
+  ###
+  ###
+
+  map: (value) ->
+
+    return value if @_multi
+
+    if @_ref
+      return value if @_ref.__isModel
+      return @linen.model @_ref, value
+
+    value
 
   ###
   ###
 
   _getDefault: (value) ->  
     return value unless @_default
-    return @_default() if type(@options) is "function"
+    return @_default.call(@) if type(@_default) is "function"
     return @_default
 
 

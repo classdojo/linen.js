@@ -16,6 +16,15 @@ class Collection extends bindable.Collection
   ###
   ###
 
+  hasChanged: () ->
+    for item in @source()
+      return true if item.hasChanged()
+    return false
+
+
+  ###
+  ###
+
   fetch: () ->
 
   ###

@@ -22,8 +22,25 @@ describe("schema", function() {
     var personSchema = linen.addSchema({
       name: "person",
       fields: {
-        name: "string",
-        address: { $ref: "address" }
+        name: {
+          first: "string",
+          last: "string"
+        },
+        address: { $ref: "address", $default: function() { 
+          return this.linen.model("address");
+        } },
+        fullName: {
+          $get: function(model) {
+            return model.get("name.first") + " " + model.get("name.last");
+          },
+          $set: function(model, fullName) {
+            var nameParts = String(fullName).split(" ");
+            model.set("name.first", nameParts.shift());
+            model.set("name.last", nameParts.shift());
+          },
+          $bind: ["name.first", "name.last"]
+        },
+        friends: [{ $ref: "person" }]
       }
     }),
     personModel,
@@ -41,12 +58,6 @@ describe("schema", function() {
     });
 
 
-    it("throws an error if address is the wrong type", function() {
-      var address = personModel.get("address");
-      personModel.set("address", 4);
-      expect(personModel.validate().message).to.contain("must be type address");
-      personModel.set("address", address);
-    });
 
 
     it("throws an error if address value is invalid", function() {
@@ -57,11 +68,23 @@ describe("schema", function() {
     });
 
     it("can persist the address when it changes", function() {
-      personModel.set("name", "jake");
-      expect(Object.keys(personModel._changed)).to.contain("name");
+      personModel.set("name.first", "jake");
+      expect(Object.keys(personModel._changed)).to.contain("name.first");
       personModel.save(); 
       expect(Object.keys(personModel._changed).length).to.be(0);
     });
+
+
+    it("has use the virtual full name", function() {
+      personModel.set("name.first", "john");
+      personModel.set("name.last", "jeffery");
+      expect(personModel.get("fullName")).to.be("john jeffery");
+      personModel.set("name.last", "jake");
+      expect(personModel.get("fullName")).to.be("john jake");
+      personModel.set("fullName", "j j");
+      personModel.set("name.first", "j");
+      personModel.set("name.last", "j");
+    })
 
 
     it("throws an error if the city is incorrect", function() {
