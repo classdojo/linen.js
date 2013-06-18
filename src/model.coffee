@@ -130,6 +130,10 @@ class Model extends bindable.Object
       fops      = field.options
 
       @bind(fieldName).to (newValue, oldValue) => 
+
+        if field.options.ref and newValue
+          newValue.owner = true
+
         @_changed[fieldName] = { key: fieldName, nv: newValue, ov: oldValue }
         if fops.set
           fops.set @, newValue, oldValue
