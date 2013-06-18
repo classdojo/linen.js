@@ -131,6 +131,7 @@ class Model extends bindable.Object
 
       @bind(fieldName).to (newValue, oldValue) => 
 
+        # might need to inherit path
         if field.options.ref and newValue
           newValue.owner = true
 
