@@ -25,13 +25,33 @@ var api = module.exports = {
     query({ data: options.query, body: options.body }).
     pull(next);
   },
-  route: function(options, next) {
+  route: function(options) {
+
+    if(!options) options = {}
+
+    if(!options.path) {
+      options.path = function(payload) {
+        if(!payload.model.schema.options.path) return;
+        return payload.model.schema.options.path(payload.model);
+      }
+    }
+
     return function(payload, next) {
 
-      var pd = payload;
+      var pd = payload,
+      path = type(options.path) == "function" ? options.path(pd) : options.path;
+
+      if(options.inheritPath) {
+        var owner = payload.model.owner;
+        while(owner && owner.schema.options.path) {
+          path = owner.schema.options.path(owner) + "/" + path;
+          owner = owner.owner;
+        }
+      }
+
 
       api.fetch({
-        path   : type(options.path) == "function" ? options.path(pd) : options.path,
+        path   : path,
         method : pd.method,
         body   : pd.data,
         query  : {}

@@ -25,11 +25,10 @@ linen.addSchema({
       })
     }]
   },
-  fetch: api.route({
-    path: function(payload, next) {
-      return "/people/" + (payload.model.get("_id") || "")
-    }
-  })
+  fetch: api.route(),
+  path: function(model) {
+    return "/people/" + (model.get("_id") || "");
+  }
 });
 
 
@@ -39,10 +38,11 @@ linen.addSchema({
     "name": "string"
   },
   fetch: api.route({
-    path: function(payload, next) {
-      return "/people/" + payload.model.owner.get("_id") + "/hobbies/" + (payload.model.get("_id") || "");
-    }
-  })
+    inheritPath: true
+  }),
+  path: function(model) {
+    return "/hobbies/" + (model.get("_id") || "");;
+  }
 });
 
 linen.addSchema({

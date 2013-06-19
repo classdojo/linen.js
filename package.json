@@ -31,6 +31,7 @@
     "flatstack": "0.0.3",
     "toarray": "0.0.x",
     "bindable": "0.3.x",
-    "verify": "0.0.x"
+    "verify": "0.0.x",
+    "type-component": "0.0.x"
   }
 }
