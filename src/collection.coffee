@@ -23,8 +23,11 @@ class Collection extends bindable.Collection
     @_callstack.error (err) ->
       console.error err
 
-    @transform().map (model) ->
-      return field.map model
+    @transform().map (model) =>
+      model = field.map model
+      model.owner = @owner
+      @_watchRemove model
+      model
 
     @on 
       insert : @_persistInsert
@@ -50,12 +53,21 @@ class Collection extends bindable.Collection
       @push model
       @_ignorePersist = false
 
+    @_watchRemove model
+
+    return model
+
+  ###
+  ###
+
+  _watchRemove: (model) ->
     model.once "remove", (err) =>
+      @_ignorePersist = true
       i = @indexOf model
       if ~i
         @splice i, 1
+      @_ignorePersist = false
 
-    return model
 
 
   ###

@@ -73,7 +73,7 @@ class Field
     # ignore fetch if options.fetch doesn't exist - not a 
     # virtual field
     return next() unless @options.fetch
-
+    payload.field = @
     @options.fetch payload, next
 
   ###
