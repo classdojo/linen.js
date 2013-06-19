@@ -8,16 +8,15 @@ class Schema
   ###
   ###
 
-  constructor: (@linen, options = {}) ->
+  constructor: (@linen, @options = {}) ->
     @name    = options.name
-    @__fetch = options.fetch
     options.fields._id = "string"
     @fields  = parser.parse @, options.fields
 
   ###
   ###
 
-  isVirtual: () -> !!@__fetch
+  isVirtual: () -> !!@options.fetch
 
   ###
   ###
@@ -34,7 +33,7 @@ class Schema
     # return the new model, along with the
     # correct, mapped data
     m = new Model @
-    m.reset d = @fields.default d
+    m.reset d = @fields.default d, m
 
     unless m.isNew()
       m.flushChanged()
@@ -71,13 +70,7 @@ class Schema
   ###
 
   _get: (payload, next) ->
-
-
-    # fetch the virtual fields
-    for field in @fields.toArray()
-      continue unless field.isVirtual()
-      field?.fetch payload
-
+    @fields.fetch payload
     @_fetch payload, next
 
   ###
@@ -85,28 +78,36 @@ class Schema
 
   _save: (payload, next) ->
     callstack = flatstack()
+
+    callstack.error (err) =>
+      callstack.pause()
+      next err
+
     model = payload.target
+    modelData = undefined
 
     # filter out the keys which are NOT virtual
     changed = payload.changed
     usable  = changed.filter (value) => not @fields.get(value.key).isVirtual()
 
-    if (payload.method is "POST" or usableKeys.length)
+    if (payload.method is "POST" or usable.length)
       data = {}
       for item in changed
         data[item.key] = item.nv
 
       callstack.push (next) =>
-        @_fetch payload, next
+        @_fetch payload, (err, result) ->
+          return next(err) if err?
+          modelData = result
+          next()
 
-    callstack.push (next2) =>
+    callstack.push (next) =>
 
       # first save the virtual fields
-      @fields.save payload, (err) =>
-        return next(err) if err?
-        next2()
+      @fields.fetch payload, next
 
-    callstack.push () -> next()
+    callstack.push () -> 
+      next null, modelData
 
 
   ###
@@ -114,7 +115,7 @@ class Schema
 
   _delete: (payload, next) ->
 
-    unless payload.target.has("_id")
+    unless payload.model.has("_id")
       return next(comerr.Invalid("_id must be present when deleting a model"))
 
     @_fetch payload, next
@@ -124,11 +125,12 @@ class Schema
   ###
 
   _fetch: (payload, next = () ->) ->
-    return next() unless @__fetch
-    @__fetch options, (err, result) ->
+
+    return next() unless @options.fetch
+
+    @options.fetch payload, (err, result) ->
       return next(err) if err?
-      options.model.set result
-      next()
+      next null, result
 
 
 module.exports = Schema

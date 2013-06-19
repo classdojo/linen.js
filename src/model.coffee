@@ -1,6 +1,7 @@
 bindable = require "bindable"
 _ = require "underscore"
-Payload = require "./payload"
+payload = require "./payload"
+dref    = require "dref"
 
 class Model extends bindable.Object 
 
@@ -15,6 +16,7 @@ class Model extends bindable.Object
   constructor: (@schema) ->
     super {}
     @_changed = {}
+    @_bindFields()
 
   ###
   ###
@@ -46,49 +48,69 @@ class Model extends bindable.Object
   _set: (key, value) ->
     super key, @schema.map key, value
 
+
+  ###
+  ###
+
+  toJSON: () ->
+    data = {}
+    for field in @schema.fields.toArray()
+      continue if field.isVirtual()
+      value = @get(field.property)
+      dref.set data, field.property, value?.toJSON?() or value
+    data
+
+
   ###
   ###
 
   flushChanged: () ->
-    ch = @_changed
+    changed = @changedToArray()
     @_changed = {}
-    changed = []
-    for key of ch
-      changed.push ch[key]
     changed
 
   ###
    refreshes the model
   ###
 
-  fetch: (next) -> @_fetch new Payload(@, "GET"), next
+  fetch: (next) -> 
+    return next(new Error("cannot '#{@schema.name}' fetch on a new model")) if @isNew()
+    @_fetch payload.model(@).method("GET"), next
 
   ###
    saves the model - either adds it as a new one, or updates it
   ###
 
-  save: (next)  -> @_fetch new Payload(@, (if @isNew() then "POST" else "PUT"), @flushChanged()), next
+  save: (next = () ->)  -> 
+    @_fetch payload.model(@).method(if @isNew() then "POST" else "PUT").changed(@flushChanged()), () =>
+      next arguments...
+      @emit "save", arguments...
+
 
   ###
    removes the model
   ###
 
-  remove: (next) -> 
-    @_fetch new Payload(@, "DELETE"), (err) =>
-      return next(err) if err?
-      @emit "delete"
+  remove: (next = () ->) -> 
+    if @isNew()
+      return next(new Error("cannot remove a new model"))
+
+    @_fetch payload.model(@).method("DELETE"), (err) =>
+      next()
+      @emit "remove"
 
   ###
    calls .fetch() on schema, and updates this model
   ###
 
   _fetch: (payload, next = () ->) ->
-    @schema.fetch payload, (err, result) =>
-      return err if err?
+    @schema.fetch payload.data, (err, result) =>
+      return next(err) if err?
 
       # result must always be the updated model
       @set result or {}
       next()
+    @
 
 
   ###
@@ -124,6 +146,7 @@ class Model extends bindable.Object
 
   _bindFields: () ->
     @_ignoreFetch = true
+
     for field in @schema.fields.toArray() then do (field) =>
 
       fieldName = field.property
@@ -133,7 +156,10 @@ class Model extends bindable.Object
 
         # might need to inherit path
         if field.options.ref and newValue
-          newValue.owner = true
+          newValue.owner = @
+
+        if newValue?.__isCollection
+          return
 
         @_changed[fieldName] = { key: fieldName, nv: newValue, ov: oldValue }
         if fops.set

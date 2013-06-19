@@ -35,22 +35,28 @@ class Field
     value = model.get @property
 
 
+
     # if this field is a collection, then make sure the value
     # is a collection as wella
     if @options.multi
       unless value?.__isCollection
-        error = new comerr.Invalid "#{@property} must be a collection"
+        return unless @options.required
+        return new comerr.Invalid "#{@property} must be a collection"
       else
         values = value.source()
     else
       values = [value]
 
+
     for v in values
-      if not @options.test(v) and (v isnt undefined or @options.required)
+
+      if v is undefined and not @options.required
+        continue
+
+      if not @options.test(v)
         error = new comerr.Invalid "'#{@property}' is invalid", { field: @ }
 
       if @options.ref and not (v?.__isModel and v.schema.name is @options.ref)
-        
         error = new comerr.Invalid "'#{@property}' must be type #{@options.ref}"
 
       else if @options.ref
@@ -62,7 +68,7 @@ class Field
   ###
   ###
 
-  fetch: (payload, next = () ->) ->
+  _fetch: (payload, next = () ->) ->
 
     # ignore fetch if options.fetch doesn't exist - not a 
     # virtual field
@@ -70,33 +76,57 @@ class Field
 
     @options.fetch payload, next
 
+  ###
+  ###
 
-    
+  fetch: (payload, next) ->
 
+    value = payload.model.get @property
+
+    switch payload.method
+      when "POST"
+        @_save value, payload, next
+      when "PUT"
+        @_save value, payload, next
+      when "GET"
+        @_get value, payload, next
+      when "DELETE"
+        @_del value, payload, next
 
 
   ###
   ###
 
-  save: (payload, next) ->
+  _get: (value, payload, next) -> 
+    @_fetch payload, next
 
-    model = payload.target
-    err   = @validate payload.target
+  ###
+  ###
 
+  _save: (value, payload, next) ->
+    err   = @validate payload.model
     return next(err) if err?
-
-    # is it a reference? call .save() on the ref
-    if @options.ref
-      value = model.get @property
+    if @options.ref and not @options.multi
       if value?.hasChanged()
         value.save next
       else
+        next()
+    else
+      if @options.multi
+        if not payload.collection
+          return next()
+      else if not payload.changed[@property]
         return next()
 
-    # otherwise make sure this field has changed before saving it
-    else
-      return next() unless payload.changed[@property]
-      @fetch model, next
+
+      @_fetch payload, next
+
+
+  ###
+  ###
+
+  _del: (value, payload, next) ->
+    @_fetch payload, next
 
 
   ###

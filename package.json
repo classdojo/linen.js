@@ -1,6 +1,6 @@
 {
   "name": "linen",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "```javascript",
   "main": "./lib/index.js",
   "scripts": {
@@ -28,6 +28,9 @@
     "underscore": "1.4.x",
     "hoist": "0.0.x",
     "async": "~0.2.9",
-    "flatstack": "0.0.3"
+    "flatstack": "0.0.3",
+    "toarray": "0.0.x",
+    "bindable": "0.3.x",
+    "verify": "0.0.x"
   }
 }

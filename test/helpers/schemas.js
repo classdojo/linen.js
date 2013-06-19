@@ -8,9 +8,28 @@ linen.addSchema({
     "first_name" : { $type: "string", $required: true },
     "last_name"  : { $type: "string", $required: true },
     "location"   : { $ref: "location"                 },
-    "friends"    : [{ $ref: "person" }],
-    "hobbies"    : [{ $ref: "hobby"  }]
-  }
+    "friends"    : [{ 
+      $ref: "person",
+      $fetch: api.route({
+        path: function(payload, next) {
+          return "/people/" + payload.model.get("_id") + "/friends/" + (/DELETE/.test(payload.method) ? payload.target.get("_id") : "");
+        }
+      })
+    }],
+    "hobbies"    : [{ 
+      $ref: "hobby",
+      $fetch: api.route({
+        path: function(payload, next) {
+          return "/people/" + payload.model.get("_id") + "/hobbies/";
+        }
+      })
+    }]
+  },
+  fetch: api.route({
+    path: function(payload, next) {
+      return "/people/" + (payload.model.get("_id") || "")
+    }
+  })
 });
 
 
@@ -18,7 +37,12 @@ linen.addSchema({
   name: "hobby",
   fields: {
     "name": "string"
-  }
+  },
+  fetch: api.route({
+    path: function(payload, next) {
+      return "/people/" + payload.model.owner.get("_id") + "/hobbies/" + (payload.model.get("_id") || "");
+    }
+  })
 });
 
 linen.addSchema({
@@ -27,7 +51,12 @@ linen.addSchema({
     "city": "string",
     "state": "string",
     "zip": { $type: "number", $is: /\d{5}/ }
-  }
+  },
+  fetch: api.route({
+    path: function(payload, next) {
+      return "/locations/" + payload.model.get("_id");
+    }
+  })
 });
 
 linen.addSchema({
@@ -36,7 +65,9 @@ linen.addSchema({
     "people": [{ 
       $ref: "person",
       $fetch: api.route({
-        path: "/people"
+        path: function(payload, next) {
+          return "/people/" + (/DELETE/.test(payload.method) ? payload.model.get("_id") : "")
+        }
       })
     }]
   }

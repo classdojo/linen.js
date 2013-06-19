@@ -55,17 +55,15 @@ class Parser
     else
       test = @_getValueTester ops
 
-      fops = 
-        ref      : ops.$ref
-        test     : test
-        multi    : ops.$multi
-        property : path.join(".")
-        default  : ops.$default
-        map      : ops.$map
-        fetch    : ops.$fetch
-        get      : ops.$get
-        set      : ops.$set
-        bind     : ops.$bind
+      fops = {}
+
+      for opName of ops
+        fops[opName.substr(1)] = ops[opName]
+
+
+      fops.test = test
+      fops.property = path.join(".")
+      
 
 
       fields.add new Field fields, fops

@@ -1,6 +1,7 @@
 var collections = require("./data"),
 vine            = require("vine"),
-sift            = require("sift");
+sift            = require("sift"),
+_ = require("underscore");
 
 function getPerson(req) {
   return sift({ _id: req.params.person }, collections.people).shift();
@@ -17,6 +18,7 @@ module.exports = function(router) {
     },
     "pull -method=POST people": function(req, res) {
       var body = req.query.body;
+
 
       if(findPeople({ first_name: body.first_name }).length) {
         return res.end(vine.error("user already exists"));

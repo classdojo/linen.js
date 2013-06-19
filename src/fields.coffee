@@ -28,7 +28,7 @@ class Fields
   ###
   ###
 
-  fieldsToArray: () ->
+  toArray: () ->
     fields = []
     for fieldName of @_fields
       fields.push @get fieldName
@@ -53,12 +53,16 @@ class Fields
   ###
   ###
 
-  default: (data) ->
+  default: (data, model) ->
     d = JSON.parse JSON.stringify data
     for fieldName of @_fields
-      v = @_fields[fieldName].default d[fieldName]
+      field = @_fields[fieldName]
+      v = field.default d[fieldName]
+
       if v?
         d[fieldName] = v
+        if field.options.ref
+          v.owner = model
 
     d
 
@@ -72,13 +76,14 @@ class Fields
   ###
   ###
 
-  save: (payload, next) ->
+  fetch: (payload, next) ->
 
     # 1. find all the virtual values that aren't actually
     # apart from the model, and save them individually 
     # 2. save the remaining data as the model
     async.each @names(), ((fieldName, next) =>
-      @get(fieldName).save payload, next
+      field = @get(fieldName)
+      field.fetch payload, next
     ), next
 
 

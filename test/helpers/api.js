@@ -1,5 +1,6 @@
 var routes = require("./routes"),
-beanpoll   = require("beanpoll");
+beanpoll   = require("beanpoll"),
+type       = require("type-component");
 
 
 var router = beanpoll.router();
@@ -13,8 +14,10 @@ function _clone(object) {
 var api = module.exports = {
   fetch: function(options, next) {
     if(!/PUT|PATCH|DELETE|POST|GET/.test(String(options.method))) {
-      return callback(new Error("method " + options.method + " doesn't exist"));
+      return next(new Error("method " + options.method + " doesn't exist"));
     }
+
+    //console.log("%s %s", options.method, options.path);
 
     router.
     request(options.path).
@@ -24,13 +27,17 @@ var api = module.exports = {
   },
   route: function(options, next) {
     return function(payload, next) {
+
+      var pd = payload;
+
       api.fetch({
-        path   : options.path,
-        method : payload.method,
-        body   : payload.data,
+        path   : type(options.path) == "function" ? options.path(pd) : options.path,
+        method : pd.method,
+        body   : pd.data,
         query  : {}
       }, function(err, result) {
         if(err) return next(err);
+        if(result.data.errors) return next(new Error(result.data.errors.shift().message))
         next(null, result.data.result);
       });
     }
