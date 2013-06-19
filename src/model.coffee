@@ -145,6 +145,7 @@ class Model extends bindable.Object
 
   _bindFields: () ->
     @_ignoreFetch = true
+    ignoreVirtuals = {}
 
     fields   = @schema.fields.toArray()
     vfields  = fields.filter (field) -> field.isVirtual()
@@ -164,7 +165,9 @@ class Model extends bindable.Object
         @_changed[fieldName] = { key: fieldName, nv: newValue, ov: oldValue }
 
         if fops.set
+          ignoreVirtuals[fieldName] = 1
           fops.set @, newValue, oldValue
+          delete ignoreVirtuals[fieldName]
       ).now()
 
 
@@ -178,6 +181,7 @@ class Model extends bindable.Object
       if fops.bind
         for property in fops.bind then do (property) =>
           @bind(property).to () =>
+            return if ignoreVirtuals[fieldName]
             @set fieldName, fops.get @
 
     @_ignoreFetch = false
