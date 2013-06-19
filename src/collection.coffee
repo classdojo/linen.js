@@ -3,6 +3,7 @@ payload   = require "./payload"
 _         = require "underscore"
 Model     = require "./model"
 flatstack = require "flatstack"
+memoize   = require "memoizee"
 
 class Collection extends bindable.Collection
   
@@ -29,6 +30,11 @@ class Collection extends bindable.Collection
       insert : @_persistInsert
       remove : @_persistRemove
       reset  : @_persistReset
+
+
+    @fetch = memoize ((next) ->
+      @_fetch next
+    ), { maxAge: 1000 * 5, async: true }
 
   ###
   ###
@@ -64,7 +70,7 @@ class Collection extends bindable.Collection
   ###
   ###
 
-  fetch: (next = ()->) ->
+  _fetch: (next = ()->) ->
     return next() unless @field.isVirtual()
 
     @_callstack.push (next) =>
@@ -83,16 +89,9 @@ class Collection extends bindable.Collection
 
   bind: (options) ->
     binding = super arguments...
-    @_throttledFetch()
+    @fetch()
     binding
 
-
-  ###
-  ###
-
-  _throttledFetch: _.throttle (() ->  
-    @fetch()
-  ), 1000 * 5
 
   ###
   ###

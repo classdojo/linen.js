@@ -105,7 +105,9 @@ describe("linen", function() {
   });
 
   it("can successfuly add a new person", function(next) {
-    items.kramer = items.people.model({first_name: "Kramer", last_name: "Weydt" }).save(function(err) {
+    items.kramer = items.people.model({first_name: "Kramer", last_name: "Weydt" });
+
+    items.kramer.save(function(err) {
       expect(!!err).to.be(false);
       next();
     });

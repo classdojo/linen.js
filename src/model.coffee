@@ -16,7 +16,6 @@ class Model extends bindable.Object
   constructor: (@schema) ->
     super {}
     @_changed = {}
-    @_bindFields()
 
   ###
   ###
@@ -147,13 +146,14 @@ class Model extends bindable.Object
   _bindFields: () ->
     @_ignoreFetch = true
 
-    for field in @schema.fields.toArray() then do (field) =>
+    fields   = @schema.fields.toArray()
+    vfields  = fields.filter (field) -> field.isVirtual()
+    
 
+    for field in fields then do (field) =>
       fieldName = field.property
       fops      = field.options
-
-      @bind(fieldName).to (newValue, oldValue) => 
-
+      @bind(fieldName).to((newValue, oldValue) =>
         # might need to inherit path
         if field.options.ref and newValue
           newValue.owner = @
@@ -162,8 +162,15 @@ class Model extends bindable.Object
           return
 
         @_changed[fieldName] = { key: fieldName, nv: newValue, ov: oldValue }
+
         if fops.set
           fops.set @, newValue, oldValue
+      ).now()
+
+
+    for field in vfields then do (field) =>
+      fieldName = field.property
+      fops      = field.options
 
       if fops.get
         @set field.property, fops.get @

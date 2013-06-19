@@ -1,6 +1,6 @@
 {
   "name": "linen",
-  "version": "0.1.1",
+  "version": "0.1.23,
   "description": "```javascript",
   "main": "./lib/index.js",
   "scripts": {
@@ -32,6 +32,7 @@
     "toarray": "0.0.x",
     "bindable": "0.3.x",
     "verify": "0.0.x",
-    "type-component": "0.0.x"
+    "type-component": "0.0.x",
+    "memoizee": "0.2.x"
   }
 }

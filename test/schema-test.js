@@ -4,7 +4,7 @@ expect = require("expect.js");
 
 
 describe("schema", function() {
-
+  
   var addressSchema = linen.addSchema({
     name: "address",
     fields: {

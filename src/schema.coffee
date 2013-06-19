@@ -34,6 +34,7 @@ class Schema
     # correct, mapped data
     m = new Model @
     m.reset d = @fields.default d, m
+    m._bindFields()
 
     unless m.isNew()
       m.flushChanged()
