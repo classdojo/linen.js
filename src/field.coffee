@@ -138,13 +138,13 @@ class Field
     value = value or @_getDefault value
 
     if @options.map 
-      def = @options.map value
+      value = @options.map value
 
 
     # return a collection if multiple
     return new Collection(@) if @options.multi
 
-    return def
+    return value
 
   ###
   ###
