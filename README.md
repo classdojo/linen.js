@@ -1,32 +1,43 @@
 ```javascript
-var linen = require("linen");
+var linen = require("linen"){};
 
-var personSchema = new linen.Schema({
-  name: "",
+linen.addSchema({
+  name: "person",
   fields: {
-    name: {
-
+    first_name: "string",
+    last_name: "string",
+    full_name: {
+      $get: function(model) {
+        return model.get("first_name") + " " + model.get("last_name");
+      },
+      $set: function(model, value) {
+        var nameParts = String(value).split(" ")
+        model.set("first_name", nameParts.shift());
+        model.set("last_name", nameParts.join(" "));
+      },
+      $bind: ["first_name", "last_name"]
     },
-    friends: [{ $ref: "person" }]
+    friends: [{
+      $ref: "person",
+      $fetch: function(payload, next) {
+        transport.fetch(payload.method, "/people/" + payload.model.get("_id") + "/friends", next);
+      }
+    }]
   },
-
-  route: "/person/:_id",
-  virtual: {
-    friends: true
+  fetch: function(payload, next) {
+    transport.fetch(payload.method, "/people/" + (payload.model.get("_id") || ""), next);
   }
 });
 
-
-linen.use({
-  schemas: {
-    person: personSchema
-  }
+var person = linen.model("person", {
+  first_name: "John",
+  last_name: "Doe"
 });
 
+console.log(person.isNew()); //true
+console.log(person.get("full_name")); //John Doe
 
-person = linen.item("person", "me");
-
-//GET /person/me/friends
-person.bind("friends").to(function() {
+//POST /people
+person.save(function() {
   
-})
+});
