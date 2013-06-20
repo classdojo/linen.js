@@ -60,6 +60,14 @@ class Collection extends bindable.Collection
   ###
   ###
 
+  clear: () ->
+    source = @source().concat()
+    for model in source
+      model.remove()
+      
+  ###
+  ###
+
   _watchRemove: (model) ->
     model.once "remove", (err) =>
       @_ignorePersist = true
