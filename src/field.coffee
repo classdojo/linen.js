@@ -115,7 +115,7 @@ class Field
       if @options.multi
         if not payload.collection
           return next()
-      else if not payload.changed[@property]
+      else if not payload.data[@property]?
         return next()
 
 
