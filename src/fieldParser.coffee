@@ -27,19 +27,23 @@ class Parser
   ###
 
   _parseFields: (options, fields, path) ->
-    ops = {}
+    ops = options
 
 
     # fields:
     #   name: "string"
 
-    if (t = type(options)) is "string"
-      ops.$type = options
-    else if t is "array"
-      ops = options[0]
-      ops.$multi = true
-    else
-      ops = options
+    t = type()
+
+    if type(ops) is "array"
+      ops   = ops[0]
+      multi = true
+
+    if type(ops) is "string"
+      ops = { $type: ops }
+
+    if multi
+      ops.$multi = multi
 
 
     # if $type or $ref isn't defined, then it's something like:
