@@ -70,6 +70,9 @@ class Field
 
   _fetch: (payload, next = () ->) ->
 
+    if @options.methods and not ~@options.methods.indexOf(payload.method)
+      return next()
+
     # ignore fetch if options.fetch doesn't exist - not a 
     # virtual field
     return next() unless @options.fetch
