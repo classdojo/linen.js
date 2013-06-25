@@ -52,7 +52,7 @@ existingPerson.bind("name").to(function(name) {
 });
 ```
 
-The `existingPerson` will asynchronously call `.to(fn)` when it's been fetch from the server. This is useful when data-binding to any sort of UI component, such as [rivets.js](http://rivetsjs.com/), or [paperclip.js](classdojo/paperclip.js).
+The `existingPerson` will asynchronously call `.to(fn)` when it's been loaded from the server. This is useful when data-binding to any sort of UI component, such as [rivets.js](http://rivetsjs.com/), or [paperclip.js](classdojo/paperclip.js).
 
 You can just as easily bind the `existingPerson`'s friends. For instance:
 
