@@ -9,9 +9,9 @@ var linen = require("linen"){};
 linen.addSchema({
   name: "person",
   fields: {
-    first_name: "string",
-    last_name: "string",
-    full_name: {
+    firstName: "string",
+    lastName: "string",
+    fullName: {
       $get: function(model) {
         return model.get("first_name") + " " + model.get("last_name");
       },
@@ -47,14 +47,14 @@ Linen works by overriding the `bind` method to fetch from any API you have setup
 ```javascript
 
 //calls GET /people/someId
-existingPerson.bind("name").to(function(name) {
+existingPerson.bind("firstName").to(function(name) {
   console.log(name); 
 });
 ```
 
 The `existingPerson` will asynchronously call `.to(fn)` when it's been loaded from the server. This is useful when data-binding to any sort of UI component, such as [rivets.js](http://rivetsjs.com/), or [paperclip.js](classdojo/paperclip.js).
 
-You can just as easily bind the `existingPerson`'s friends. For instance:
+Here's another example of data-binding to `linen` models:
 
 ```javascript
 
@@ -62,7 +62,41 @@ You can just as easily bind the `existingPerson`'s friends. For instance:
 existingPerson.bind("friends").to(function(friends) {
 
   // GET /people/friendId
-  friends.at(0).bind("name").once().to(function(name) {
+  friends.at(0).bind("firstName").once().to(function(name) {
   });
 });
+```
 
+The above examples make it easy to abstract models from any API. To demonstrate this, here's an example of using `dummy data`:
+
+
+```javascript
+var existingPerson = new bindable.Object({
+  firstName: "Ron",
+  lastName: "Burgundy",
+  friends: [
+    new bindable.Object({
+      firstName: "Brian",
+      lastName: "Fontana"
+    }),
+    new bindable.Object({
+      firstName: "Brick",
+      lastName: "Tamland"
+    }),
+    new bindable.Object({
+      firstName: "Champ",
+      lastName: "Kind"
+    })
+  ]
+});
+
+
+existingPerson.bind("firstName").to(function(name) {
+  console.log(name); //Ron 
+});
+
+existingPerson.bind("friends").to(function(friends) {
+  friends.at(0).bind("firstName").once().to(function(name) {
+    console.log(name); //Brian
+  });
+});
