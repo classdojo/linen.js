@@ -11,6 +11,8 @@ linen.addSchema({
   fields: {
     firstName: "string",
     lastName: "string",
+
+    //virtual value - doesn't actually exist in the API
     fullName: {
       $get: function(model) {
         return model.get("first_name") + " " + model.get("last_name");
@@ -22,6 +24,9 @@ linen.addSchema({
       },
       $bind: ["first_name", "last_name"]
     },
+
+    //fetches GET /people/:personId/friends when
+    //person.bind("friends").to(fn) is called
     friends: [{
       $ref: "person",
       $fetch: function(payload, next) {
@@ -29,6 +34,9 @@ linen.addSchema({
       }
     }]
   },
+
+  //fetches GET /people/:personId when
+  //person.bind(property).to(fn) is valled
   fetch: function(payload, next) {
     transport.fetch(payload.method, "/people/" + (payload.model.get("_id") || ""), next);
   }
