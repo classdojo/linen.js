@@ -11,6 +11,9 @@ linen.addSchema({
   // name of the schema - gets referenced by 
   // linen.model("person")
   name: "person",
+
+  //fields for the person. Keep in mind that model properties
+  //get *validated* against their coresponding field. 
   fields: {
     firstName: "string",
     lastName: "string",
