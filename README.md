@@ -49,7 +49,7 @@ Linen works by overriding the `bind` method to fetch from any API you have setup
 //calls GET /people/someId
 existingPerson.bind("firstName").to(function(name) {
   console.log(name); 
-});
+}).now();
 ```
 
 The `existingPerson` will asynchronously call `.to(fn)` when it's been loaded from the server. This is useful when data-binding to any sort of UI component, such as [rivets.js](http://rivetsjs.com/), or [paperclip.js](classdojo/paperclip.js).
@@ -63,8 +63,8 @@ existingPerson.bind("friends").to(function(friends) {
 
   // GET /people/friendId
   friends.at(0).bind("firstName").once().to(function(name) {
-  });
-});
+  }).now();
+}).now();
 ```
 
 The above examples make it easy to abstract models from any API. To demonstrate this, here's an example of using `dummy data`:
@@ -93,10 +93,10 @@ var existingPerson = new bindable.Object({
 
 existingPerson.bind("firstName").to(function(name) {
   console.log(name); //Ron 
-});
+}).now();
 
 existingPerson.bind("friends").to(function(friends) {
   friends.at(0).bind("firstName").once().to(function(name) {
     console.log(name); //Brian
-  });
-});
+  }).now();
+}).now();
