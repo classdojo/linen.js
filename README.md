@@ -4,7 +4,7 @@ Linen (line-in) maps API's to [bindable](/classdojo/bindable.js) `objects`, and 
 Here's an example person schema:
 
 ```javascript
-var linen = require("linen"){};
+var linen = require("linen")();
 
 linen.addSchema({
   name: "person",
@@ -100,3 +100,35 @@ existingPerson.bind("friends").to(function(friends) {
     console.log(name); //Brian
   }).now();
 }).now();
+```
+
+
+### API
+
+#### linen()
+
+Returns a new linen instance
+
+#### linen.addSchema(definition)
+
+adds a new schema
+
+#### definition
+
+Inspired by [mongoose](http://mongoosejs.com/):
+
+```javascript
+linen.addSchema({
+  firstName: {
+
+  }
+});
+```
+
+#### linen.model(schemaName[, modelId ])
+
+returns a new, or existing model
+
+
+
+
