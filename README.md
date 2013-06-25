@@ -1,7 +1,7 @@
 Linen (line-in) maps API's to [bindable](/classdojo/bindable.js) `objects`, and `collections`. At [classdojo](http://classdojo.com), we use `linen` to abstract our API from front-end, so we don't necessarily depend on any sort of API while developing new components. This allows us to rapidly build prototypes which can be wired up later. 
 
 
-Here's an example schema definition of a person schema:
+Here's an example person schema:
 
 ```javascript
 var linen = require("linen"){};
