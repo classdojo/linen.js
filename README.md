@@ -7,12 +7,15 @@ Here's an example person schema:
 var linen = require("linen")();
 
 linen.addSchema({
+
+  // name of the schema - gets referenced by 
+  // linen.model("person")
   name: "person",
   fields: {
     firstName: "string",
     lastName: "string",
 
-    //virtual value - doesn't actually exist in the API
+    // virtual value - doesn't actually exist in the API
     fullName: {
       $get: function(model) {
         return model.get("first_name") + " " + model.get("last_name");
@@ -25,8 +28,8 @@ linen.addSchema({
       $bind: ["first_name", "last_name"]
     },
 
-    //fetches GET /people/:personId/friends when
-    //person.bind("friends").to(fn) is called
+    // fetches GET /people/:personId/friends when
+    // person.bind("friends").to(fn) is called
     friends: [{
       $ref: "person",
       $fetch: function(payload, next) {
