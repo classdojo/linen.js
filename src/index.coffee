@@ -23,5 +23,4 @@ class Linen
 
 
 
-
 module.exports = () -> new Linen()

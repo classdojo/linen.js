@@ -42,7 +42,6 @@ class Payload
     @data.data   = model.toJSON()
     @
     
-
   ###
   ###
 
