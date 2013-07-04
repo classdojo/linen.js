@@ -168,7 +168,7 @@ class Field
   ###
 
   _getDefault: (value) ->  
-    return value unless @options.default
+    return value unless @options.default?
     return @options.default.call(@) if type(@options.default) is "function"
     return @options.default
 
