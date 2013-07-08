@@ -3,7 +3,7 @@ payload   = require "./payload"
 _         = require "underscore"
 Model     = require "./model"
 flatstack = require "flatstack"
-memoize   = require "memoizee"
+memoize   = require "./memoize"
 
 class Collection extends bindable.Collection
   
@@ -35,9 +35,9 @@ class Collection extends bindable.Collection
       reset  : @_persistReset
 
 
-    @fetch = memoize ((next) ->
+    @fetch = memoize ((next) =>
       @_fetch next
-    ), { maxAge: 1000 * 5, async: true }
+    ), { maxAge: 1000 * 5 }
 
   ###
   ###
