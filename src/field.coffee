@@ -35,12 +35,11 @@ class Field
     value = model.get @property
 
 
-
     # if this field is a collection, then make sure the value
     # is a collection as wella
     if @options.multi
+      return unless @options.required
       unless value?.__isCollection
-        return unless @options.required
         return new comerr.Invalid "#{@property} must be a collection"
       else
         values = value.source()

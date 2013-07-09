@@ -93,7 +93,10 @@ class Parser
         tester[k].apply tester, toarray ops[key]
 
 
-    (value) => tester.test value
+    (value) => 
+      if type(value) is "string" and not value.length
+        return false
+      return tester.test value
 
 
   ###

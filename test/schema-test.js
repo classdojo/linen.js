@@ -92,6 +92,6 @@ describe("schema", function() {
     expect(personModel.validate()).not.to.be(undefined);
     personModel.set("address.state", "MN");
     expect(personModel.validate()).to.be(undefined);
-  })
+  });
 
 })
