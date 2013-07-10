@@ -139,6 +139,10 @@ class Model extends bindable.Object
     @fetch()
   ), 1000 * 5
 
+  ###
+  ###
+
+  clone: () -> @schema.model @
 
   ###
   ###
