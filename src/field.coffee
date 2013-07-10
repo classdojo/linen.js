@@ -49,7 +49,7 @@ class Field
 
     for v in values
 
-      if v is undefined and not @options.required
+      if (v is undefined or (type(v) == "string" && v.length == 0)) and not @options.required
         continue
 
       if not @options.test(v)
