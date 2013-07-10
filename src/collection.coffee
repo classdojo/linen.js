@@ -121,9 +121,38 @@ class Collection extends bindable.Collection
   ###
   ###
 
-  _reset: (source) ->
+  _reset: (src) ->
     @_ignorePersist = true
-    @source source
+
+    # fix issue when removing items within an array
+    src = src
+    esrc = @source().concat()
+
+    # remove old item
+    for existingItem, i in esrc
+      found = false
+      for newItem in src
+        if existingItem.get("_id") is newItem._id
+          found = true
+          break
+
+      unless found
+        @splice i, 1
+
+
+    # update existing
+    for existingItem in esrc
+      for newItem, i in src
+        if existingItem.get("_id") is newItem._id
+          existingItem.set newItem
+          src.splice i, 1
+          break
+
+
+    # insert the reset
+    @push(item) for item in src
+
+
     @_ignorePersist = false
 
   ###

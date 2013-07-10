@@ -142,7 +142,6 @@ class Field
     if @options.map 
       value = @options.map value
 
-
     # return a collection if multiple
     return new Collection(@) if @options.multi
 
