@@ -69,14 +69,20 @@ class Field
 
   _fetch: (payload, next = () ->) ->
 
+    payload.field = @
+
     if @options.methods and not ~@options.methods.indexOf(payload.method)
       return next()
 
     # ignore fetch if options.fetch doesn't exist - not a 
     # virtual field
-    return next() unless @options.fetch
-    payload.field = @
-    @options.fetch payload, next
+
+    if @options.fetch
+      return @options.fetch payload, next
+    else if @_refVirtual() and payload.model.get(@property)
+      return payload.model.get(@property).fetch next
+    else 
+      return next()
 
   ###
   ###
