@@ -12,6 +12,7 @@ class Schema
     @name    = options.name
     options.fields._id = "string"
     @fields  = parser.parse @, options.fields
+    @methods = options.methods
 
   ###
   ###
@@ -38,6 +39,10 @@ class Schema
 
     unless m.isNew()
       m.flushChanged()
+
+    # copy the methods on over
+    for methodName of @methods
+      m[methodName] = @methods[methodName]
 
     m
 

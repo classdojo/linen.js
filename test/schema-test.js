@@ -41,6 +41,11 @@ describe("schema", function() {
         $bind: ["name.first", "name.last"]
       },
       friends: [{ $ref: "person" }]
+    },
+    methods: {
+      hello: function(callback) {
+        callback(null, this.get("name.first"));
+      }
     }
   }),
   personModel,
@@ -94,4 +99,11 @@ describe("schema", function() {
     expect(personModel.validate()).to.be(undefined);
   });
 
+
+  it("can say hello", function(next) {
+    personModel.hello(function(err, message) {
+      expect(message).to.be(personModel.get("name.first"));
+      next();
+    })
+  });
 })
