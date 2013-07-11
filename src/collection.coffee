@@ -102,8 +102,6 @@ class Collection extends bindable.Collection
     @_callstack.push () => next()
     @
 
-
-
   ###
   ###
 
@@ -111,7 +109,6 @@ class Collection extends bindable.Collection
     binding = super arguments...
     @fetch()
     binding
-
 
   ###
   ###

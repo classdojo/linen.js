@@ -149,7 +149,12 @@ class Field
       value = @options.map value
 
     # return a collection if multiple
-    return new Collection(@) if @options.multi
+    if @options.multi
+      col = new Collection @
+      if @options.ref
+        
+        col._reset value or []
+      return col
 
     return value
 
