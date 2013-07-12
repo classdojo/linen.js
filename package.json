@@ -1,6 +1,6 @@
 {
   "name": "linen",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "description": "```javascript",
   "main": "./lib/index.js",
   "scripts": {

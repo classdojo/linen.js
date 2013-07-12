@@ -167,6 +167,12 @@ class Field
 
     if @options.ref
       return value if value.__isModel
+      
+      if @options.multi
+        col = new Collection @
+        col._reset value or []
+        return col
+
       model = @linen.model @options.ref, value
       model.field = @
       return model

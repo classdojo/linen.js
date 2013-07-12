@@ -17,14 +17,11 @@ class Collection extends bindable.Collection
 
   constructor: (@field) ->
     super()
+    @linen = field.linen
 
-    @_callstack = flatstack()
-
-    @_callstack.error (err) ->
-      console.error err
 
     @transform().map (model) =>
-      model = field.map model
+      model = @_map model
       model.owner = @owner
       @_watchRemove model
       model
@@ -42,8 +39,13 @@ class Collection extends bindable.Collection
   ###
   ###
 
+  _map: (data) -> if data?.__isModel then data else @linen.model(@field.options.ref, data)
+
+  ###
+  ###
+
   model: (data) -> 
-    model = @field.linen.model(@field.options.ref, data)
+    model = @_map data
     model.collection = @
     model.owner = @owner
 
@@ -93,13 +95,11 @@ class Collection extends bindable.Collection
   _fetch: (next = ()->) ->
     return next() unless @field.isVirtual()
 
-    @_callstack.push (next) =>
-      @field.fetch payload.collection(@).method("GET").data, (err, models) =>
-        return next(err) if err?
-        @_reset models
-        next()
+    @field.fetch payload.collection(@).method("GET").data, (err, models) =>
+      return next(err) if err?
+      @_reset models
+      next()
 
-    @_callstack.push () => next()
     @
 
   ###
@@ -168,8 +168,7 @@ class Collection extends bindable.Collection
 
   _persistInsert: (model) ->
     return if @_ignorePersist or @owner.isNew()
-    @_callstack.push (next) =>
-      @field.fetch payload.collection(@).target(model).method("POST").data, next
+    @field.fetch payload.collection(@).target(model).method("POST").data, next
 
 
   ###
@@ -178,8 +177,7 @@ class Collection extends bindable.Collection
   _persistRemove: (model) ->
     return if @_ignorePersist or @owner.isNew()
     return if model.isNew()
-    @_callstack.push (next) =>  
-      @field.fetch payload.collection(@).target(model).method("DELETE").data, next
+    @field.fetch payload.collection(@).target(model).method("DELETE").data, next
 
 
 
