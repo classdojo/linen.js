@@ -99,7 +99,7 @@ class Collection extends bindable.Collection
       return next(err) if err?
 
       if models
-        @_reset models or @source()
+        @_reset models
       next()
 
     @
