@@ -79,7 +79,7 @@ class Field
 
     if @options.fetch
       return @options.fetch payload, next
-    else if @_refVirtual() and payload.model.get(@property)
+    else if @_refVirtual() and payload.model.get(@property) and not @options.multi
       return payload.model.get(@property).fetch next
     else 
       return next()
