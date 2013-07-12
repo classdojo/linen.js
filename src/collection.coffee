@@ -168,7 +168,7 @@ class Collection extends bindable.Collection
 
   _persistInsert: (model) ->
     return if @_ignorePersist or @owner.isNew()
-    @field.fetch payload.collection(@).target(model).method("POST").data, next
+    @field.fetch payload.collection(@).target(model).method("POST").data, () ->
 
 
   ###
@@ -177,7 +177,7 @@ class Collection extends bindable.Collection
   _persistRemove: (model) ->
     return if @_ignorePersist or @owner.isNew()
     return if model.isNew()
-    @field.fetch payload.collection(@).target(model).method("DELETE").data, next
+    @field.fetch payload.collection(@).target(model).method("DELETE").data, () ->
 
 
 
