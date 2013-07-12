@@ -124,6 +124,14 @@ class Collection extends bindable.Collection
     # fix issue when removing items within an array
     src = src
     esrc = @source().concat()
+    
+    # update existing
+    for existingItem in esrc
+      for newItem, i in src
+        if existingItem.get("_id") is newItem._id
+          existingItem.set newItem
+          src.splice i, 1
+          break
 
     # remove old item
     for existingItem, i in esrc
@@ -137,13 +145,6 @@ class Collection extends bindable.Collection
         @splice i, 1
 
 
-    # update existing
-    for existingItem in esrc
-      for newItem, i in src
-        if existingItem.get("_id") is newItem._id
-          existingItem.set newItem
-          src.splice i, 1
-          break
 
 
     # insert the reset
