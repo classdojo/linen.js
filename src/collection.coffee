@@ -97,7 +97,9 @@ class Collection extends bindable.Collection
 
     @field.fetch payload.collection(@).method("GET").data, (err, models) =>
       return next(err) if err?
-      @_reset models or @source()
+
+      if models
+        @_reset models or @source()
       next()
 
     @
