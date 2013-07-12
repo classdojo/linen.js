@@ -124,7 +124,8 @@ class Collection extends bindable.Collection
     @_ignorePersist = true
 
     # fix issue when removing items within an array
-    src = src
+    src  = src
+    src2 = src.concat()
     esrc = @source().concat()
     
     # update existing
@@ -138,7 +139,7 @@ class Collection extends bindable.Collection
     # remove old item
     for existingItem, i in esrc
       found = false
-      for newItem in src
+      for newItem in src2
         if existingItem.get("_id") is newItem._id
           found = true
           break
