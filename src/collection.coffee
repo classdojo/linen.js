@@ -19,6 +19,8 @@ class Collection extends bindable.Collection
     super()
     @linen = field.linen
 
+    @_callstack = flatstack()
+
 
     @transform().map (model) =>
       model = @_map model
@@ -95,12 +97,16 @@ class Collection extends bindable.Collection
   _fetch: (next = ()->) ->
     return next() unless @field.isVirtual()
 
-    @field.fetch payload.collection(@).method("GET").data, (err, models) =>
-      return next(err) if err?
+    @_callstack.push (next) =>
 
-      if models
-        @_reset models
-      next()
+      @field.fetch payload.collection(@).method("GET").data, (err, models) =>
+        return next(err) if err?
+
+        if models
+          @_reset models
+        next()
+
+    @_callstack.push () => next()
 
     @
 
@@ -172,7 +178,8 @@ class Collection extends bindable.Collection
 
   _persistInsert: (model) ->
     return if @_ignorePersist or @owner.isNew()
-    @field.fetch payload.collection(@).target(model).method("POST").data, () ->
+    @_callstack.push (next) =>
+      @field.fetch payload.collection(@).target(model).method("POST").data, next
 
 
   ###
@@ -181,7 +188,9 @@ class Collection extends bindable.Collection
   _persistRemove: (model) ->
     return if @_ignorePersist or @owner.isNew()
     return if model.isNew()
-    @field.fetch payload.collection(@).target(model).method("DELETE").data, () ->
+
+    @_callstack.push (next) =>
+      @field.fetch payload.collection(@).target(model).method("DELETE").data, next
 
 
 
