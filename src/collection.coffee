@@ -41,13 +41,18 @@ class Collection extends bindable.Collection
   ###
   ###
 
-  _map: (data) -> if data?.__isModel then data else @linen.model(@field.options.ref, data)
+  _map: (data) -> 
+    return data unless @field.options.ref
+    if data?.__isModel then data else @linen.model(@field.options.ref, data)
 
   ###
   ###
 
   model: (data) -> 
     model = @_map data
+    
+    return model unless @field.options.ref
+
     model.collection = @
     model.owner = @owner
 
@@ -73,7 +78,7 @@ class Collection extends bindable.Collection
   ###
 
   _watchRemove: (model) ->
-    model.once "remove", (err) =>
+    model.once? "remove", (err) =>
       @_ignorePersist = true
       i = @indexOf model
       if ~i
@@ -137,16 +142,17 @@ class Collection extends bindable.Collection
     # update existing
     for existingItem in esrc
       for newItem, i in src
-        if existingItem.get("_id") is newItem._id
-          existingItem.set newItem
-          src.splice i, 1
+        if @_compare existingItem, newItem
+          if @field.options.ref
+            existingItem.set newItem
+            src.splice i, 1
           break
 
     # remove old item
     for existingItem, i in esrc
       found = false
       for newItem in src2
-        if existingItem.get("_id") is newItem._id
+        if @_compare existingItem, newItem
           found = true
           break
 
@@ -165,10 +171,19 @@ class Collection extends bindable.Collection
   ###
   ###
 
+  _compare: (a, b) ->
+    unless @field.options.ref
+      return a is b
+    else
+      return a.get("_id") is b._id
+
+  ###
+  ###
+
   toJSON: () ->
     models = []
     for model in @source()
-      models.push model.push if model.__isModel then model.toJSON() else model
+      models.push if model.__isModel then model.toJSON() else model
 
     models
 
