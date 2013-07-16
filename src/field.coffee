@@ -161,17 +161,16 @@ class Field
   ###
   ###
 
-  map: (value) ->
+  map: (model, value) ->
 
     return value if @options.multi and value.__isCollection
 
-    if @options.ref
+    if @options.multi
+      col = model.get(@property) || new Collection @
+      col._reset value or []
+      return col
+    else if @options.ref
       return value if value.__isModel
-      
-      if @options.multi
-        col = new Collection @
-        col._reset value or []
-        return col
 
       model = @linen.model @options.ref, value
       model.field = @

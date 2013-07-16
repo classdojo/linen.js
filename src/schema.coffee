@@ -49,7 +49,7 @@ class Schema
   ###
   ###
 
-  map: (key, value) -> @fields.map key, value
+  map: (model, key, value) -> @fields.map model, key, value
 
   ###
   ###

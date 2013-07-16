@@ -45,7 +45,7 @@ class Model extends bindable.Object
   ###
 
   _set: (key, value) ->
-    super key, @schema.map key, value
+    super key, @schema.map @, key, value
 
 
   ###

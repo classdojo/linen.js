@@ -32,15 +32,15 @@ describe("linen", function() {
 
   //even when friends is present, linen collections should remove the references
   //until they're FULLY loaded.
-  it("craig's friends collection is empty", function() {
-    expect(items.craigsFriends.length()).to.be(0);
+  it("craig's friends collection is not empty", function() {
+    expect(items.craigsFriends.length()).to.be(5);
   });
 
 
   it("can fetch craig's friends", function(next) {
     items.craigsFriends.fetch(function() {
-      items.craigsFriends.last().get("location").fetch(function() {
-        expect(items.craigsFriends.last().get("location.name")).to.be("Palo Alto");
+      items.craigsFriends.first().get("location").fetch(function() {
+        expect(items.craigsFriends.first().get("location.name")).to.be("Palo Alto");
         next();
       });
     });

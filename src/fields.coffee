@@ -70,9 +70,9 @@ class Fields
   ###
   ###
 
-  map: (key, value) ->
+  map: (model, key, value) ->
     return value unless (field = @get(key))
-    field.map value
+    field.map model, value
   ###
   ###
 
