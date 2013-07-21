@@ -158,10 +158,10 @@ class Model extends bindable.Object
 
     return onFetch() unless fetchable
 
-    property = if (isVirtual = fetchable.isFetchable()) then fetchable.property else "__default"
+    key = if (isVirtual = fetchable.isFetchable()) then fetchable.property else "__default"
 
-    return onFetch() if @_fetchedWatched[property]
-    @_fetchedWatched[property] = true
+    return onFetch() if @_fetchedWatched[key]
+    @_fetchedWatched[key] = true
 
     if isVirtual
 
