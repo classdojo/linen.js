@@ -111,16 +111,12 @@ class Model extends bindable.Object
       next()
     @
 
-
   ###
-   on binding, fetch this model, but don't do it all the time.
   ###
 
-  bind: (property) ->
-    binding = super arguments...
-    return binding if @_ignoreFetch
+  _watching: (property) ->
+    return if @_ignoreFetch
     @_throttledFetch()
-    binding
 
   ###
   ###

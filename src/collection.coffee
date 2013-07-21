@@ -4,7 +4,7 @@ _         = require "underscore"
 Model     = require "./model"
 flatstack = require "flatstack"
 memoize   = require "./memoize"
-type      = require "type-compoennt"
+type      = require "type-component"
 
 class Collection extends bindable.Collection
   
@@ -178,7 +178,7 @@ class Collection extends bindable.Collection
     unless @field.options.ref
       return a is b
     else
-      return a.get("_id") is b._id
+      return a.get("_id") is b._id or b
 
   ###
   ###

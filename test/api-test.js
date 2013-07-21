@@ -36,6 +36,8 @@ describe("linen", function() {
     expect(items.craigsFriends.length()).to.be(5);
   });
 
+  return;
+
 
   it("can fetch craig's friends", function(next) {
     items.craigsFriends.fetch(function() {
