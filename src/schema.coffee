@@ -76,7 +76,6 @@ class Schema
   ###
 
   _get: (payload, next) ->
-    @fields.fetch payload
     @_fetch payload, next
 
   ###

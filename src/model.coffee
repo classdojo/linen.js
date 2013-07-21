@@ -15,7 +15,8 @@ class Model extends bindable.Object
 
   constructor: (@schema) ->
     super {}
-    @_changed = {}
+    @_changed        = {}
+    @_fetchedWatched = {}
 
   ###
   ###
@@ -115,8 +116,27 @@ class Model extends bindable.Object
   ###
 
   _watching: (property) ->
+
     return if @_ignoreFetch
-    @_throttledFetch()
+
+    props = property.split(".")
+
+    for key, i in props
+      break if fetchable = @schema.fields.get props.slice(0, i + 1).join(".")
+
+    return unless fetchable
+
+    property = if (isVirtual = fetchable.isFetchable()) then fetchable.property else "__default"
+
+    return if @_fetchedWatched[property]
+    @_fetchedWatched[property] = true
+
+
+    if isVirtual
+      fetchable.fetch payload.model(@).method("GET").data, () ->
+    else
+      @_throttledFetch () ->
+
 
   ###
   ###

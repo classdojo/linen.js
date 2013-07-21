@@ -23,7 +23,13 @@ class Field
   ###
   ###
 
+  isFetchable: () -> !!@options.fetch
+
+  ###
+  ###
+
   _refVirtual: () ->
+    return false if @options.multi
     return false unless @options.ref
     return @linen.schemas.get(@options.ref).isVirtual()
 

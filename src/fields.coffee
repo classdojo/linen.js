@@ -1,4 +1,5 @@
 async = require "async" 
+dref = require "dref"
 
 class Fields
 
@@ -57,10 +58,10 @@ class Fields
     d = JSON.parse JSON.stringify data
     for fieldName of @_fields
       field = @_fields[fieldName]
-      v = field.default d[fieldName]
+      v = field.default dref.get data, fieldName
 
       if v?
-        d[fieldName] = v
+        dref.set d, fieldName, v
         if field.options.ref
           v.owner = model
 
@@ -71,6 +72,7 @@ class Fields
   ###
 
   map: (model, key, value) ->
+    
     return value unless (field = @get(key))
     field.map model, value
   ###
