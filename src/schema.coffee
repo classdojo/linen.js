@@ -46,6 +46,12 @@ class Schema extends bindable.Object
   vget: (model, key) -> @get(key)?.value(model)
 
   ###
+    model.set(k, v)
+  ###
+
+  vset: (model, key, value) -> @get(key)?.map(value) ? value
+
+  ###
   ###
 
   value: (model) -> 
@@ -55,12 +61,6 @@ class Schema extends bindable.Object
 
   default: (model) -> 
  
-  ###
-    model.set(k, v)
-  ###
-
-  vset: (model, key, value) -> 
-    @get(key)?.map(value) ? value
 
   ###
     model.fetch() OR when a property is listened to
@@ -87,8 +87,13 @@ class Schema extends bindable.Object
 
     ops = {}
 
+    # array? is multiple
+    if (t = type(definition)) is "array"
+      ops = definition[0]
+      ops.multi = true
+
     # type provided
-    if type(definition) == "string"
+    else if t is "string"
       ops.type = definition
 
     # dollar sign - explicit ops
