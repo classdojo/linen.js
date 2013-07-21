@@ -1,25 +1,28 @@
-Schema  = require "./schema"
-Schemas = require "./schemas"
+Schema = require "./schema"
 
-class Linen
-  
-  ###
-  ###
-
-  constructor: (options = {}) ->
-    @schemas   = new Schemas @
-    @transport = options.transport
+class Linen 
 
   ###
   ###
 
-  getSchema: (schemaName)    -> @schemas.get schemaName
-  addSchema: (schemaOptions) -> @schemas.add schemaOptions
+  constructor: () ->
+    @_schemas = { }
 
   ###
   ###
 
-  model      : (schemaName, data) -> @schemas.model schemaName, data
+  model: (name, data) ->
+
+    unless @_schemas[name]
+      throw new Error "schema '#{name}' does not exist"
+
+    @_schemas[name].model data
+
+  ###
+  ###
+
+  register: (name, definition) ->
+    @_schemas[name] = new Schema @, name, definition
 
 
 

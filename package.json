@@ -1,6 +1,6 @@
 {
   "name": "linen",
-  "version": "0.1.27",
+  "version": "0.2.0",
   "description": "```javascript",
   "main": "./lib/index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "url": "git://github.com/classdojo/linen.js.git"
   },
   "devDependencies": {
-    "mocha": "~1.11.0",
+    "mocha": "~1.12.0",
     "expect.js": "~0.2.0",
     "sift": "0.0.12",
     "vine": "~0.1.1",
@@ -24,15 +24,9 @@
   "readmeFilename": "README.md",
   "gitHead": "bcd19b040fe73382c64db3c81cc692d5bb948ffa",
   "dependencies": {
-    "comerr": "0.0.x",
-    "underscore": "1.4.x",
-    "hoist": "0.0.x",
-    "async": "~0.2.9",
-    "flatstack": "0.0.3",
-    "toarray": "0.0.x",
+    "dref": "0.0.x",
     "bindable": "0.3.x",
-    "verify": "0.0.x",
-    "type-component": "0.0.x",
-    "dref": "0.0.6"
+    "type-component": "0.0.1",
+    "flatstack": "0.0.7"
   }
 }

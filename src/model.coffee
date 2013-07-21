@@ -1,210 +1,58 @@
 bindable = require "bindable"
-_ = require "underscore"
-payload = require "./payload"
-dref    = require "dref"
 
-class Model extends bindable.Object 
-
-  ###
-  ###
-
-  __isModel: true
+class Model extends bindable.Object
 
   ###
   ###
 
   constructor: (@schema) ->
-    super {}
-    @_changed        = {}
-    @_fetchedWatched = {}
+    super()
+
+  ###
+   called when a property is being watched on this model
+  ###
+
+  _watching: (property) ->
+    @schema.fetch @, property
 
   ###
   ###
 
-  isNew: () -> not @has "_id"
+  reset: (data) ->
+    @set data
+    @changed = []
 
   ###
   ###
 
-  hasChanged: () -> !!Object.keys @_changed
-
-  ###
-  ###
-
-  changed: () -> @_changed
-
-  ###
-  ###
-
-  changedToArray: () ->
-    cha = []
-    for key of @_changed
-      cha.push @_changed[key]
-    cha
+  get: (key) -> 
+    @schema.vget(@, key) ? super(key)
 
   ###
   ###
 
   _set: (key, value) ->
-    super key, @schema.map @, key, value
-
-
-  ###
-  ###
-
-  toJSON: () ->
-    data = {}
-    for field in @schema.fields.toArray()
-      continue if field.isVirtual()
-      value = @get(field.property)
-      dref.set data, field.property, value?.toJSON?() or value
-    data
-
+    super key, @schema.vset @, key, value
 
   ###
   ###
 
-  flushChanged: () ->
-    changed = @changedToArray()
-    @_changed = {}
-    changed
-
-  ###
-   refreshes the model
-  ###
-
-  fetch: (next) -> 
-    return next(new Error("cannot '#{@schema.name}' fetch on a new model")) if @isNew()
-    @_fetch payload.model(@).method("GET"), next
-
-  ###
-   saves the model - either adds it as a new one, or updates it
-  ###
-
-  save: (next = () ->)  -> 
-    @_fetch payload.model(@).method(if @isNew() then "POST" else "PUT").changed(@flushChanged()), () =>
-      next arguments...
-      @emit "save", arguments...
-
-
-  ###
-   removes the model
-  ###
-
-  remove: (next = () ->) -> 
-    if @isNew()
-      return next(new Error("cannot remove a new model"))
-
-    @_fetch payload.model(@).method("DELETE"), (err) =>
-      next()
-      @emit "remove"
-
-  ###
-   calls .fetch() on schema, and updates this model
-  ###
-
-  _fetch: (payload, next = () ->) ->
-    @schema.fetch payload.data, (err, result) =>
-      return next(err) if err?
-
-      # result must always be the updated model
-      @set result or {}
-      next()
-    @
+  isNew: () -> return not @get "_id"
 
   ###
   ###
 
-  _watching: (property) ->
-
-    return if @_ignoreFetch
-
-    props = property.split(".")
-
-    for key, i in props
-      break if fetchable = @schema.fields.get props.slice(0, i + 1).join(".")
-
-    return unless fetchable
-
-    property = if (isVirtual = fetchable.isFetchable()) then fetchable.property else "__default"
-
-    return if @_fetchedWatched[property]
-    @_fetchedWatched[property] = true
-
-
-    if isVirtual
-      fetchable.fetch payload.model(@).method("GET").data, () ->
-    else
-      @_throttledFetch () ->
-
+  fetch: (next) -> @schema.fetch @
 
   ###
   ###
 
-  validate: (next) -> 
-    error = @schema.validate @
-    if arguments.length is 1
-      next error
-    else
-      return error
+  validate: (next) -> @schema.validate @
 
   ###
   ###
 
-  _throttledFetch: _.throttle (() ->  
-    @fetch()
-  ), 1000 * 5
-
-  ###
-  ###
-
-  clone: () -> @schema.model @
-
-  ###
-  ###
-
-  _bindFields: () ->
-    @_ignoreFetch = true
-    ignoreVirtuals = {}
-
-    fields   = @schema.fields.toArray()
-    vfields  = fields.filter (field) -> field.isVirtual()
-    
-
-    for field in fields then do (field) =>
-      fieldName = field.property
-      fops      = field.options
-      @bind(fieldName).to((newValue, oldValue) =>
-        # might need to inherit path
-        if field.options.ref and newValue
-          newValue.owner = @
-
-        if newValue?.__isCollection
-          return
-
-        @_changed[fieldName] = { key: fieldName, nv: newValue, ov: oldValue }
-
-        if fops.set
-          ignoreVirtuals[fieldName] = 1
-          fops.set @, newValue, oldValue
-          delete ignoreVirtuals[fieldName]
-      ).now()
+  save: (next) -> @schema.save @
 
 
-    for field in vfields then do (field) =>
-      fieldName = field.property
-      fops      = field.options
-
-      if fops.get
-        @set field.property, fops.get @
-
-      if fops.bind
-        for property in fops.bind then do (property) =>
-          @bind(property).to () =>
-            return if ignoreVirtuals[fieldName]
-            @set fieldName, fops.get @
-
-    @_ignoreFetch = false
-
-
-module.exports = Model
+module.exports = Model;
