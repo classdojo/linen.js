@@ -2,6 +2,8 @@ bindable = require "bindable"
 _ = require "underscore"
 payload = require "./payload"
 dref    = require "dref"
+type = require "type-component"
+memoize = require "./memoize"
 
 class Model extends bindable.Object 
 
@@ -17,6 +19,11 @@ class Model extends bindable.Object
     super {}
     @_changed        = {}
     @_fetchedWatched = {}
+
+    oldFetch = @_fetch
+    @_throttledFetch = memoize ((next) =>
+      @fetch next
+    ), { maxAge: 1000 * 5 }
 
   ###
   ###
@@ -80,9 +87,18 @@ class Model extends bindable.Object
    refreshes the model
   ###
 
-  fetch: (next) -> 
+  fetch: (property, next) -> 
+
+    if type(property) is "function"
+      next = property
+      property = undefined
+
     return next(new Error("cannot '#{@schema.name}' fetch on a new model")) if @isNew()
-    @_fetch payload.model(@).method("GET"), next
+
+    unless property
+      @_fetch payload.model(@).method("GET"), next 
+    else
+      @_getProperty property, next
 
   ###
    saves the model - either adds it as a new one, or updates it
@@ -126,29 +142,38 @@ class Model extends bindable.Object
 
     return if @_ignoreFetch
 
+
+  ###
+  ###
+
+  _getProperty: (property, next = () ->) ->
     props = property.split(".")
+
+    onFetch = (err) =>
+      return next(err) if err?
+      next undefined, @get property
 
     for key, i in props
       break if fetchable = @schema.fields.get props.slice(0, i + 1).join(".")
 
-    return unless fetchable
+    return onFetch() unless fetchable
 
     property = if (isVirtual = fetchable.isFetchable()) then fetchable.property else "__default"
 
-    return if @_fetchedWatched[property]
+    return onFetch() if @_fetchedWatched[property]
     @_fetchedWatched[property] = true
-
 
     if isVirtual
 
       v = @get(fetchable.property)
 
       if v and (v.__isModel or v.__isCollection)
-        v.fetch () ->
+        v.fetch onFetch
       else
-        fetchable.fetch payload.model(@).method("GET").data, () ->
+        fetchable.fetch payload.model(@).method("GET").data, onFetch
     else
-      @_throttledFetch () ->
+      @_throttledFetch onFetch
+
 
 
   ###
@@ -161,12 +186,6 @@ class Model extends bindable.Object
     else
       return error
 
-  ###
-  ###
-
-  _throttledFetch: _.throttle (() ->  
-    @fetch()
-  ), 1000 * 5
 
   ###
   ###

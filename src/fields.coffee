@@ -77,7 +77,7 @@ class Fields
     d[key] = value
 
     for fieldName of @_fields
-      if v = dref.get(d, fieldName)
+      if (v = dref.get(d, fieldName))?
         dref.set d, fieldName, @_fields[fieldName].map model, v
 
     return d[key]
