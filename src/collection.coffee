@@ -178,7 +178,8 @@ class Collection extends bindable.Collection
     unless @field.options.ref
       return a is b
     else
-      return a.get("_id") is b._id or b
+      aid = a.get("_id")
+      return (aid is b._id) or (aid is b)
 
   ###
   ###
