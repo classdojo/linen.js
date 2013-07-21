@@ -4,6 +4,7 @@ _         = require "underscore"
 Model     = require "./model"
 flatstack = require "flatstack"
 memoize   = require "./memoize"
+type      = require "type-compoennt"
 
 class Collection extends bindable.Collection
   
@@ -132,6 +133,8 @@ class Collection extends bindable.Collection
   ###
 
   _reset: (src) ->
+    return if type(src) isnt "array"
+
     @_ignorePersist = true
 
     # fix issue when removing items within an array
