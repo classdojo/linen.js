@@ -72,9 +72,16 @@ class Fields
   ###
 
   map: (model, key, value) ->
+
+    d = {}
+    d[key] = value
+
+    for fieldName of @_fields
+      if v = dref.get(d, fieldName)
+        dref.set d, fieldName, @_fields[fieldName].map model, v
+
+    return d[key]
     
-    return value unless (field = @get(key))
-    field.map model, value
   ###
   ###
 

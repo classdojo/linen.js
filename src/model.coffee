@@ -48,6 +48,13 @@ class Model extends bindable.Object
   _set: (key, value) ->
     super key, @schema.map @, key, value
 
+  ###
+  ###
+
+  reset: (data) ->
+    @set data
+    @_changed = {}
+
 
   ###
   ###
@@ -108,7 +115,7 @@ class Model extends bindable.Object
       return next(err) if err?
 
       # result must always be the updated model
-      @set result or {}
+      @reset result or {}
       next()
     @
 
@@ -133,7 +140,13 @@ class Model extends bindable.Object
 
 
     if isVirtual
-      fetchable.fetch payload.model(@).method("GET").data, () ->
+
+      v = @get(fetchable.property)
+
+      if v and (v.__isModel or v.__isCollection)
+        v.fetch () ->
+      else
+        fetchable.fetch payload.model(@).method("GET").data, () ->
     else
       @_throttledFetch () ->
 
