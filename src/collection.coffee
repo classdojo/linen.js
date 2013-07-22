@@ -34,9 +34,10 @@ class Collection extends bindable.Collection
       reset  : @_persistReset
 
 
+    # should be a while before a server refresh
     @fetch = memoize ((next) =>
       @_fetch next
-    ), { maxAge: 1000 * 5 }
+    ), { maxAge: 1000 * 60 * 5 }
 
   ###
   ###

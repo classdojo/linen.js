@@ -19,7 +19,7 @@ class Linen
   ###
   ###
 
-  model      : (schemaName, data) -> @schemas.model schemaName, data
+  model      : (schemaName, data, owner) -> @schemas.model schemaName, data, owner
 
 
 
