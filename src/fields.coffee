@@ -63,7 +63,8 @@ class Fields
       if v?
         dref.set d, fieldName, v
         if field.options.ref
-          v.owner = model
+          if v._owner
+            v._owner model
 
     d
 

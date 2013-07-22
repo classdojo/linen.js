@@ -25,7 +25,7 @@ class Collection extends bindable.Collection
 
     @transform().map (model) =>
       model = @_map model
-      model.owner = @owner
+      model.setOwner? @owner
       @_watchRemove model
       model
 
@@ -55,7 +55,7 @@ class Collection extends bindable.Collection
     return model unless @field.options.ref
 
     model.collection = @
-    model.owner = @owner
+    model.setOwner? @owner
 
     model.once "save", (err) =>
       return if err?
@@ -87,6 +87,12 @@ class Collection extends bindable.Collection
       @_ignorePersist = false
 
 
+  ###
+  ###
+
+  setOwner: (value) ->
+    @owner = value
+    @set "_owner", value
 
   ###
   ###

@@ -111,6 +111,14 @@ class Model extends bindable.Object
 
 
   ###
+  ###
+
+  setOwner: (value) ->
+    @owner = value
+    @set "_owner", value
+
+
+  ###
    removes the model
   ###
 
@@ -216,7 +224,7 @@ class Model extends bindable.Object
       @bind(fieldName).to((newValue, oldValue) =>
         # might need to inherit path
         if field.options.ref and newValue
-          newValue.owner = @
+          newValue.setOwner? @
 
         if newValue?.__isCollection
           return
