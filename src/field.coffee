@@ -149,7 +149,7 @@ class Field
 
   default: (value) ->
 
-    value = value or @_getDefault value
+    value = value ? @_getDefault value
 
     if @options.map 
       value = @options.map value
