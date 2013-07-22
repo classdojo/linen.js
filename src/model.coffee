@@ -174,7 +174,7 @@ class Model extends bindable.Object
     else
     
       # property already exists? don't fetch then.
-      return onFetch() if @get(property)?
+      return onFetch() if @get(property)? and not fetchable?.isVirtual()
 
       @_throttledFetch onFetch
 
