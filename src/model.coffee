@@ -139,8 +139,8 @@ class Model extends bindable.Object
   ###
 
   _watching: (property) ->
-
     return if @_ignoreFetch
+    @_getProperty property
 
 
   ###
@@ -172,6 +172,10 @@ class Model extends bindable.Object
       else
         fetchable.fetch payload.model(@).method("GET").data, onFetch
     else
+    
+      # property already exists? don't fetch then.
+      return onFetch() if @get(property)?
+
       @_throttledFetch onFetch
 
 
