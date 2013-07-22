@@ -34,6 +34,10 @@ class Schema
     # return the new model, along with the
     # correct, mapped data
     m = new Model @
+    
+    if @options.map
+      d = @options.map d
+
     m.reset d = @fields.default d, m
     m._bindFields()
 
