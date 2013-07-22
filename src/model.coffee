@@ -160,23 +160,26 @@ class Model extends bindable.Object
 
     key = if (isVirtual = fetchable.isFetchable()) then fetchable.property else "__default"
 
-    return onFetch() if @_fetchedWatched[key]
-    @_fetchedWatched[key] = true
+    return @_fetchedWatched[key](onFetch) if @_fetchedWatched[key]
 
-    if isVirtual
+    @_fetchedWatched[key] = memoize (next) =>
 
-      v = @get(fetchable.property)
+      if isVirtual
 
-      if v and (v.__isModel or v.__isCollection)
-        v.fetch onFetch
+        v = @get(fetchable.property)
+
+        if v and (v.__isModel or v.__isCollection)
+          v.fetch next
+        else
+          fetchable.fetch payload.model(@).method("GET").data, next
       else
-        fetchable.fetch payload.model(@).method("GET").data, onFetch
-    else
-    
-      # property already exists? don't fetch then.
-      return onFetch() if @get(property)? and not fetchable?.isVirtual()
+      
+        # property already exists? don't fetch then.
+        return next() if @get(property)? and not fetchable?.isVirtual()
 
-      @_throttledFetch onFetch
+        @_throttledFetch next
+
+    @_fetchedWatched[key].call @, onFetch
 
 
 
