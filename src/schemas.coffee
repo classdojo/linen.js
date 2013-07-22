@@ -28,7 +28,7 @@ class Schemas
   ###
   ###
 
-  model: (name, options) -> @_vExists(name).model(options)
+  model: (name, options, owner) -> @_vExists(name).model(options, owner)
 
   ###
   ###

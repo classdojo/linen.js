@@ -22,7 +22,7 @@ class Schema
   ###
   ###
 
-  model: (data) ->
+  model: (data, owner) ->
     d = {}
 
     if type(data) is "string"
@@ -34,9 +34,10 @@ class Schema
     # return the new model, along with the
     # correct, mapped data
     m = new Model @
+    m.setOwner owner
     
     if @options.map
-      d = @options.map d
+      d = @options.map.call m, d
 
     m.reset d = @fields.default d, m
     m._bindFields()

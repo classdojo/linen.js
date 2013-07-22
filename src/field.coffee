@@ -178,7 +178,7 @@ class Field
     else if @options.ref
       return value if value.__isModel
 
-      model = @linen.model @options.ref, value
+      model = @linen.model @options.ref, value, model
       model.field = @
       return model
 

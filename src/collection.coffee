@@ -25,7 +25,6 @@ class Collection extends bindable.Collection
 
     @transform().map (model) =>
       model = @_map model
-      model.setOwner? @owner
       @_watchRemove model
       model
 
@@ -44,7 +43,7 @@ class Collection extends bindable.Collection
 
   _map: (data) -> 
     return data unless @field.options.ref
-    if data?.__isModel then data else @linen.model(@field.options.ref, data)
+    if data?.__isModel then data else @linen.model(@field.options.ref, data, @owner)
 
   ###
   ###
@@ -55,7 +54,6 @@ class Collection extends bindable.Collection
     return model unless @field.options.ref
 
     model.collection = @
-    model.setOwner? @owner
 
     model.once "save", (err) =>
       return if err?
