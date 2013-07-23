@@ -1,5 +1,6 @@
-Schema  = require "./schema"
-Schemas = require "./schemas"
+Schema     = require "./schema"
+Schemas    = require "./schemas"
+transports = require "./transports"
 
 class Linen
   
@@ -24,3 +25,4 @@ class Linen
 
 
 module.exports = () -> new Linen()
+module.exports.transports = transports 

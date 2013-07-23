@@ -1,6 +1,6 @@
 {
   "name": "linen",
-  "version": "0.1.38",
+  "version": "0.1.39",
   "description": "```javascript",
   "main": "./lib/index.js",
   "scripts": {
@@ -32,7 +32,8 @@
     "toarray": "0.0.x",
     "bindable": "0.3.x",
     "verify": "0.0.x",
-    "type-component": "0.0.x",
-    "dref": "0.0.6"
+    "type-component": "0.0.1",
+    "dref": "0.0.6",
+    "outcome": "0.0.18"
   }
 }

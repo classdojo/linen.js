@@ -143,7 +143,9 @@ class Collection extends bindable.Collection
     @_ignorePersist = true
 
     # fix issue when removing items within an array
-    src  = src
+    src  = src.filter((model) ->
+      model?
+    )
     src2 = src.concat()
     esrc = @source().concat()
     
