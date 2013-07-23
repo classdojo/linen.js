@@ -13,7 +13,7 @@ module.exports = (options = {}) ->
       ###
       ###
 
-      host: options.hosts?.main
+      host: defaultHost = options.hosts?.main or "#{window.location.protocol}//#{window.location.host}"
       
       ###
        joins two paths together
@@ -92,7 +92,7 @@ module.exports = (options = {}) ->
 
       route: (options = {}) ->
 
-        host = options.host or rhost
+        host = options.host or defaultHost
 
         unless options.path
           options.path = (payload) ->
