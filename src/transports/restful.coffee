@@ -1,6 +1,7 @@
 
 outcome = require "outcome"
 type    = require "type-component"
+comerr  = require "comerr"
 
 
 module.exports = (options = {}) ->
