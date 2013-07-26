@@ -72,8 +72,13 @@ module.exports = (options = {}) ->
           type: options.method,
           dataType: "json",
           data: if /GET/.test(options.method) then undefined else JSON.parse(JSON.stringify(options.data or {})),
-          error: (err) ->
-            next new Error err?.message or err
+          error: (response) ->
+
+            if response.responseJSON
+              return next response.responseJSON
+
+            return next comerr.fromCode response.status
+            
           success: (content) ->
 
             if content.error

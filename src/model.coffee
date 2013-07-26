@@ -4,6 +4,7 @@ payload = require "./payload"
 dref    = require "dref"
 type = require "type-component"
 memoize = require "./memoize"
+comerr = require "comerr"
 
 class Model extends bindable.Object 
 
