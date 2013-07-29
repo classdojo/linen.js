@@ -22,8 +22,9 @@ class Linen
   ###
 
   register: (name, definition) ->
-    @_schemas[name] = new Schema @, name, definition
+    @_schemas[name] = new Schema definition, name, @
 
 
 
 module.exports = () -> new Linen()
+module.exports.Schema = Schema

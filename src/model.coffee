@@ -26,7 +26,10 @@ class Model extends bindable.Object
   ###
 
   get: (key) -> 
-    @schema.vget(@, key) ? super(key)
+
+    # fetch from super first, trigger the virtual get method
+    # from the schema - note that virtual methods should only be set once
+    super(key) ? @schema.vget(@, key)
 
   ###
   ###
