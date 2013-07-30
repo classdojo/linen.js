@@ -7,6 +7,7 @@ class Model extends bindable.Object
 
   constructor: (@schema) ->
     super()
+    @_vgetting = {}
 
   ###
    called when a property is being watched on this model
@@ -33,9 +34,15 @@ class Model extends bindable.Object
   ###
   ###
 
-  _set: (key, value) ->
-    super key, @schema.vset @, key, value
+  #_set: (key, value) ->
+  #  super key, @schema.vset @, key, value
 
+  ###
+  ###
+
+  _watching: (property) ->
+    @get(property)
+    
   ###
   ###
 

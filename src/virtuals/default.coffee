@@ -12,7 +12,11 @@ class DefaultMapper extends require("./base")
   ###
   ###
 
-  get: (model, value) -> value ? @_createDefault()
+  get: (model, value) -> 
+    return value if value?
+    value = @_createDefault()
+    model.set @schema.path, value
+    value
 
   ###
   ###

@@ -13,7 +13,7 @@ class Schema
   ###
   ###
 
-  constructor: (@options, @name, @linen) ->
+  constructor: (@options, @name, @linen, @path) ->
 
     @_fields   = {}
 
@@ -53,7 +53,8 @@ class Schema
     model.get(k)
   ###
 
-  vget: (model, key) -> @field(key)?.virtuals.get(model)
+  vget: (model, key) -> 
+    @field(key)?.virtuals.get(model)
 
   ###
     model.set(k, v)
@@ -142,7 +143,7 @@ class Schema
 
 
 
-parseSchemaOps = (definition, name, linen) ->
+parseSchemaOps = (definition, name, linen, path = []) ->
 
   ops = { }
 
@@ -172,10 +173,11 @@ parseSchemaOps = (definition, name, linen) ->
     if property.substr(0, 1) is "$"
       schemaOps[property.substr(1)] = ops[property]
     else
-      fieldOps = parseSchemaOps ops[property], property, linen
+      pt = path.concat(property)
+      fieldOps = parseSchemaOps ops[property], property, linen, pt
       fieldOps.property = property
 
-      schemaOps.fields.push new Schema fieldOps, property, linen
+      schemaOps.fields.push new Schema fieldOps, property, linen, pt.join(".")
 
   schemaOps
 
