@@ -90,7 +90,6 @@ class Schema
     else
       value = modelOrValue
 
-
     value
 
 
@@ -110,7 +109,25 @@ class Schema
   ###
 
   validate: (modelOrValue, next) -> 
-    @validator.validate modelOrValue, next
+
+    value = @value modelOrValue
+
+
+    @validator.validate value, (err) =>
+
+      if err
+        err.message = "'#{@name}' #{err.message}"
+        return next(err)
+
+      @_validateFields value, next
+
+  ###
+  ###
+
+  _validateFields: (value, next) ->
+    async.forEach @fields, ((field, next) =>
+      field.validate value, next
+    ), next
 
   ###
    parse a definition. Something like:

@@ -20,6 +20,8 @@ describe("validate", function() {
       s.validate(new bindable.Object({ name: "craig" }), next);
     }); 
 
+    
+
     it("fails with the a number", function(next) {
       s.validate(new bindable.Object({name: 15 }), function(err) {
         expect(err.message).to.be("'name' must be a string");

@@ -14,8 +14,6 @@ class Validator
 
   constructor: (@schema) ->
 
-    @property = @schema.options.property
-    @name     = @schema.options.name
     @required = @schema.options.required
 
     validators = []
@@ -35,37 +33,17 @@ class Validator
   ###
   ###
 
-  validate: (modelOrValue, next) ->
-
-    # property exists? 
-    if @property
-      value = dref.get modelOrValue, @property
-    else
-      value = modelOrValue
+  validate: (value, next) ->
 
     # doesn't exist?
     unless value?
       if @required
-        return next new Error "'#{@name}' must be defined"
+        return next new Error "must be defined"
       else
         return next()
 
     async.forEach @_validators, ((validator, next) ->
       validator.validate value, next
-    ), (err) =>
-
-      if err
-        err.message = "'#{@name}' #{err.message}"
-        return next err
-
-      @_validateFields value, next
-
-  ###
-  ###
-
-  _validateFields: (value, next) ->
-    async.forEach @schema.fields, ((field, next) =>
-      field.validate value, next
     ), next
 
   ###
