@@ -17,7 +17,7 @@ class Schema
     @_parseDefinition options
 
     # next, add the validator, and virtuals
-    @validator = new Validator @, @options
+    @validator = new Validator @
 
   ###
   ###
@@ -64,7 +64,7 @@ class Schema
   field: (property = "") -> 
     path = property.split "."
     field = @_fields[path.shift()]
-    
+
     if field and path.length
       return field.field path.join(".")
     else
@@ -90,7 +90,8 @@ class Schema
   ###
   ###
 
-  validate: (model, next) ->
+  validate: (model, next) -> 
+    @validator.validate model, next
 
   ###
    parse a definition. Something like:

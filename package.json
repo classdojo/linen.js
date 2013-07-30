@@ -29,6 +29,8 @@
     "bindable": "0.3.x",
     "type-component": "0.0.1",
     "flatstack": "0.0.7",
-    "underscore": "~1.5.1"
+    "underscore": "~1.5.1",
+    "comerr": "0.0.5",
+    "async": "~0.2.9"
   }
 }
