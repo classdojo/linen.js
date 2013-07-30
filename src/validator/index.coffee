@@ -46,7 +46,7 @@ class Validator
     # doesn't exist?
     unless value?
       if @required
-        return new Error "'#{@name}' must be present"
+        return next new Error "'#{@name}' must be defined"
       else
         return next()
 

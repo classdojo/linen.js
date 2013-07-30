@@ -13,7 +13,16 @@ class TypeValidator
   ###
 
   validate: (value, next) -> 
-    unless type(value) is @type
+
+    t = type(value)
+
+    valid = t is @type
+
+    # need to perform additional checks to make sure it's the correct type
+    switch t
+      when "number" then valid = valid and !isNaN(value)
+
+    unless valid
       next new Error @message
     else
       next()
