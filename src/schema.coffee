@@ -3,18 +3,25 @@ Model     = require "./model"
 type      = require "type-component"
 Validator = require "./validator"
 _         = require "underscore"
+dref      = require "dref"
+outcome   = require "outcome"
+async     = require "async"
 
 class Schema
 
   ###
   ###
 
-  constructor: (options, @name, @linen) ->
+  constructor: (@options, @name, @linen) ->
 
-    @_fields = {}
+    @_fields   = {}
 
-    # first parse the definition
-    @_parseDefinition options
+    @fields = options.fields
+
+    @_fieldsByKey = {}
+
+    for field in @fields
+      @_fieldsByKey[field.name] = field
 
     # next, add the validator, and virtuals
     @validator = new Validator @
@@ -63,7 +70,7 @@ class Schema
 
   field: (property = "") -> 
     path = property.split "."
-    field = @_fields[path.shift()]
+    field = @_fieldsByKey[path.shift()]
 
     if field and path.length
       return field.field path.join(".")
@@ -90,8 +97,8 @@ class Schema
   ###
   ###
 
-  validate: (model, next) -> 
-    @validator.validate model, next
+  validate: (modelOrValue, next) -> 
+    @validator.validate modelOrValue, next
 
   ###
    parse a definition. Something like:
@@ -107,39 +114,46 @@ class Schema
    }
   ###
 
-  _parseDefinition: (definition) -> 
-
-    ops = {
-      $name: @name
-    }
-
-
-    # array? it's a collection of items
-    if (t = type(definition)) is "array"
-      ops = definition[0]
-      ops.collection = true
-
-    else if t is "object"
-      _.extend ops, definition
-
-    else if t is "string"
-      ops.$type = definition
-
-    schemaOptions = {}
-
-    # split the schema options from the 
-    # sub-fields
-    for property of ops
-
-      # it's a modifier for the schema. Convert it.
-      if property.substr(0, 1) is "$"
-        schemaOptions[property.substr(1)] = ops[property]
-      else
-        @_fields[property] = new Schema ops[property], property, @linen
-
-    @options = schemaOptions
 
 
 
 
-module.exports = Schema
+parseSchemaOps = (definition, name, linen) ->
+
+  ops = { }
+
+  schemaOps = {
+    name: name,
+    fields: []
+  }
+
+  # array? it's a collection of items
+  if (t = type(definition)) is "array"
+    ops = definition[0]
+    ops.collection = true
+
+  else if t is "object"
+    _.extend ops, definition
+
+  else if t is "string"
+    ops.$type = definition
+
+  schemaOptions = {}
+
+  # split the schema options from the 
+  # sub-fields
+  for property of ops
+
+    # it's a modifier for the schema. Convert it.
+    if property.substr(0, 1) is "$"
+      schemaOps[property.substr(1)] = ops[property]
+    else
+      fieldOps = parseSchemaOps ops[property], property, linen
+      fieldOps.property = property
+
+      schemaOps.fields.push new Schema fieldOps, property, linen
+
+  schemaOps
+
+module.exports = (options, name, linen) ->
+  new Schema parseSchemaOps(options, name, linen), name, linen

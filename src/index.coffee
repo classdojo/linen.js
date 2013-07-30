@@ -1,4 +1,4 @@
-Schema = require "./schema"
+schema = require "./schema"
 
 class Linen 
 
@@ -22,9 +22,9 @@ class Linen
   ###
 
   register: (name, definition) ->
-    @_schemas[name] = new Schema definition, name, @
+    @_schemas[name] = schema definition, name, @
 
 
 
 module.exports = () -> new Linen()
-module.exports.Schema = Schema
+module.exports.schema = schema
