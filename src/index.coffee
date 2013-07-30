@@ -1,4 +1,5 @@
 schema = require "./schema"
+Model  = require "./model"
 
 class Linen 
 
@@ -28,3 +29,4 @@ class Linen
 
 module.exports = () -> new Linen()
 module.exports.schema = schema
+module.exports.Model  = Model

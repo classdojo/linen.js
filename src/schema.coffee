@@ -6,7 +6,7 @@ _          = require "underscore"
 dref       = require "dref"
 outcome    = require "outcome"
 async      = require "async"
-MapFactory = require "./mappers/factory"
+Virtuals   = require "./virtuals"
 
 class Schema
 
@@ -26,17 +26,12 @@ class Schema
 
     # next, add the validator, and virtuals
     @validator = new Validator @
-    #@mapper    = MapFactory.getMapper @
+    @virtuals  = new Virtuals @
 
   ###
   ###
 
-  model: (data) -> @map data
-
-  ###
-  ###
-
-  map: (data) ->
+  model: (data) ->
 
     # is a string? must be an id
     if type(data) is "string"
@@ -54,18 +49,18 @@ class Schema
 
     model
 
-
   ###
     model.get(k)
   ###
 
-  vget: (model, key) -> @get(key)?.value(model)
+  vget: (model, key) -> @field(key)?.virtuals.get(model)
 
   ###
     model.set(k, v)
   ###
 
-  vset: (model, key, value) -> @get(key)?.map(value) ? value
+  vset: (model, key, value) -> 
+    # @get(key)?.map(value) ? value
 
   ###
   ###
