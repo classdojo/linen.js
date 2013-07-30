@@ -160,13 +160,12 @@ describe("validate", function() {
       })
     });
 
-    it("succeeds if name is undefined", function() {
+    it("succeeds if name is undefined", function(next) {
       s2.validate({ name: undefined }, function(err) {
-        expect(err).to.be(undefined);
+        expect(err).to.be(null);
         next();
-      })
-    })
-
+      });
+    });
   });
 
   return;

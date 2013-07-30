@@ -1,11 +1,12 @@
-bindable  = require "bindable"
-Model     = require "./model"
-type      = require "type-component"
-Validator = require "./validator"
-_         = require "underscore"
-dref      = require "dref"
-outcome   = require "outcome"
-async     = require "async"
+bindable   = require "bindable"
+Model      = require "./model"
+type       = require "type-component"
+Validator  = require "./validator"
+_          = require "underscore"
+dref       = require "dref"
+outcome    = require "outcome"
+async      = require "async"
+MapFactory = require "./mappers/factory"
 
 class Schema
 
@@ -25,6 +26,7 @@ class Schema
 
     # next, add the validator, and virtuals
     @validator = new Validator @
+    #@mapper    = MapFactory.getMapper @
 
   ###
   ###
@@ -80,7 +82,17 @@ class Schema
   ###
   ###
 
-  value: (model) -> 
+  value: (modelOrValue) -> 
+
+    # property exists? 
+    if @options.property
+      value = dref.get modelOrValue, @options.property
+    else
+      value = modelOrValue
+
+
+    value
+
 
   ###
   ###
