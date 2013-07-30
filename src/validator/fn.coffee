@@ -5,6 +5,11 @@ class FnValidator
   ###
   ###
 
+  constructor: (@_tester) ->
+
+  ###
+  ###
+
   validate: (value, next) ->
     @_tester value, next
   
