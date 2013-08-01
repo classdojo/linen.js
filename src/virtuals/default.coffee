@@ -31,4 +31,6 @@ class DefaultMapper extends require("./base")
 
   @test: (schema) -> schema.options.default
 
+
+
 module.exports = DefaultMapper

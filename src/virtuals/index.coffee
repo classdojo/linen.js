@@ -5,6 +5,7 @@ DefaultMapper    = require "./default"
 FnMapper         = require "./fn"
 
 
+
 class Virtual
 
   ###

@@ -57,6 +57,17 @@ class Schema
     @field(key)?.virtuals.get(model)
 
   ###
+  ###
+
+  refresh: (model, fields) ->
+
+  ###
+  ###
+
+  persist: (model, changed) ->
+  
+
+  ###
     model.set(k, v)
   ###
 
