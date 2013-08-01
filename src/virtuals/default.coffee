@@ -5,29 +5,29 @@ class DefaultVirtual extends require("./base")
   ###
   ###
 
-  constructor: (schema) ->
-    super schema
-    @_createDefault = @_getDefaultFn schema.options.default
+  constructor: (field) ->
+    super field
+    @_createDefault = @_getDefaultFn field.options.default
   
   ###
   ###
 
   fetch: (model, next) -> 
 
-    # skip if the value is new, 
-    return next() if model.get(@schema.path)? or !model.isNew()
+    # skip if the value is new, or 
+    return next() if model.get(@field.path)? or !model.isNew()
 
     # async?
     if @_createDefault.length is 1 
       @_createDefault (err, value) =>
         if err 
           return console.error err
-        model.set @schema.path, value
+        model.set @field.path, value
         next()
 
     #sync?
     else
-      model.set @schema.path, @_createDefault()
+      model.set @field.path, @_createDefault()
       next()
 
   ###
@@ -41,7 +41,7 @@ class DefaultVirtual extends require("./base")
   ###
   ###
 
-  @test: (schema) -> schema.options.default
+  @test: (field) -> field.options.default
 
 
 module.exports = DefaultVirtual

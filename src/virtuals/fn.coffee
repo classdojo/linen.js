@@ -11,30 +11,41 @@ class FnVirtual extends require("./base")
   ###
   ###
 
-  constructor: (schema) ->
-    super schema
-    @_fetch = @_findFetch schema
+  constructor: (field) ->
+    super field
+    @_fetcher = @_findFetcher field
+    @_fetch = @_fetcher?.options.fetch
 
   ###
   ###
 
   fetch: (model, next) ->
-    return next() if model.isNew()?
 
-    @_fetch.call model, (err, result) ->
+    # TODO - @_fetch should be tested out in @test
+    return next() if model.isNew() or !@_fetch
+
+    @_fetch.call model, (err, result) =>
       return next(err) if err?
 
-      console.log result
+      v = @_fetcher.map result
+
+      unless @_fetcher.path
+        model.reset v
+      else
+        model.set @_fetcher.path, v
+
+      next()
 
   ###
+   finds explicit $fetch fn
   ###
 
-  _findFetch: (schema) -> 
-    p = schema
+  _findFetcher: (field) -> 
+    p = field
 
     while p and !p.options.fetch
       p = p.parent
 
-    p?.options.fetch
+    p
 
 module.exports = FnVirtual

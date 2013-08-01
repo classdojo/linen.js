@@ -10,21 +10,21 @@ class Virtual
   ###
   ###
 
-  constructor: (@schema) ->
+  constructor: (@field) ->
 
-    ops = @schema.options
+    ops = @field.options
 
     @_virtuals = []
 
     if ops.default?
-      @_virtuals.push new DefaultMapper @schema
+      @_virtuals.push new DefaultMapper @field
 
-    @_virtuals.push new FnMapper @schema
+    @_virtuals.push new FnMapper @field
 
     if ops.multi
-      @_virtuals.push new CollectionMapper @schema
+      @_virtuals.push new CollectionMapper @field
     else if ops.ref
-      @_virtuals.push new ReferenceMapper @schema
+      @_virtuals.push new ReferenceMapper @field
 
 
   ###
@@ -34,6 +34,14 @@ class Virtual
     async.forEach @_virtuals, ((mapper, next) ->
       mapper.fetch model, next
     ), next
+
+  ###
+  ###
+
+  cast: (data) ->
+    for virtual in @_virtuals
+      data = virtual.cast data
+    data
 
 
 

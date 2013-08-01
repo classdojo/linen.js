@@ -83,6 +83,7 @@ class Schema
   persist: (model, changed) ->
 
   ###
+   returns a field
   ###
 
   field: (property = "") -> 
@@ -93,6 +94,13 @@ class Schema
       return field.field path.join(".")
     else
       return field
+
+  ###
+   maps to the proper data type
+   TODO
+  ###
+
+  map: (data) -> data
 
   ###
   ###
