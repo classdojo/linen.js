@@ -14,25 +14,21 @@ class DefaultVirtual extends require("./base")
 
   fetch: (model, next) -> 
 
-    return next() if model.get(@schema.path)?
+    # skip if the value is new, 
+    return next() if model.get(@schema.path)? or !model.isNew()
 
-    if model.isNew()
-
-      # async?
-      if @_createDefault.length is 1 
-        @_createDefault (err, value) =>
-          if err 
-            return console.error err
-          model.set @schema.path, value
-          next()
-
-      #sync?
-      else
-        model.set @schema.path, @_createDefault()
+    # async?
+    if @_createDefault.length is 1 
+      @_createDefault (err, value) =>
+        if err 
+          return console.error err
+        model.set @schema.path, value
         next()
 
+    #sync?
     else
-      @child.fetch model, next
+      model.set @schema.path, @_createDefault()
+      next()
 
   ###
   ###
@@ -46,7 +42,6 @@ class DefaultVirtual extends require("./base")
   ###
 
   @test: (schema) -> schema.options.default
-
 
 
 module.exports = DefaultVirtual

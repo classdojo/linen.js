@@ -148,14 +148,20 @@ describe("virtual default values", function() {
   });
 
   describe("with existing model", function() {
-    return
-    it("don't define default value", function() {
+
+    it("don't define default value", function(next) {
+
       var b = linen.schema({
         name: "string",
         age: {
           $default: 0
         }
       }).model("abba");
+
+      b.fetchAll(function() {
+        expect(b.get("age")).to.be(undefined);
+        next();
+      });
     });
   });
 });

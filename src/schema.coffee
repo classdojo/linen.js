@@ -22,14 +22,12 @@ class Schema
 
     @fieldNames = []
 
-
     @_fieldsByKey = {}
 
     for field in @fields
       @_fieldsByKey[field.name] = field
       @fieldNames.push field.name
       field.parent = @
-
 
     # next, add the validator, and virtuals
     @validator = new Validator @

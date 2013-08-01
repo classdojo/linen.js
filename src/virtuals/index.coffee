@@ -14,23 +14,24 @@ class Virtual
 
     ops = @schema.options
 
-
-    @_mappers = []
+    @_virtuals = []
 
     if ops.default?
-      @_mappers.push new DefaultMapper @schema
+      @_virtuals.push new DefaultMapper @schema
+
+    @_virtuals.push new FnMapper @schema
 
     if ops.multi
-      @_mappers.push new CollectionMapper @schema
+      @_virtuals.push new CollectionMapper @schema
     else if ops.ref
-      @_mappers.push new ReferenceMapper @schema
+      @_virtuals.push new ReferenceMapper @schema
 
 
   ###
   ###
 
   fetch: (model, next = () ->) ->
-    async.forEach @_mappers, ((mapper, next) ->
+    async.forEach @_virtuals, ((mapper, next) ->
       mapper.fetch model, next
     ), next
 
