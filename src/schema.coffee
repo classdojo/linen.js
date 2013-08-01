@@ -15,12 +15,10 @@ class Schema
 
   constructor: (@options, @name, @linen, @path) ->
 
-    @_fields   = {}
-
     @fields = options.fields
+    @fieldPaths = options.fields.map (field) -> field.path
 
     @_fieldsByKey = {}
-
     for field in @fields
       @_fieldsByKey[field.name] = field
 
@@ -31,7 +29,7 @@ class Schema
   ###
   ###
 
-  model: (data) ->
+  model: (data = {}) ->
 
     # is a string? must be an id
     if type(data) is "string"
@@ -43,23 +41,16 @@ class Schema
     # setup the virtual methods
     for key of @_methods
       model[key] = @_methods[key]
-
-    # resets the data without triggering persistence
-    model.reset data
-
+      
     model
 
   ###
-    model.get(k)
   ###
 
-  vget: (model, key) -> 
-    @field(key)?.virtuals.get(model)
+  refresh: (model, fields = []) ->
+    for key in fields
+      @field(key)?.virtuals.get(model)
 
-  ###
-  ###
-
-  refresh: (model, fields) ->
 
   ###
   ###

@@ -4,34 +4,79 @@ expect = require("expect.js");
 
 describe("virtual default values", function() {
 
-  it("work with numbers", function() {
+  it("work with numbers", function(next) {
 
-    var s = linen.schema({
+    var b = linen.schema({
       age: {
         $type: "number",
         $default: 0
       }
-    }), b = new linen.Model(s);
+    }).model();
 
-    expect(b.get("age")).to.be(0);
+
+    expect(b.get("age")).to.be(undefined);
+
+    b.bind("age").once().to(function(v) {
+      expect(v).to.be(0);
+      next();
+    }).now();
   });
 
-  it("work woth boolean values", function() {
-    var s = linen.schema({
+  it("work woth boolean values", function(next) {
+    var b = linen.schema({
       hasFriends: {
         $type: "boolean",
         $default: false
       }
-    }), b = new linen.Model(s);
+    }).model();
 
-    expect(b.get("hasFriends")).to.be(false);
+    expect(b.get("hasFriends")).to.be(undefined);
+
+    b.bind("hasFriends").once().to(function(v) {
+      expect(v).to.be(false);
+      next();
+    }).now();
   });
 
-  it("work with functions", function() {
-    var s = linen.schema({
+  describe("work with functions", function() {
 
+    it("asynchronously", function(next) {
+
+      var b = linen.schema({
+        name: {
+          $type: "string",
+          $default: function(next) {
+            next(null, "craig");
+          }
+        }
+      }).model();
+
+      b.bind("name").once().to(function(v) {
+        expect(v).to.be("craig");
+        next();
+      }).now();
     });
+
+    it("synchronously", function(next) {
+      var b = linen.schema({
+        name: {
+          $type: "string",
+          $default: function() {
+            return "jake";
+          }
+        }
+      }).model();
+
+
+      b.bind("name").once().to(function(v) {
+        expect(v).to.be("jake");
+        next();
+      }).now();
+    });
+    
   });
+
+  return;
 
   it("works asynchronously", function() {
 

@@ -1,4 +1,6 @@
 bindable = require "bindable"
+type     = require "type-component"
+toarray  = require "toarray"
 
 class Model extends bindable.Object
 
@@ -26,22 +28,14 @@ class Model extends bindable.Object
   ###
   ###
 
-  get: (key) -> 
-    # fetch from super first, trigger the virtual get method
-    # from the schema - note that virtual methods should only be set once
-    super(key) ? @schema.vget(@, key)
-
-  ###
-  ###
-
-  #_set: (key, value) ->
-  #  super key, @schema.vset @, key, value
-
-  ###
-  ###
-
   _watching: (property) ->
-    @get(property)
+    @refresh [property]
+
+  ###
+  ###
+
+  refresh: (properties) -> 
+    @schema.refresh @, toarray properties
     
   ###
   ###

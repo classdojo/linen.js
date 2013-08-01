@@ -13,10 +13,24 @@ class DefaultMapper extends require("./base")
   ###
 
   get: (model, value) -> 
-    return value if value?
-    value = @_createDefault()
-    model.set @schema.path, value
-    value
+    return if value?
+
+    if model.isNew()
+
+
+      # async?
+      if @_createDefault.length is 1 
+        @_createDefault (err, value) =>
+          if err 
+            return console.error err
+          model.set @schema.path, value
+
+      #sync?
+      else
+        model.set @schema.path, @_createDefault()
+
+    else
+      @schema.fetch model
 
   ###
   ###
