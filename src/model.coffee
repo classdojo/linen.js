@@ -33,6 +33,12 @@ class Model extends bindable.Object
   ###
   ###
 
+  fetchField: (name, next) -> 
+    @schema.fetchField @, name, next
+
+  ###
+  ###
+
   fetch: (next) ->
     @schema.fetch @, next
     

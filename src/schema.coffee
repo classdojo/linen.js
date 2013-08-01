@@ -29,9 +29,19 @@ class Schema
       @fieldNames.push field.name
       field.parent = @
 
+  ###
+  ###
+
+  init: () ->
     # next, add the validator, and virtuals
     @validator = new Validator @
     @virtuals  = new Virtuals @
+
+    for field in @fields
+      field.init()
+
+    @
+
 
   ###
   ###
@@ -57,8 +67,8 @@ class Schema
    once a property is watched
   ###
 
-  fetchField: (model, fieldName) ->
-    @field(fieldName)?.virtuals.fetch(model)
+  fetchField: (model, fieldName, next) ->
+    @field(fieldName)?.fetch model, next
 
   ###
    fetch the particular model
@@ -197,4 +207,4 @@ parseSchemaOps = (definition, name, linen, path = []) ->
   schemaOps
 
 module.exports = (options, name, linen) ->
-  new Schema parseSchemaOps(options, name, linen)
+  new Schema(parseSchemaOps(options, name, linen)).init()

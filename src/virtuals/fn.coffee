@@ -20,10 +20,8 @@ class FnVirtual extends require("./base")
   ###
 
   fetch: (model, next) ->
-
     # TODO - @_fetch should be tested out in @test
-    return next() if model.isNew() or !@_fetch
-
+    return next() if (!@field.parent and model.isNew()) or !@_fetch
     @_fetch.call model, (err, result) =>
       return next(err) if err?
 
