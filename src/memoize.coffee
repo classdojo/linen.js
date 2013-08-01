@@ -19,7 +19,12 @@ module.exports = (fn, ops = {}) ->
 
     args.push (args...) =>
       setTimeout (() =>
-        memoizedArgs = args
+
+        if ops.store isnt false
+          memoizedArgs = args
+        else
+          called = false
+
         em.emit "done", args...
 
 

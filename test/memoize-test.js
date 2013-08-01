@@ -38,4 +38,26 @@ describe("memoizer", function() {
       }, 11);
     })
   });
+
+
+  it("can throw away the memoized values after a result is returned", function(next) {
+    var count = 0;
+    var fn = memoize(function(next) {
+      count++;
+      setTimeout(next, 1, null, count);
+    }, {
+      store: false
+    });
+
+    fn(function(err, count) {
+      fn(function(err, count) {
+        expect(count).to.be(2);
+        next();
+      })
+    });
+
+    fn(function(err, count) {
+      expect(count).to.be(1);
+    });
+  });
 });
