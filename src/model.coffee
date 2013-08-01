@@ -7,16 +7,8 @@ class Model extends bindable.Object
   ###
   ###
 
-  constructor: (@schema) ->
-    super()
-    @_vgetting = {}
-
-  ###
-   called when a property is being watched on this model
-  ###
-
-  _watching: (property) ->
-    @schema.fetch @, property
+  constructor: (@schema, data = {}) ->
+    super data
 
   ###
   ###

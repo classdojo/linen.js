@@ -13,14 +13,23 @@ class Schema
   ###
   ###
 
-  constructor: (@options, @name, @linen, @path) ->
+  constructor: (@options) ->
 
-    @fields = options.fields
-    @fieldPaths = options.fields.map (field) -> field.path
+    @fields     = options.fields
+    @name       = options.name
+    @linen      = options.linen
+    @path       = options.path
+
+    @fieldNames = []
+
 
     @_fieldsByKey = {}
+
     for field in @fields
       @_fieldsByKey[field.name] = field
+      @fieldNames.push field.name
+      field.parent = @
+
 
     # next, add the validator, and virtuals
     @validator = new Validator @
@@ -36,9 +45,10 @@ class Schema
       data = { _id: data }
 
     # setup the model
-    model = new Model @
+    # TODO @cast data
+    model = new Model @, data
 
-    # setup the virtual methods
+    # attach the methods defined in this schema
     for key of @_methods
       model[key] = @_methods[key]
 
@@ -50,7 +60,7 @@ class Schema
   ###
 
   fetchField: (model, fieldName) ->
-    @field(fieldName)?.fetch(model)
+    @field(fieldName)?.virtuals.fetch(model)
 
   ###
    fetch the particular model
@@ -146,6 +156,8 @@ parseSchemaOps = (definition, name, linen, path = []) ->
 
   schemaOps = {
     name: name,
+    linen: linen,
+    path: path.join("."),
     fields: []
   }
 
@@ -174,9 +186,9 @@ parseSchemaOps = (definition, name, linen, path = []) ->
       fieldOps = parseSchemaOps ops[property], property, linen, pt
       fieldOps.property = property
 
-      schemaOps.fields.push new Schema fieldOps, property, linen, pt.join(".")
+      schemaOps.fields.push new Schema fieldOps
 
   schemaOps
 
 module.exports = (options, name, linen) ->
-  new Schema parseSchemaOps(options, name, linen), name, linen
+  new Schema parseSchemaOps(options, name, linen)

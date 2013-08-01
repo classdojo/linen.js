@@ -1,6 +1,6 @@
 type = require "type-component"
 
-class DefaultMapper extends require("./base")
+class DefaultVirtual extends require("./base")
 
   ###
   ###
@@ -49,4 +49,4 @@ class DefaultMapper extends require("./base")
 
 
 
-module.exports = DefaultMapper
+module.exports = DefaultVirtual

@@ -16,6 +16,7 @@ describe("schema", function() {
 
 
   it("can be created with the correct types", function() {
+
     var schema = linen.schema({
       name: "string",
       age: "number",
@@ -31,6 +32,21 @@ describe("schema", function() {
     expect(schema.field("custom").options.type).to.be("blarg");
     expect(schema.field("sub").options.type).to.be("string");
   });
+
+  it("has reference to the parent schema", function() {
+    var s = linen.schema({
+      name: "string",
+      address: {
+        city: {
+          name: "string"
+        }
+      }
+    });
+
+    expect(s.field("address").parent).to.be(s)
+    expect(s.field("address.city").parent).to.be(s.field("address"));
+    expect(s.field("address.city.name").parent).to.be(s.field("address.city"));
+  })
 
   it("can specify any option in the schema, and stay separated from sub-schemas", function() {
     var schema = linen.schema({

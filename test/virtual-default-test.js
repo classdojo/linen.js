@@ -146,4 +146,16 @@ describe("virtual default values", function() {
       next();
     });
   });
+
+  describe("with existing model", function() {
+    return
+    it("don't define default value", function() {
+      var b = linen.schema({
+        name: "string",
+        age: {
+          $default: 0
+        }
+      }).model("abba");
+    });
+  });
 });

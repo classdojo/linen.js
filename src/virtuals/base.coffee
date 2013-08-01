@@ -1,4 +1,4 @@
-class Mapper
+class BaseVirtual
   
   ###
   ###
@@ -11,4 +11,4 @@ class Mapper
   fetch: (model, next) -> next()
   
 
-module.exports = Mapper
+module.exports = BaseVirtual
