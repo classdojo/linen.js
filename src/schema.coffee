@@ -41,29 +41,38 @@ class Schema
     # setup the virtual methods
     for key of @_methods
       model[key] = @_methods[key]
-      
+
     model
 
   ###
+   fetch a particular field - this is called
+   once a property is watched
   ###
 
-  refresh: (model, fields = []) ->
-    for key in fields
-      @field(key)?.virtuals.get(model)
+  fetchField: (model, fieldName) ->
+    @field(fieldName)?.fetch(model)
 
+  ###
+   fetch the particular model
+  ###
+
+  fetch: (model, next) ->
+    @virtuals.fetch model, next
+
+  ###
+   fetch ALL the fields in a given model
+  ###
+
+  fetchAll: (model, next) ->
+    @fetch model, () =>
+      async.forEach @fields, ((field, next) ->
+        field.fetchAll model, next
+      ), next
 
   ###
   ###
 
   persist: (model, changed) ->
-  
-
-  ###
-    model.set(k, v)
-  ###
-
-  vset: (model, key, value) -> 
-    # @get(key)?.map(value) ? value
 
   ###
   ###
@@ -90,26 +99,12 @@ class Schema
 
     value
 
-
-  ###
-  ###
-
-  default: (model) -> 
- 
-
-  ###
-    model.fetch() OR when a property is listened to
-  ###
-
-  fetch: (payload, key = undefined) ->
-
   ###
   ###
 
   validate: (modelOrValue, next) -> 
 
     value = @value modelOrValue
-
 
     @validator.validate value, (err) =>
 

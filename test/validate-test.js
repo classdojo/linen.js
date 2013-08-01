@@ -170,6 +170,45 @@ describe("validate", function() {
     });
   });
 
+
+  describe("with no type", function() {
+    it("works with any value", function(next) {
+      var s = linen.schema({
+        name: {
+        }
+      });
+
+      s.validate({ name: "FDFDS"}, function(err) {
+        expect(err).to.be(null);
+        s.validate({ name: undefined }, function(err) {
+          expect(err).to.be(null);
+          s.validate({ name: 0 }, function(err) {
+            expect(err).to.be(null);
+            s.validate({ name: false}, function(err) {
+              expect(err).to.be(null);
+              next();
+            });
+          });
+        });
+      });
+    });
+
+    it("fails if the value field is required", function(next) {
+      var s = linen.schema({
+        name: {
+          $required: true
+        }
+      });
+      s.validate({ name: "FDFDS"}, function(err) {
+        expect(err).to.be(null);
+        s.validate({ name: undefined }, function(err) {
+          expect(err.message).to.be("'name' must be defined")
+          next();
+        });
+      });
+    })
+  })
+
   return;
 
 

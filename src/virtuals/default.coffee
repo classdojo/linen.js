@@ -12,11 +12,11 @@ class DefaultMapper extends require("./base")
   ###
   ###
 
-  get: (model, value) -> 
-    return if value?
+  fetch: (model, next) -> 
+
+    return next() if model.get(@schema.path)?
 
     if model.isNew()
-
 
       # async?
       if @_createDefault.length is 1 
@@ -24,13 +24,15 @@ class DefaultMapper extends require("./base")
           if err 
             return console.error err
           model.set @schema.path, value
+          next()
 
       #sync?
       else
         model.set @schema.path, @_createDefault()
+        next()
 
     else
-      @schema.fetch model
+      @child.fetch model, next
 
   ###
   ###

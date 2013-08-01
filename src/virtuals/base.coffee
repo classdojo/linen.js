@@ -8,7 +8,7 @@ class Mapper
   ###
   ###
 
-  get: (value) -> value
+  fetch: (model, next) -> next()
   
 
 module.exports = Mapper

@@ -29,23 +29,26 @@ class Model extends bindable.Object
   ###
 
   _watching: (property) ->
-    @refresh [property]
+    @schema.fetchField @, property
+
+  ###
+   fills the model in with *all* virtuals
+  ###
+
+  fetchAll: (next) ->
+    @schema.fetchAll @, next
 
   ###
   ###
 
-  refresh: (properties) -> 
-    @schema.refresh @, toarray properties
+  fetch: (next) ->
+    @schema.fetch @, next
     
   ###
+   returns TRUE if the _id is not present
   ###
 
   isNew: () -> return not @get "_id"
-
-  ###
-  ###
-
-  fetch: (next) -> @schema.fetch @
 
   ###
   ###

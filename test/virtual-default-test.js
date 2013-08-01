@@ -1,6 +1,7 @@
 var linen = require(".."),
 Model  = linen.Model,
-expect = require("expect.js");
+expect = require("expect.js"),
+type = require("type-component");
 
 describe("virtual default values", function() {
 
@@ -73,29 +74,7 @@ describe("virtual default values", function() {
         next();
       }).now();
     });
-    
   });
-
-  return;
-
-  it("works asynchronously", function() {
-
-  });
-
-  it("works with data-bindings", function(next) {
-    var s = linen.schema({
-      age: {
-        $type: "number",
-        $default: 0
-      }
-    }), b = new linen.Model(s);
-
-    b.bind("age").to(function(v) {
-      expect(v).to.be(0);
-      next();
-    }).now();
-  });
-
 
   it("works with nested fields", function(next) {
     var s = linen.schema({
@@ -105,9 +84,9 @@ describe("virtual default values", function() {
           $default: "sf"
         }
       }
-    }), b = new linen.Model(s), b2 = new linen.Model(s);
+    }), b = new s.model(), b2 = s.model();
 
-    expect(b.get("address.city")).to.be("sf");
+    expect(b.get("address.city")).to.be(undefined);
     b2.bind("address.city").to(function(v) {
       expect(v).to.be("sf");
       next();
@@ -115,14 +94,56 @@ describe("virtual default values", function() {
   });
 
 
-  it("works with functions", function() {
-    var s = linen.schema({
+  it("works with dates", function(next) {
+    
+    var b = linen.schema({
+      createdAt: {
+        $type: "number",
+        $default: Date.now
+      }
+    }).model();
+
+    var now = Date.now();
+
+    b.bind("createdAt").to(function(v) {
+      expect(type(v)).to.be("number");
+      next();
+    }).now();
+  });
+
+  it("can fetch all default fields in a model", function(next) {
+    var b = linen.schema({
+      createdAt: {
+        $type: "number",
+        $default: Date.now
+      },
+      age: {
+        $type: "number",
+        $default: 23
+      },
       name: {
         $type: "string",
-        $default: function() {
-          return "craig";
+        $default: "craig"
+      },
+      address: {
+        city: {
+          $type: "string",
+          $default: "sf"
+        },
+        state: {
+          $type: "string",
+          $default: "CA"
         }
       }
+    }).model();
+
+    b.fetchAll(function() {
+      expect(type(b.get("createdAt"))).to.be("number");
+      expect(b.get("age")).to.be(23);
+      expect(b.get("name")).to.be("craig");
+      expect(b.get("address.city")).to.be("sf");
+      expect(b.get("address.state")).to.be("CA");
+      next();
     });
   });
 });

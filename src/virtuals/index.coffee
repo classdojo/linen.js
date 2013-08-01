@@ -3,8 +3,7 @@ CollectionMapper = require "./collection"
 ReferenceMapper  = require "./reference"
 DefaultMapper    = require "./default"
 FnMapper         = require "./fn"
-
-
+async            = require "async"
 
 class Virtual
 
@@ -30,12 +29,10 @@ class Virtual
   ###
   ###
 
-  get: (model) ->
-
-    for mapper in @_mappers
-      v = mapper.get model, v
-
-    v
+  fetch: (model, next = () ->) ->
+    async.forEach @_mappers, ((mapper, next) ->
+      mapper.fetch model, next
+    ), next
 
 
 
