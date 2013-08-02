@@ -1,2 +1,0 @@
-describe("value casting", function() {
-});

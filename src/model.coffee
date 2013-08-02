@@ -63,5 +63,15 @@ class Model extends bindable.Object
 
   save: (next) -> @schema.save @
 
+  ###
+  ###
+
+  toObject: () -> @toJSON()
+
+  ###
+  ###
+
+  toJSON: () -> @schema.toJSON @
+
 
 module.exports = Model;

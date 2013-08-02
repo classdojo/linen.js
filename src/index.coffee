@@ -22,7 +22,7 @@ class Linen
   ###
   ###
 
-  register: (name, definition) ->
+  schema: (name, definition) ->
     @_schemas[name] = schema definition, name, @
 
 

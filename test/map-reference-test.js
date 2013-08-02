@@ -1,0 +1,39 @@
+var linen = require(".."),
+expect = require("expect.js");
+
+describe("map references", function() {
+
+
+  it("works with models", function() {
+
+    var l = linen(),
+    p = l.schema("person", {
+      name: "string",
+      address: {
+        $ref: "address"
+      }
+    }),
+    h = l.schema("address", {
+      city: "string",
+      state: "string"
+    }),
+    m = p.model({ address: "abba" });
+    expect(m.get("address").schema.name).to.be("address");
+
+  });
+
+
+  it("can use references recursively", function() {
+    var l = linen(),
+    p = l.schema("person", {
+      name: "string",
+      friend: {
+        $ref: "person"
+      }
+    });
+
+    expect(p.model().get("friend")).to.be(undefined);
+    expect(p.model({friend:"abba"}).get("friend._id")).to.be("abba");
+  });
+
+});
