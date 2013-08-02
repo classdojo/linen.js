@@ -41,11 +41,6 @@ class Model extends bindable.Object
   fetchField: (name, next) -> 
     @schema.fetchField @, name, next
 
-  ###
-  ###
-
-  fetch: (next) ->
-    @schema.fetch @, next
     
   ###
    returns TRUE if the _id is not present
@@ -62,6 +57,12 @@ class Model extends bindable.Object
   ###
 
   save: (next) -> @schema.save @
+
+  ###
+  ###
+
+  fetch: (next) ->
+    @schema.fetch @, next
 
   ###
   ###

@@ -25,6 +25,8 @@ class ReferenceMap
     # otherwise cast the value as a model
     refModel = @field.linen.model @_ref, value
 
+    refModel.owner = model
+
     return refModel
 
 
