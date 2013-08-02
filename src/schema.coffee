@@ -70,14 +70,26 @@ class Schema
   ###
 
   fetchField: (options, fieldName, next) ->
-    @field(fieldName, true)?.fetch model, next
+
+    field = @field(fieldName, true)
+
+    # it has .fetch() explicitly defined
+    if field.canFetch()
+      return field.fetch options, next
+
+    @fetch options, next
+
+  ###
+  ###
+
+  canFetch: () -> !!@options.fetch
 
   ###
    fetch the particular model
   ###
 
   fetch: (options, next) ->
-    return next() unless @options.fetch
+    return next(new Error("cannot fetch field")) unless @options.fetch
     next()
 
   ###
