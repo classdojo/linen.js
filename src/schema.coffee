@@ -69,43 +69,37 @@ class Schema
    once a property is watched
   ###
 
-  fetchField: (model, fieldName, next) ->
-    @field(fieldName)?.fetch model, next
+  fetchField: (options, fieldName, next) ->
+    @field(fieldName, true)?.fetch model, next
 
   ###
    fetch the particular model
   ###
 
-  fetch: (model, next) ->
-
-    #TODO - memoize field property to memoization collection
-    @virtuals.fetch model, next
+  fetch: (options, next) ->
+    return next() unless @options.fetch
+    next()
 
   ###
    fetch ALL the fields in a given model
   ###
 
-  fetchAll: (model, next) ->
-    @fetch model, () =>
+  fetchAll: (options, next) ->
+    @fetch options, () =>
       async.forEach @fields, ((field, next) ->
-        field.fetchAll model, next
+        field.fetchAll options, next
       ), next
-
-  ###
-  ###
-
-  persist: (model, changed) ->
 
   ###
    returns a field
   ###
 
-  field: (property = "") -> 
+  field: (property = "", closest = false) -> 
     path = property.split "."
     field = @_fieldsByKey[path.shift()]
 
     if field and path.length
-      return field.field path.join(".")
+      return field.field(path.join(".")) ? if closest then field else undefined
     else
       return field
 

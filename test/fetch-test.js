@@ -2,7 +2,6 @@ var linen = require(".."),
 expect    = require("expect.js");
 
 describe("fetch", function() {
-  return;
   describe("GET", function() {
     it("works when explicitly called", function(next) {
       var p = linen.schema({
@@ -10,7 +9,7 @@ describe("fetch", function() {
         $fetch: function(payload, next) {
 
         }
-      }).m = p.model();
+      }), m = p.model();
 
       m.fetch(function() {
         expect(m.get("name")).to.be("")
