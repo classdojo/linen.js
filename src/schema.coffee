@@ -132,30 +132,9 @@ class Schema
         err.message = "'#{@name}' #{err.message}"
         return next(err)
 
-      @_validateFields data, next
-
-  ###
-  ###
-
-  _validateFields: (data, next) ->
-    async.forEach @fields, ((field, next) =>
-      field.validate dref.get(data, field.name), next
-    ), next
-
-  ###
-   parse a definition. Something like:
-
-   {
-    name: "string",
-    address: {
-      $type: "string"
-    },
-    $fetch: function() {
-  
-    }
-   }
-  ###
-
+      async.forEach @fields, ((field, next) =>
+        field.validate dref.get(data, field.name), next
+      ), next
 
 
 
