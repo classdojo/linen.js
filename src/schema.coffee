@@ -6,7 +6,7 @@ _          = require "underscore"
 dref       = require "dref"
 outcome    = require "outcome"
 async      = require "async"
-Virtuals   = require "./virtuals"
+getMapper  = require "./map/factory"
 
 class Schema
 
@@ -35,7 +35,7 @@ class Schema
   init: () ->
     # next, add the validator, and virtuals
     @validator = new Validator @
-    @virtuals  = new Virtuals @
+    @mapper    = getMapper @
 
     for field in @fields
       field.init()
@@ -53,8 +53,10 @@ class Schema
       data = { _id: data }
 
     # setup the model
-    # TODO @cast data
-    model = new Model @, data
+    # TODO @map data
+    model = new Model @, { _id: data._id }
+
+    model.reset @map model, data
 
     # attach the methods defined in this schema
     for key of @_methods
@@ -75,6 +77,8 @@ class Schema
   ###
 
   fetch: (model, next) ->
+
+    #TODO - memoize field property to memoization collection
     @virtuals.fetch model, next
 
   ###
@@ -107,45 +111,41 @@ class Schema
 
   ###
    maps to the proper data type
-   TODO
+   TODO - default, g/s
   ###
 
-  map: (data) -> data
+  map: (model, data) -> 
+    data = @mapper.map model, data
 
-  ###
-  ###
+    # nested? must be an object
+    if @fields.length
+      if !data
+        data = {}
+      for field in @fields
+        data[field.name] = field.map model, data[field.name]
 
-  value: (modelOrValue) -> 
+    data
 
-    # property exists? 
-    if @options.property
-      value = dref.get modelOrValue, @options.property
-    else
-      value = modelOrValue
-
-    value
 
   ###
   ###
 
-  validate: (modelOrValue, next) -> 
+  validate: (data, next) -> 
 
-    value = @value modelOrValue
-
-    @validator.validate value, (err) =>
+    @validator.validate data, (err) =>
 
       if err
         err.message = "'#{@name}' #{err.message}"
         return next(err)
 
-      @_validateFields value, next
+      @_validateFields data, next
 
   ###
   ###
 
-  _validateFields: (value, next) ->
+  _validateFields: (data, next) ->
     async.forEach @fields, ((field, next) =>
-      field.validate value, next
+      field.validate dref.get(data, field.name), next
     ), next
 
   ###
@@ -200,7 +200,6 @@ parseSchemaOps = (definition, name, linen, path = []) ->
     else
       pt = path.concat(property)
       fieldOps = parseSchemaOps ops[property], property, linen, pt
-      fieldOps.property = property
 
       schemaOps.fields.push new Schema fieldOps
 

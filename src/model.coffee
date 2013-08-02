@@ -3,6 +3,11 @@ type     = require "type-component"
 toarray  = require "toarray"
 
 class Model extends bindable.Object
+  
+  ###
+  ###
+
+  __isModel: true
 
   ###
   ###
