@@ -81,16 +81,6 @@ class Schema
     next()
 
   ###
-   fetch ALL the fields in a given model
-  ###
-
-  fetchAll: (options, next) ->
-    @fetch options, () =>
-      async.forEach @fields, ((field, next) ->
-        field.fetchAll options, next
-      ), next
-
-  ###
    returns a field
   ###
 
@@ -119,7 +109,6 @@ class Schema
         data[field.name] = field.map model, data[field.name]
 
     data
-
 
   ###
   ###
