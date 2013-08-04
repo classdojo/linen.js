@@ -90,7 +90,6 @@ describe("fetch", function() {
       })
     });
 
-
     it("works by binding to a property", function(next) {
       var s = linen.schema({
         name: {
@@ -108,6 +107,25 @@ describe("fetch", function() {
         next();
       });
     });
+
+
+    it("works by binding a field value", function(next) {
+      var s = linen.schema({
+        name: "string",
+        $fetch: {
+          get: function(payload, next) {
+            next(null, {
+              name: "craig"
+            });
+          }
+        }
+      });
+
+      s.model().bind("name.length").to(function(value) {
+        expect(value).to.be(5);
+        next();
+      });  
+    }); 
 
     it("errors if GET doesn't exist", function(next) {
       var s = linen.schema({

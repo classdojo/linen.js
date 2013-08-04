@@ -1,4 +1,4 @@
-var memoize = require("../lib/memoize"),
+var memoize = require("../lib/memoize/fn"),
 expect = require("expect.js");
 
 describe("memoizer", function() {
