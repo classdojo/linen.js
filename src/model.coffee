@@ -1,6 +1,5 @@
 bindable = require "bindable"
 type     = require "type-component"
-toarray  = require "toarray"
 
 class Model extends bindable.Object
   
@@ -14,6 +13,8 @@ class Model extends bindable.Object
 
   constructor: (@schema, data = {}) ->
     super data
+    @_changes = {}
+    @on "change", @_onChange
 
   ###
   ###
@@ -25,44 +26,41 @@ class Model extends bindable.Object
   ###
   ###
 
-  _watching: (property) ->
-    @schema.fetchField @, property
+  _watching: (property) ->  
+    @schema.loadField @, property, () ->
 
-  ###
-   fills the model in with *all* virtuals
-  ###
-
-  fetchAll: (next) ->
-    @schema.fetchAll @, next
-
-  ###
-  ###
-
-  fetchField: (name, next) -> 
-    @schema.fetchField @, name, next
-
-    
   ###
    returns TRUE if the _id is not present
   ###
 
-  isNew: () -> return not @get "_id"
+  isNew: () -> return @schema.isNew @
+
+  ###
+   validates whether the model is valid
+  ###
+
+  validate: (next = () ->) -> @schema.validate @, next
+
+  ###
+   reloads the model from the server
+  ###
+
+  load: (next) -> @schema.load @, next
 
   ###
   ###
 
-  validate: (next) -> @schema.validate @
+  loadField: (fieldName, next) -> @schema.loadField @, fieldName, next
 
   ###
   ###
 
-  save: (next) -> @schema.save @
+  save: (next) -> @schema.save @, next
 
   ###
   ###
 
-  fetch: (next) ->
-    @schema.fetch @, next
+  remove: (next) -> @schema.remove @, next
 
   ###
   ###
@@ -73,6 +71,24 @@ class Model extends bindable.Object
   ###
 
   toJSON: () -> @schema.toJSON @
+
+  ###
+  ###
+
+  _flushChanges: () ->
+    c = @_changes
+    @_changes = {}
+    c
+
+  ###
+   called whenever a property changes on the model - used
+   for persisting data to the server
+  ###
+
+  _onChange: (key) ->
+    @_changes[key] = 1
+
+
 
 
 module.exports = Model;
