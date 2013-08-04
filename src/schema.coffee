@@ -1,7 +1,8 @@
 
-Model      = require "./model"
-type       = require "type-component"
-Field      = require "./field"
+Model          = require "./model"
+type           = require "type-component"
+Field          = require "./field"
+MemoDictionary = require "./memoize/dictionary"
 
 class Schema extends Field
 
@@ -22,7 +23,11 @@ class Schema extends Field
     # setup the model
     # TODO @map data
     model = new Model @, { _id: data._id }
-    
+
+    # attach a model memoizer so that values are cached
+    # for a bit before being re-fetched
+    model._memoizer = new MemoDictionary()
+
     @reset model, data
 
     # attach the methods defined in this schema
@@ -31,9 +36,6 @@ class Schema extends Field
 
     model
 
-  
-
-  
 
 module.exports = (options = {}, name = undefined, linen = undefined) ->
   new Schema(Field.parseOptions(options, name, linen)).init()
