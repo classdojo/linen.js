@@ -22,8 +22,8 @@ class Schema extends Field
     # setup the model
     # TODO @map data
     model = new Model @, { _id: data._id }
-
-    model.reset @map model, data
+    
+    @reset model, data
 
     # attach the methods defined in this schema
     for key of @_methods
