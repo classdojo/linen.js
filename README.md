@@ -1,4 +1,14 @@
-Linen (line-in) maps API's to [bindable](/classdojo/bindable.js) `objects`, and `collections`. At [classdojo](http://classdojo.com), we use `linen` to abstract our API from front-end, so we don't necessarily depend on any sort of API while developing new components. This allows us to rapidly build prototypes which can be wired up later. 
+Linen (line-in) maps API's to [bindable](/classdojo/bindable.js) `objects`, and `collections`. 
+
+## Motivation
+
+- Makes it easy to build components without being concerned about how they interact with the backend.
+- Makes it easy to build prototypes that work without a backend.
+- Allows for front-end / backend to be built in parallel.
+- Encapsulates your service layer, and makes your application more more maintainable. 
+- reduces the amount of calls to the backend - only makes calls which are necessary.
+- Easily build front-end fixtures that work with selenium tests.
+
 
 
 Here's an example person schema:
@@ -6,45 +16,37 @@ Here's an example person schema:
 ```javascript
 var linen = require("linen")();
 
-linen.addSchema({
+linen.schema({
 
   // name of the schema - gets referenced by 
   // linen.model("person")
-  name: "person",
+  $name: "person",
 
   //fields for the person. Keep in mind that model properties
   //get *validated* against their coresponding field. 
-  fields: {
-    firstName: "string",
-    lastName: "string",
+  firstName: "string",
+  lastName: "string",
 
-    // virtual value - doesn't actually exist in the API
-    fullName: {
-      $get: function(model) {
-        return model.get("first_name") + " " + model.get("last_name");
-      },
-      $set: function(model, value) {
-        var nameParts = String(value).split(" ")
-        model.set("first_name", nameParts.shift());
-        model.set("last_name", nameParts.join(" "));
-      },
-      $bind: ["first_name", "last_name"]
+  //virtual property
+  fullName: {
+    $get: function() {
+      return @get("firstName") + " " + @get("lastName");
     },
-
-    // fetches GET /people/:personId/friends when
-    // person.bind("friends").to(fn) is called
-    friends: [{
-      $ref: "person",
-      $fetch: function(payload, next) {
-        transport.fetch(payload.method, "/people/" + payload.model.get("_id") + "/friends", next);
-      }
-    }]
+    $set: function(value) {
+      var nameParts = String(value).split(" ")
+      @set("firstName", nameParts.shift());
+      @set("lastName", nameParts.join(" "));
+    },
+    $bind: ["firstName", "lastName"]
   },
 
+
   //fetches GET /people/:personId when
-  //person.bind(property).to(fn) is valled
-  fetch: function(payload, next) {
-    transport.fetch(payload.method, "/people/" + (payload.model.get("_id") || ""), next);
+  //person.bind(property).to(fn) is called
+  $fetch: {
+    get: function(payload, next) {
+      transport.get("/people/" + payload.model.get("_id"), next);
+    }
   }
 });
 ```
