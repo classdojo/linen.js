@@ -13,8 +13,9 @@ class FnFetch
     method = payload.method
 
     unless (fn = @field.options.fetch[method])
-      return next(new Error("method \"#{method}\" doesn't exist"))
+      return next(new Error("method \"#{method}\" on \"#{@field.path}\" doesn't exist"));
 
+    payload.field = @field
 
     fn.call payload.model, payload, (err, result = {}) =>
 

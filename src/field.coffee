@@ -106,12 +106,17 @@ class Field
         field.validate dref.get(data, field.name), next
       ), next
 
+  ###
+  ###
+
+  fetch: (payload, next) ->
+    @fetcher.fetch payload, next
 
   ###
   ###
 
   load: (model, next) ->
-    @fetcher.fetch payload.
+    @fetch payload.
       model(model).
       method("get").options, next
 
@@ -125,18 +130,11 @@ class Field
   ###
   ###
 
-  save: (model, next) ->
-
-  ###
-  ###
-
   _field: (name, next) ->
     unless (f = @field(name))
       next new Error("field \"#{name}\" doesn't exist")
       return false
     return f
-
-
 
 
 

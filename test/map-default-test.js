@@ -55,6 +55,20 @@ describe("map default values", function() {
     expect(b.get("address.city")).to.be("sf");
   });
 
+  it("fills nested objects without explicit $default", function() {
+    var s = linen.schema({
+      address: {
+        city: {
+          name: "string"
+        }
+      }
+    }), b = s.model();
+
+    expect(b.get("address")).not.to.be(undefined)
+    expect(b.get("address.city")).not.to.be(undefined)
+    expect(b.get("address.city.name")).to.be(undefined)
+  });
+
 
   it("works with dates", function() {
     
