@@ -9,8 +9,8 @@ describe("schema", function() {
       name: "string"
     });
 
-    expect(schema.field("name")).not.to.be(undefined);
-    expect(schema.field("name").options.name).to.be("name");
+    expect(schema.getField("name")).not.to.be(undefined);
+    expect(schema.getField("name").options.name).to.be("name");
   });
 
 
@@ -27,10 +27,10 @@ describe("schema", function() {
     });
 
 
-    expect(schema.field("name").options.type).to.be("string");
-    expect(schema.field("age").options.type).to.be("number");
-    expect(schema.field("custom").options.type).to.be("blarg");
-    expect(schema.field("sub").options.type).to.be("string");
+    expect(schema.getField("name").options.type).to.be("string");
+    expect(schema.getField("age").options.type).to.be("number");
+    expect(schema.getField("custom").options.type).to.be("blarg");
+    expect(schema.getField("sub").options.type).to.be("string");
   });
 
   it("has reference to the parent schema", function() {
@@ -43,9 +43,9 @@ describe("schema", function() {
       }
     });
 
-    expect(s.field("address").parent).to.be(s)
-    expect(s.field("address.city").parent).to.be(s.field("address"));
-    expect(s.field("address.city.name").parent).to.be(s.field("address.city"));
+    expect(s.getField("address").parent).to.be(s)
+    expect(s.getField("address.city").parent).to.be(s.getField("address"));
+    expect(s.getField("address.city.name").parent).to.be(s.getField("address.city"));
   })
 
   it("can specify any option in the schema, and stay separated from sub-schemas", function() {
@@ -59,11 +59,11 @@ describe("schema", function() {
       $blarg: 1
     });
 
-    expect(schema.field("name").options.type).to.be("string");
-    expect(schema.field("age").options.fetch).not.to.be(undefined);
-    expect(schema.field("age").options.type).to.be(undefined);
-    expect(schema.field("age.fetch")).to.be(undefined);
-    expect(schema.field("blarg")).to.be(undefined);
+    expect(schema.getField("name").options.type).to.be("string");
+    expect(schema.getField("age").options.fetch).not.to.be(undefined);
+    expect(schema.getField("age").options.type).to.be(undefined);
+    expect(schema.getField("age.fetch")).to.be(undefined);
+    expect(schema.getField("blarg")).to.be(undefined);
   });
 
 
@@ -75,13 +75,13 @@ describe("schema", function() {
       }
     });
 
-    expect(schema.field("name")).not.to.be(undefined);
-    expect(schema.field("name").options.name).to.be("name");
-    expect(schema.field("name").options.type).to.be(undefined);
-    expect(schema.field("name.first").options.name).to.be("first");
-    expect(schema.field("name.first").options.type).to.be("string");
-    expect(schema.field("name.last").options.name).to.be("last");
-    expect(schema.field("name.last").options.type).to.be("string");
+    expect(schema.getField("name")).not.to.be(undefined);
+    expect(schema.getField("name").options.name).to.be("name");
+    expect(schema.getField("name").options.type).to.be(undefined);
+    expect(schema.getField("name.first").options.name).to.be("first");
+    expect(schema.getField("name.first").options.type).to.be("string");
+    expect(schema.getField("name.last").options.name).to.be("last");
+    expect(schema.getField("name.last").options.type).to.be("string");
   });
 
 });

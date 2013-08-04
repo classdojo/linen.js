@@ -54,23 +54,23 @@ class Field
    returns a field
   ###
 
-  field: (property = "", closest = false) -> 
+  getField: (property = "", closest = false) -> 
     path = property.split "."
     field = @_fieldsByKey[path.shift()]
 
     if field and path.length
-      return field.field(path.join("."), closest) ? if closest then field else undefined
+      return field.getField(path.join("."), closest) ? if closest then field else undefined
     else
       return field
 
   ###
   ###
 
-  fields: (fieldNames, closest = false) ->
+  getFields: (fieldNames, closest = false) ->
     fields = []
     for property in fieldNames
-      field  = @field(property, closest)
-      continue if ~fields.indexOf field
+      field  = @getField(property, closest)
+      continue if not field or ~fields.indexOf field
       fields.push field
     fields
 
@@ -151,7 +151,7 @@ class Field
   ###
 
   _field: (name, next) ->
-    unless (f = @field(name))
+    unless (f = @getField(name))
       next new Error("field \"#{name}\" doesn't exist")
       return false
     return f
