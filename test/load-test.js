@@ -273,6 +273,42 @@ describe("fetch", function() {
           }, 10);
         })
       });
+
+      it("fetches a property once if the nested fields are fetched multiple times", function(next) {
+        var loadCount = 0;
+
+        var s = linen.schema({
+          name: "string",
+          address: {
+            city: "string",
+            state: "string"
+          },
+          $fetch: {
+            get: function(payload, next) {
+              loadCount++;
+              next(null, {
+                name: "craig",
+                address: {
+                  city: "San Francisco",
+                  state: "CA"
+                }
+              })
+            }
+          }
+        }), m = s.model();
+
+        m.loadField("name", function() {
+          m.loadField("address.city", function() {
+            m.loadField("address.state", function() {
+              expect(loadCount).to.be(1);
+              expect(m.get("name")).to.be("craig");
+              expect(m.get("address.city")).to.be("San Francisco");
+              expect(m.get("address.state")).to.be("CA");
+              next();
+            });
+          });
+        })
+      });
     });
     
   });
