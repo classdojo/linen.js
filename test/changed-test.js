@@ -11,7 +11,7 @@ describe("model", function() {
 
     m.set("name", "craig");
 
-    expect(m._changes.name).to.be(1);
+    expect(m._changeWatcher._changes.name).to.be(1);
   });
 
 
@@ -20,7 +20,7 @@ describe("model", function() {
     }).model();
 
     m.set("name", "craig");
-    expect(m._changes.name).to.be(1);
+    expect(m._changeWatcher._changes.name).to.be(1);
   });
 
   it("can flush changes", function(){
@@ -29,11 +29,11 @@ describe("model", function() {
 
     m.set("name", "abba");
     m.set("last", "abba");
-    expect(m._changes.name).to.be(1);
-    expect(m._changes.last).to.be(1);
+    expect(m._changeWatcher._changes.name).to.be(1);
+    expect(m._changeWatcher._changes.last).to.be(1);
 
-    m._flushChanges()
-    expect(m._changes.name).to.be(undefined);
-    expect(m._changes.last).to.be(undefined);
+    m._changeWatcher.flushChangedKeys()
+    expect(m._changeWatcher._changes.name).to.be(undefined);
+    expect(m._changeWatcher._changes.last).to.be(undefined);
   });
 })

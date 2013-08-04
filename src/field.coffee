@@ -59,9 +59,20 @@ class Field
     field = @_fieldsByKey[path.shift()]
 
     if field and path.length
-      return field.field(path.join(".")) ? if closest then field else undefined
+      return field.field(path.join("."), closest) ? if closest then field else undefined
     else
       return field
+
+  ###
+  ###
+
+  fields: (fieldNames, closest = false) ->
+    fields = []
+    for property in fieldNames
+      field  = @field(property, closest)
+      continue if ~fields.indexOf field
+      fields.push field
+    fields
 
   ###
   ###

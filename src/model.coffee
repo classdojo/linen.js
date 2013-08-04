@@ -13,10 +13,6 @@ class Model extends bindable.Object
 
   constructor: (@schema, data = {}) ->
     super data
-    @_changes = {}
-
-    # keep tabs on the changed values
-    @on "change", @_onChange
 
   ###
   ###
@@ -74,20 +70,5 @@ class Model extends bindable.Object
 
   toJSON: () -> @schema.toJSON @
 
-  ###
-  ###
-
-  _flushChanges: () ->
-    c = @_changes
-    @_changes = {}
-    c
-
-  ###
-   called whenever a property changes on the model - used
-   for persisting data to the server
-  ###
-
-  _onChange: (key) ->
-    @_changes[key] = 1
 
 module.exports = Model;
