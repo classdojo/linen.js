@@ -12,22 +12,24 @@ class FnFetch
   fetch: (payload, next) ->
     method = payload.method
 
-    unless (fn = @field.options.fetch[method])
-      return next(new Error("method \"#{method}\" on \"#{@field.path}\" doesn't exist"));
+    payload.model._memoizer.call @field.path, @field.options.memoize ? { maxAge: 1000 * 5 }, next, (next) =>
 
-    payload.field = @field
+      unless (fn = @field.options.fetch[method])
+        return next(new Error("method \"#{method}\" on \"#{@field.path}\" doesn't exist"));
 
-    fn.call payload.model, payload, (err, result = {}) =>
+      payload.field = @field
 
-      # enforce asynchronous behavior - fetch might not be async - if it isn't,
-      # it might break data-bindings
-      setTimeout (() =>
-        return next(err) if err?
+      fn.call payload.model, payload, (err, result = {}) =>
 
-        @field.reset payload.model, result
+        # enforce asynchronous behavior - fetch might not be async - if it isn't,
+        # it might break data-bindings
+        setTimeout (() =>
+          return next(err) if err?
 
-        next()
-      ), 1
+          @field.reset payload.model, result
+
+          next()
+        ), 0
 
 
   

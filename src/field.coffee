@@ -125,10 +125,9 @@ class Field
   ###
 
   load: (model, next) ->
-    model._memoizer.call @path, @options.memoize ? { maxAge: 1000 * 5 }, next, (next) =>
-      @fetch payload.
-        model(model).
-        method("get").options, next
+    @fetch payload.
+      model(model).
+      method("get").options, next
 
   ###
   ###

@@ -233,12 +233,46 @@ describe("fetch", function() {
 
 
         m.loadField("name", function() {
+          expect(m.get("name")).to.be("craig");
           m.loadField("name", function() {
             expect(loadCount).to.be(1);
+            expect(m.get("name")).to.be("craig");
             next();
           })
         });
-      })
+      });
+
+
+      it("properly re-fetches a model after the memo has expired", function(next) {
+        var loadCount = 0;
+
+        var s = linen.schema({
+          name: "string",
+          $memoize: {
+            maxAge: 1
+          },
+          $fetch: {
+            get: function(payload, next) {
+              loadCount++;
+              next(null, {
+                name: "craig"
+              });
+            }
+          }
+        }),
+        m = s.model();
+
+        m.loadField("name", function() {
+          expect(m.get("name")).to.be("craig");
+          setTimeout(function() {
+            m.loadField("name", function() {
+              expect(m.get("name")).to.be("craig");
+              expect(loadCount).to.be(2);
+              next();
+            })
+          }, 10);
+        })
+      });
     });
     
   });
