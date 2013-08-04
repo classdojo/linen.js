@@ -29,5 +29,10 @@ class ReferenceMap
 
     return refModel
 
+  ###
+  ###
+
+  toObject:(model, value) -> value?.toJSON()
+
 
 module.exports = ReferenceMap

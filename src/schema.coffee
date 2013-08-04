@@ -5,6 +5,7 @@ Field          = require "./field"
 MemoDictionary = require "./memoize/dictionary"
 payload        = require "./payload"
 ChangeWatcher  = require "./changeWatcher"
+dref           = require "dref"
 
 class Schema extends Field
 
@@ -45,35 +46,18 @@ class Schema extends Field
   save: (model, next) ->
 
     # TODO - there should be a change watcher instead
-    d = model._flushChanges()
     p = payload.model(model)
 
     if model.isNew()
       p.method("post").
-      body @_getModelData(model.data, @fields(model._changeWatcher.flushChangesKeys(), true))
+      body @_getModelData(model.data, @getFields(model._changeWatcher.flushChangedKeys(), true))
     else
       p.method("put").
       body @_getModelData model.data
 
-
-
     @fetch p.options, next
 
-  ###
-  ###
-
-  toObject: (model) -> @_getModelData model.data
-
-  ###
-  ###
-
-  _getModelData: (data, fields = @allFields) ->
-    
-
-
-
-
-
+  
 
 
 module.exports = (options = {}, name = undefined, linen = undefined) ->

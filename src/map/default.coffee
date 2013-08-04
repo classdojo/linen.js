@@ -18,6 +18,11 @@ class DefaultMap
   ###
   ###
 
+  toObject: (model, value) -> value
+
+  ###
+  ###
+
   _fixDefault: (def) ->
     if type(def) is "function"
       return def

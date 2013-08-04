@@ -55,4 +55,22 @@ describe("map references", function() {
     expect(m.get("address").owner).to.be(m);
   });
 
+  it("properly maps a defined reference", function() {
+    var l = linen(),
+    p = l.schema("person", {
+      name: "string",
+      address: {
+        $ref: "address"
+      }
+    }),
+    h = l.schema("address", {
+      city: "string",
+      state: "string"
+    }),
+    m = p.model({ name: "craig", address: { city: "SF", state: "CA"} });
+    expect(m.get("address.city")).to.be("SF");
+    expect(m.get("address.state")).to.be("CA");
+    expect(m.get("name")).to.be("craig");
+  })
+
 });

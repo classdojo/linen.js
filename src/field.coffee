@@ -156,6 +156,19 @@ class Field
       return false
     return f
 
+  ###
+  ###
+
+  toObject: (model, data, fields = @fields) -> 
+    d = @mapper.toObject model, data
+
+    if fields.length
+      d = {}
+      for field in fields
+        d[field.name] = field.toObject model, data[field.name]
+
+    d
+
 
 
 Field.parseOptions = (definition, name, linen, path = []) ->

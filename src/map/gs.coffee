@@ -26,6 +26,11 @@ class GetterSetterMap
 
     _get()
 
+  ###
+  ###
+
+  toObject: (model, value) -> value
+
 
 
 
