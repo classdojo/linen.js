@@ -50,10 +50,10 @@ class Schema extends Field
 
     if model.isNew()
       p.method("post").
-      body @_getModelData(model.data, @getFields(model._changeWatcher.flushChangedKeys(), true))
+      body @toObject(model, model.data, @getFields(model._changeWatcher.flushChangedKeys(), true))
     else
       p.method("put").
-      body @_getModelData model.data
+      body @toObject(model, model.data)
 
     @fetch p.options, next
 
