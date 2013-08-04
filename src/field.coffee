@@ -94,6 +94,15 @@ class Field
   ###
   ###
 
+  reset: (model, data) ->
+    unless @parent
+      model.set @map model, data
+    else  
+      model.set @path, @map model, data
+
+  ###
+  ###
+
   validate: (data, next) -> 
 
     @validator.validate data, (err) =>

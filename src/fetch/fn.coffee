@@ -24,10 +24,7 @@ class FnFetch
       setTimeout (() =>
         return next(err) if err?
 
-        unless @field.parent
-          payload.model.set result
-        else  
-          payload.model.set @field.path, result
+        @field.reset payload.model, result
 
         next()
       ), 1
