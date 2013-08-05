@@ -5,7 +5,7 @@ describe("save", function() {
   describe("new", function() {
 
     
-    /*it("can properly save a new item", function(next) {
+    it("can properly save a new item", function(next) {
       var hitSaveCount = 0;
       var s = linen.schema({
         name: "string",
@@ -73,7 +73,7 @@ describe("save", function() {
         expect(m.get("address.city")).to.be("SF2");
         next();
       });
-    });*/
+    });
 
 
     it("can properly save a deeply nested field", function(next) {
@@ -102,7 +102,6 @@ describe("save", function() {
       })
     });
 
-    return;
 
     it("can save a model multiple times", function(next) {
 
