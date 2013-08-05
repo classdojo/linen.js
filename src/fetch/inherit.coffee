@@ -1,9 +1,4 @@
-class InheritFetch
-
-  ###
-  ###
-
-  constructor: (@field) ->
+class InheritFetch extends require("./base")
   
   ###
   ###

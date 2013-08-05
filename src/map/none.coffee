@@ -1,19 +1,4 @@
-class NoMapper 
+class NoMapper extends require("./base")
   
-  ###
-  ###
-
-  constructor: () ->
-
-  ###
-  ###
-
-  map: (model, data) -> data
-
-  ###
-  ###
-
-  toObject: (model, data) -> data
-
 
 module.exports = NoMapper

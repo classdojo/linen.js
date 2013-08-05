@@ -8,6 +8,7 @@ outcome    = require "outcome"
 async      = require "async"
 getMapper  = require "./map/factory"
 getFetcher = require "./fetch/factory"
+getJSONify = require "./jsonify/factory"
 payload    = require "./payload"
 
 
@@ -44,6 +45,7 @@ class Field
     @validator = new Validator @
     @mapper    = getMapper @
     @fetcher   = getFetcher @
+    @jsonifier = getJSONify @
 
     for field in @fields
       field.init()
@@ -159,15 +161,7 @@ class Field
   ###
   ###
 
-  toObject: (model, data, fields = @fields) -> 
-    d = @mapper.toObject model, data
-
-    if fields.length
-      d = {}
-      for field in fields
-        d[field.name] = field.toObject model, data[field.name]
-
-    d
+  toJSON: (model, options) -> @jsonifier.toJSON model, options
 
 
 

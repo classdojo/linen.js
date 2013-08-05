@@ -63,7 +63,7 @@ class Model extends bindable.Object
   ###
   ###
 
-  toJSON: () -> @schema.toObject @, @data
+  toJSON: () -> @schema.toJSON @
 
 
 module.exports = Model;

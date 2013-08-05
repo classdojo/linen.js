@@ -1,10 +1,5 @@
 
-class FnFetch
-  
-  ###
-  ###
-
-  constructor: (@field) ->
+class FnFetch extends require("./base")
 
   ###
   ###
@@ -31,7 +26,5 @@ class FnFetch
           next()
         ), 0
 
-
-  
 
 module.exports = FnFetch

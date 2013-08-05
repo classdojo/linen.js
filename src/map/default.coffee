@@ -1,6 +1,6 @@
 type = require "type-component"
 
-class DefaultMap
+class DefaultMap extends require("./base")
   
   ### 
   ###
@@ -14,11 +14,6 @@ class DefaultMap
   map: (model, value) -> 
     return value if not model.isNew()
     value ? @_default()
-
-  ###
-  ###
-
-  toObject: (model, value) -> value
 
   ###
   ###

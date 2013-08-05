@@ -1,12 +1,13 @@
 type = require "type-component"
 
-class ReferenceMap
+class ReferenceMap extends require("./base")
   
   ###
   ###
 
-  constructor: (@field) ->
-    @_ref = @field.options.ref
+  constructor: (field) ->
+    super field
+    @_ref = field.options.ref
 
   ###
   ###
@@ -28,11 +29,6 @@ class ReferenceMap
     refModel.owner = model
 
     return refModel
-
-  ###
-  ###
-
-  toObject:(model, value) -> value?.toJSON()
 
 
 module.exports = ReferenceMap
