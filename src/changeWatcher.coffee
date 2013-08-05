@@ -1,30 +1,24 @@
-dref = require "dref"
-
 class ChangeWatcher
 
   ###
   ###
 
   constructor: (@model) ->
-    @schema = @model.schema
-    @model.on "change", @_onChange
-    @_changes = {}
+    @_values = {}
 
   ###
   ###
 
-  _onChange: (key, value) =>
-    @_changes[key] = 1
+  hasChanged: (fieldName) -> 
+    @_values[fieldName] isnt @model.get(fieldName)
 
   ###
   ###
 
-  flushChangedKeys: () -> 
-    keys = []
-    for key of @_changes
-      keys.push key
-    @_changes = {}
-    return keys
+  change: (fieldName) ->
+    return false unless @hasChanged(fieldName)
+    @_values[fieldName] = @model.get(fieldName)
+    return true
 
 
 module.exports = ChangeWatcher

@@ -1,4 +1,5 @@
 dref = require "dref"
+hashObject = require "../utils/hashObject"
 
 class FnFetch extends require("./base")
 
@@ -12,21 +13,22 @@ class FnFetch extends require("./base")
 
     payload.field = @field
 
-    # only cache when fetching data
-    if payload.method is "get"
-      @_get payload, next
+    @_fetch2 payload, next
 
-    # persisting delete / update / post shouldn't be blocked
-    else
-      @_fetch payload, next
 
   ###
   ###
 
-  _get: (payload, next) ->
-    payload.model._memoizer.call @field.path, @field.options.memoize ? { maxAge: 1000 * 5 }, next, (next) =>
-      @_fetch payload, next
+  _fetch2: (payload, next) ->
 
+    payloadHash = hashObject { 
+      data: payload.currentData, 
+      method: payload.method, 
+      path: @field.path 
+    }
+
+    payload.model._memoizer.call payloadHash, @field.options.memoize ? { maxAge: 1000 * 5 }, next, (next) =>
+      @_fetch payload, next
 
 
   ###
@@ -37,8 +39,7 @@ class FnFetch extends require("./base")
     method = payload.method
 
     unless (fn = @field.options.fetch[method])
-      return next(new Error("method \"#{method}\" on \"#{@field.path}\" doesn't exist"));
-
+      return next(new Error("method \"#{method}\" on \"#{@field.path}\" doesn't exist"))
 
     fn.call payload.model, payload, (err, result = {}) =>
 

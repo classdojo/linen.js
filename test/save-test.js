@@ -4,7 +4,7 @@ expect    = require("expect.js");
 describe("save", function() {
   describe("new", function() {
 
-    /*
+    
     it("can properly save a new item", function(next) {
       var hitSaveCount = 0;
       var s = linen.schema({
@@ -45,7 +45,7 @@ describe("save", function() {
         expect(hitSaveCount).to.be(1);
         next();
       });
-    });*/
+    });
 
     it("can propertly save a nested field", function(next) {
 
@@ -128,12 +128,80 @@ describe("save", function() {
           next();
         })
       });
-
-
     });
 
-    it("cannot save if a value hasn't changed", function() {
-      
+    it("cannot save if a value hasn't changed", function(next) {
+
+      var saveCount = 0,
+      s = linen.schema({
+        name: "string",
+        $fetch: {
+          post: function(payload, next) {
+            saveCount++;
+            next();
+          }
+        }
+      }), m = s.model();
+
+      m.save(function() {
+        m.save(function() {
+          expect(saveCount).to.be(1);
+          next();
+        }); 
+      })
+    });
+
+
+    it("posts, then puts", function(next) {
+      var postCount = 0,
+      putCount = 0,
+      s = linen.schema({
+        name: "string",
+        $fetch: {
+          post: function(payload, next) {
+            postCount++;
+            next(null, {
+              _id: "abba"
+            });
+          },
+          put: function(payload, next) {
+            putCount++;
+            next(null);
+          }
+        }
+      }), m = s.model();
+
+      m.save(function() {
+        m.save(function() {
+          expect(putCount).to.be(1);
+          expect(postCount).to.be(1);
+          next();
+        }); 
+      })
+    });
+
+    it("doesn't resave if the server response is different", function() {
+      var putCount = 0,
+      s = linen.schema({
+        name: "string",
+        randomValue: "number",
+        $fetch: {
+          put: function(payload, next) {
+            putCount++;
+            next(null, {
+              randomValue: Math.random()
+            });
+          }
+        }
+      }), m = s.model("abba");
+
+      m.save(function() {
+        m.save(function() {
+          m.save(function() {
+            expect(putCount).to.be(1);
+          })
+        })
+      })
     });
   });
 

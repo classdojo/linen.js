@@ -12,6 +12,8 @@ class MemoDictionary
   ###
 
   call: (key, options, next, fn) ->
+
+
     memo = @_memos[key]
 
     unless memo

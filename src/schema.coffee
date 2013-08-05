@@ -29,7 +29,7 @@ class Schema extends Field
 
     # attach a model memoizer so that values are cached
     # for a bit before being re-fetched
-    model._memoizer     = new MemoDictionary()
+    model._memoizer      = new MemoDictionary()
     model._changeWatcher = new ChangeWatcher model
 
     @reset model, data
@@ -48,16 +48,28 @@ class Schema extends Field
     # TODO - there should be a change watcher instead
     p = payload.model(model)
 
-
     if model.isNew()
       p.method("post").
-      body @toJSON(model, model.data, { fields: @getFields(model._changeWatcher.flushChangedKeys(), true) })
+      body @toJSON(model, model.data)
     else
       p.method("put").
-      body @toJSON(model, model.data)
-
+      body @toJSON(model, model.data, { fields: @_getChangedFields(model) })
 
     @fetchAll p.options, next
+
+
+  ###
+  ###
+
+  _getChangedFields: (model) ->
+
+    changedFields = []
+
+    for field in @allFields
+      if model._changeWatcher.change(field.property)
+        changedFields.push(field)
+
+    changedFields
 
 
 
