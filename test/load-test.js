@@ -309,6 +309,32 @@ describe("fetch", function() {
           });
         })
       });
+
+      
+      it("can load, and map a response", function(next) {
+
+        var count = 0;
+
+        var s = linen.schema({
+          name: "string",
+          $fetch: {
+            get: function(payload, next) {
+              next();
+            }
+          },
+          $map: function(data) {
+            return {
+              count: ++count
+            }
+          }
+        }), m = s.model();
+
+        expect(m.get("count")).to.be(1);
+        m.load(function() {
+          expect(m.get("count")).to.be(2);
+          next();
+        });
+      });
     });
     
   });
