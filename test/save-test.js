@@ -292,8 +292,4 @@ describe("save", function() {
       })
     })
   });
-
-  describe("existing", function() {
-
-  })
 });
