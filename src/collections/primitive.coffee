@@ -1,6 +1,9 @@
-bindable = require "bindable"
 
-class PrimitiveCollection extends bindable.Collection
+class PrimitiveCollection extends require("./base")
+  
+  ###
+  ###
+
   __collectionType: "simple"
 
 module.exports = PrimitiveCollection

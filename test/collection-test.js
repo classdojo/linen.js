@@ -25,4 +25,39 @@ describe("collections", function() {
       next();
     });
   });
+
+  it("can be loaded with model types", function(next) {
+    var l = linen();
+    l.schema("person",{
+      tags: [{
+        $ref: "tag"
+      }],
+      $fetch: {
+        get: function(payload, next) {
+          next(null, {
+            tags: [{
+              name: "sport",
+              value: "baseball"
+            },{
+              type: "sport",
+              value: "basketball"
+            }]
+          })
+        }
+      }
+    });
+
+    l.schema("tag", {
+      name: "string",
+      value: "string"
+    });
+
+    var m = l.model("person");
+
+    m.load(function() {
+      expect(m.get("tags").length()).to.be(2)
+      expect(m.get("tags").at(0).__isModel).to.be(true);
+      next();
+    });
+  });
 })

@@ -14,6 +14,7 @@ class CollectionMapper extends require("./base")
       return value
 
     newValue = @_createCollection()
+    newValue.owner = model
     newValue.reset toarray value
 
     newValue
@@ -24,8 +25,8 @@ class CollectionMapper extends require("./base")
 
   _createCollection: () -> 
     if @field.options.ref
-      return new ModelCollection()
+      return new ModelCollection @field
     else
-      return new PrimitiveCollection()
+      return new PrimitiveCollection @field
 
 module.exports = CollectionMapper
