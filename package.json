@@ -18,7 +18,8 @@
     "beanpoll": "~0.2.19",
     "outcome": "0.0.18",
     "underscore": "~1.4.4",
-    "toarray": "0.0.1"
+    "toarray": "0.0.1",
+    "benchmark": "~1.0.0"
   },
   "author": "",
   "license": "BSD",
