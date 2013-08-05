@@ -5,8 +5,9 @@ class JSONify extends require("./base")
   ###
   ###
 
-  writeJSON: (model, data) -> 
-    dref.set data, @field.path, model.get(@field.property)
+  writeJSON: (model, data = {}) -> 
+
+    dref.set data, @field.path, model.get(@field.path)
     
 
 module.exports = JSONify

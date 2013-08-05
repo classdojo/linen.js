@@ -38,7 +38,6 @@ class Field
 
   init: () ->
 
-
     @_addAllFields @allFields = []
 
     # next, add the validator, and virtuals
@@ -137,10 +136,31 @@ class Field
   ###
   ###
 
+  fetchAll: (payload, next) ->
+    @fetch payload, (err) =>
+      return next(err) if err?
+      async.forEach @fields, ((field, next) =>
+        field.fetchAll payload, next
+      ), next
+
+  ###
+  ###
+
   load: (model, next) ->
     @fetch payload.
       model(model).
       method("get").options, next
+
+  ###
+  ###
+
+  loadAll: (model, next) ->
+    @load model, (err) =>
+      return next(err) if err?
+      async.forEach @fields, ((field, next) ->
+        field.loadAll model, next
+      ), next
+
 
   ###
   ###
@@ -161,7 +181,17 @@ class Field
   ###
   ###
 
-  toJSON: (model, options) -> @jsonifier.toJSON model, options
+  toJSON: (model, options = {}) -> 
+
+    unless options.fields
+      options.fields = @allFields
+
+    data = {}
+
+    for field in options.fields
+      field.jsonifier.writeJSON model, data
+
+    data
 
 
 

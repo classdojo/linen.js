@@ -22,10 +22,7 @@ class ChangeWatcher
   flushChangedKeys: () -> 
     keys = []
     for key of @_changes
-      kp = key.split(".") 
-      k = kp.shift()
-      continue if ~keys.indexOf(k)
-      keys.push k
+      keys.push key
     @_changes = {}
     return keys
 

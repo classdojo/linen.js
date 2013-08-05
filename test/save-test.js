@@ -47,7 +47,7 @@ describe("save", function() {
       });
     });*/
 
-    it("can propertly save a nested field", function() {
+    it("can propertly save a nested field", function(next) {
 
       var saveCount = 0;
       var s = linen.schema({
@@ -57,19 +57,84 @@ describe("save", function() {
           $fetch: {
             post: function(payload, next) {
               saveCount++;
-              expect(payload.data.address.city).to.be("SF");
-              next();
+              expect(payload.body.address.city).to.be("SF");
+              expect(payload.currentData.city).to.be("SF");
+              next(null, {
+                city: "SF2"
+              });
             }
           }
         }
+      }), m;
+
+
+      (m = s.model({ address: { city: "SF"}})).save(function() {
+        expect(saveCount).to.be(1);
+        expect(m.get("address.city")).to.be("SF2");
+        next();
+      });
+    });
+
+
+    it("can properly save a deeply nested field", function(next) {
+      var saveCount = 0,
+      s = linen.schema({
+        a: {
+          b: {
+            c: {
+              $fetch: {
+                post: function(payload, next) {
+                  saveCount++;
+                  expect(payload.body.a.b.c).to.be("ABBA");
+                  expect(payload.currentData).to.be("ABBA");
+                  next(null, "blah");
+                }
+              }
+            }
+          }
+        }
+      }), m;
+
+      (m = s.model({a:{b:{c:"ABBA"}}})).save(function() {
+        expect(saveCount).to.be(1);
+        expect(m.get("a.b.c")).to.be("blah");
+        next();
+      })
+    });
+
+    it("can save a model multiple times", function(next) {
+
+      var saveCount = 0,
+      s = linen.schema({
+        name: "string",
+        $fetch: {
+          post: function(payload, next) {
+            saveCount++;
+            if(saveCount == 1) {
+              expect(payload.currentData.name).to.be("craig");
+            } else {
+              expect(payload.currentData.name).to.be("john");
+            }
+            next()
+          }
+        }
+      }), m = s.model();
+
+      m.set("name", "craig");
+      m.save(function() {
+        m.set("name", "john");
+        m.save(function() {
+          expect(saveCount).to.be(2);
+          next();
+        })
       });
 
 
-      s.model({ address: { city: "SF"}}).save(function() {
-        expect(saveCount).to.be(1);
-        next();
-      })
-    })
+    });
+
+    it("cannot save if a value hasn't changed", function() {
+      
+    });
   });
 
   describe("existing", function() {

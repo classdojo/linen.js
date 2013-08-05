@@ -4,7 +4,10 @@ class InheritFetch extends require("./base")
   ###
 
   fetch: (payload, next) -> 
-    return next() unless @field.parent
+
+    # cannot POST a property that's inheriting 
+    return next() if not @field.parent or payload.method isnt "get"
+    
     @field.parent.fetch payload, next
 
 

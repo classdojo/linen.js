@@ -48,14 +48,18 @@ class Schema extends Field
     # TODO - there should be a change watcher instead
     p = payload.model(model)
 
+
     if model.isNew()
       p.method("post").
-      body @toObject(model, model.data, @getFields(model._changeWatcher.flushChangedKeys(), true))
+      body @toJSON(model, model.data, { fields: @getFields(model._changeWatcher.flushChangedKeys(), true) })
     else
       p.method("put").
-      body @toObject(model, model.data)
+      body @toJSON(model, model.data)
 
-    @fetch p.options, next
+
+    @fetchAll p.options, next
+
+
 
   
 
