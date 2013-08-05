@@ -15,5 +15,5 @@ module.exports = (field) ->
   if field.options.ref
     return new ReferenceMap field
 
-  new NoMap()
+  new NoMap field
 

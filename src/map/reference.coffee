@@ -15,7 +15,7 @@ class ReferenceMap extends require("./base")
   map: (model, value) ->
 
     # undefined? don't cast the reference
-    return unless value?
+    return super(model, value) unless value?
 
     # already a model? make sure it's the right type
     if value?.__isModel

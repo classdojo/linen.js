@@ -50,10 +50,10 @@ class Schema extends Field
 
     if model.isNew()
       p.method("post").
-      body @toJSON(model, model.data)
+      body @toJSON(model)
     else
       p.method("put").
-      body @toJSON(model, model.data, { fields: @_getChangedFields(model) })
+      body @toJSON(model, { fields: ct = @_getChangedFields(model) })
 
     @fetchAll p.options, next
 
@@ -66,7 +66,7 @@ class Schema extends Field
     changedFields = []
 
     for field in @allFields
-      if model._changeWatcher.change(field.property)
+      if model._changeWatcher.change(field.path)
         changedFields.push(field)
 
     changedFields

@@ -4,7 +4,7 @@ expect    = require("expect.js");
 describe("save", function() {
   describe("new", function() {
 
-    
+    /*
     it("can properly save a new item", function(next) {
       var hitSaveCount = 0;
       var s = linen.schema({
@@ -201,6 +201,70 @@ describe("save", function() {
             expect(putCount).to.be(1);
           })
         })
+      })
+    });*/
+
+    it("only sends changed data", function(next) {
+      var count = 0,
+      s = linen.schema({
+        name: "string",
+        age: "number",
+        $fetch: {
+          put: function(payload, next) {
+            count++;
+            if(count == 1) {
+              expect(payload.currentData.name).to.be("craig");
+              expect(payload.currentData.age).to.be(undefined);
+              expect(Object.keys(payload.currentData)).not.to.contain("age")
+            } else
+            if(count == 2) {
+              expect(payload.currentData.name).to.be(undefined);
+              expect(payload.currentData.age).to.be(99);
+              expect(Object.keys(payload.currentData)).not.to.contain("name")
+            } else 
+            if(count == 3) {
+              expect(payload.currentData.name).to.be("john");
+              expect(payload.currentData.age).to.be(100);
+            }
+            next();
+          }
+        }
+      }), m = s.model("abba");
+
+
+      m.set("name", "craig");
+
+      m.save(function() {
+        expect(m.get("name")).to.be("craig");
+        expect(count).to.be(1);
+        m.set("age", 99);
+        m.save(function() {
+          expect(count).to.be(2);
+          m.set("name", "john");
+          m.set("age", 100);
+          m.save(function() {
+            expect(count).to.be(3);
+            next();
+          });
+        });
+      });
+    });
+  
+    it("cannot save if there are no changes", function(next) {
+      var count = 0,
+      s = linen.schema({
+        name: "string",
+        $fetch: {
+          put: function(payload, next) {
+            count++;
+            next();
+          }
+        }
+      }), m = s.model("abba");
+
+      m.save(function() {
+        expect(count).to.be(0);
+        next();
       })
     });
   });

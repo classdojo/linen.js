@@ -23,5 +23,15 @@ class MemoDictionary
 
     memo next
 
+  ###
+  ###
+
+  replaceHash: (oldKey, newKey) -> 
+    @_memos[newKey] = @_memos[oldKey]
+
+    if oldKey isnt newKey
+      delete @_memos[oldKey]
+
+
 
 module.exports = MemoDictionary

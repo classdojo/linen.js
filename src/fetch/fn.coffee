@@ -13,22 +13,7 @@ class FnFetch extends require("./base")
 
     payload.field = @field
 
-    @_fetch2 payload, next
-
-
-  ###
-  ###
-
-  _fetch2: (payload, next) ->
-
-    payloadHash = hashObject { 
-      data: payload.currentData, 
-      method: payload.method, 
-      path: @field.path 
-    }
-
-    payload.model._memoizer.call payloadHash, @field.options.memoize ? { maxAge: 1000 * 5 }, next, (next) =>
-      @_fetch payload, next
+    @_fetch payload, next
 
 
   ###
@@ -38,20 +23,53 @@ class FnFetch extends require("./base")
 
     method = payload.method
 
-    unless (fn = @field.options.fetch[method])
-      return next(new Error("method \"#{method}\" on \"#{@field.path}\" doesn't exist"))
+    # make sure there's data actually being sent to the server
+    if /post|put/.test payload.method
+      unless Object.keys(payload.currentData or {}).length 
+        return next()
 
-    fn.call payload.model, payload, (err, result = {}) =>
+    # make the request, but keep track of the data being sent to the server
+    payload.model._memoizer.call currentHash = @_getPayloadHash(payload), @field.options.memoize ? { maxAge: 1000 * 5 }, next, (next) =>
+      @_fetch payload, next
 
-      # enforce asynchronous behavior - fetch might not be async - if it isn't,
-      # it might break data-bindings
-      setTimeout (() =>
-        return next(err) if err?
+      unless (fn = @field.options.fetch[method])
+        return next(new Error("method \"#{method}\" on \"#{@field.path}\" doesn't exist"))
 
-        @field.reset payload.model, result
+      fn.call payload.model, payload, (err, result = {}) =>
 
-        next()
-      ), 0
+        # enforce asynchronous behavior - fetch might not be async - if it isn't,
+        # it might break data-bindings
+        setTimeout (() =>
+          return next(err) if err?
+
+          @field.reset payload.model, result
+
+          # replace the old memo hash with the current one from the server
+          payload.model._memoizer.replaceHash currentHash, @_getPayloadHash(payload)
+
+          next()
+        ), 0
+
+  ###
+    used for memoizing responses
+  ###
+
+  _getPayloadHash: (payload) ->
+    hashObject { 
+      data: if payload.method isnt "get" then @_flattenModelValues(payload.model) else undefined, 
+      method: payload.method, 
+      path: @field.path,
+      query: payload.query
+    }
+
+  ###
+  ###
+
+  _flattenModelValues: (model) ->
+    d = []
+    for field in @field.allFields
+      d.push model.get field.name
+    d
 
 
 module.exports = FnFetch

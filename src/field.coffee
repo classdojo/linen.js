@@ -99,7 +99,7 @@ class Field
       if !data
         data = {}
       for field in @fields
-        data[field.name] = field.map model, data[field.name]
+        data[field.name] = field.map model, data[field.name] ? model.get(field.path)
 
     data
 
