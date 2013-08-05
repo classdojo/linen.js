@@ -335,6 +335,111 @@ describe("fetch", function() {
           next();
         });
       });
+
+
+      describe("can load all fields", function() {
+
+        it("with simple fields", function(next) {
+          var s = linen.schema({
+            name: {
+              $type: "string",
+              $fetch: {
+                get: function(payload, next) {
+                  next(null, "craig");
+                }
+              }
+            },
+            address: {
+              city: "string",
+              state: "string",
+              $fetch:  {
+                get: function(payload, next) {
+                  next(null, {
+                    city: "sf",
+                    state: "ca"
+                  });
+                } 
+              }
+            },
+            age: "number",
+            $fetch: {
+              get: function(payload, next) {
+                next(null, {
+                  age: 99
+                });
+              }
+            }
+          })
+
+          var m = s.model();
+
+          m.loadAllFields(function() {
+            expect(m.get("name")).to.be("craig");
+            expect(m.get("age")).to.be(99);
+            expect(m.get("address.city")).to.be("sf");
+            expect(m.get("address.state")).to.be("ca");
+            next();
+          });
+        });
+
+        it("with references", function(next) {
+          var l = linen();
+          l.schema("person", {
+            name: "string",
+            address:{
+              $ref: "address"
+            },
+            $fetch: {
+              get: function(payload, next) {
+                next(null, { name: "craig", address: "addr" });
+              }
+            }
+          });
+          l.schema("address", {
+            city: {
+              $ref: "city"
+            },
+            state: {
+              $ref: "state"
+            },
+            $fetch: {
+              get: function(payload, next) {
+                next(null, { city: "sf", state: "ca" });
+              }
+            }
+          });
+          l.schema("city", {
+            name: "string",
+            $fetch: {
+              get: function(payload, next) {
+                next(null, { name: "sf" })
+              }
+            }
+          });
+          l.schema("state", {
+            name: "string",
+            $fetch: {
+              get: function(payload, next) {
+                next(null, { name: "ca" })
+              }
+            }
+          });
+
+          var m = l.model("person");
+
+          m.loadAllFields(function() {
+            expect(m.get("name")).to.be("craig");
+
+            //this SHOULD be undefined since only the fields defined
+            //in the schema should be loaded
+            expect(m.get("address.city.name")).to.be(undefined);
+            expect(m.get("address.city._id")).to.be("sf");
+            expect(m.get("address.state.name")).to.be(undefined);
+            expect(m.get("address.state._id")).to.be("ca");
+            next();
+          })
+        })
+      });
     });
     
   });

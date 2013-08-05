@@ -38,6 +38,7 @@ describe("map default values", function() {
         }
       }
     }).model();
+    
     expect(b.get("name")).to.be("jake");
   });
 

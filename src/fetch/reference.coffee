@@ -4,7 +4,7 @@ class RefFetch extends require("./base")
   ###
 
   fetch: (payload, next) ->
-    ref = payload.model.get @field.path
+    ref = payload.model.get(@field.path)
     return next() unless ref?
 
     if payload.method is "get"

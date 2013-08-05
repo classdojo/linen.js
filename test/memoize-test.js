@@ -35,7 +35,7 @@ describe("memoizer", function() {
           expect(count).to.be(2);
           next();
         })
-      }, 11);
+      }, 20);
     })
   });
 
