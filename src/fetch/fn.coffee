@@ -33,6 +33,7 @@ class FnFetch extends require("./base")
     payload.model._memoizer.call currentHash = @_getPayloadHash(payload), @field.options.memoize ? { maxAge: 1000 * 5 }, next, (next) =>
       @_fetch payload, next
 
+      
       unless (fn = @field.options.fetch[method])
         return next(new Error("method \"#{method}\" on \"#{@field.path}\" doesn't exist"))
 

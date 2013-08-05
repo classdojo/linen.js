@@ -209,7 +209,7 @@ Field.parseOptions = (definition, name, linen, path = []) ->
   # array? it's a collection of items
   if (t = type(definition)) is "array"
     ops = definition[0]
-    ops.collection = true
+    ops.$collection = true
 
   else if t is "object"
     _.extend ops, definition

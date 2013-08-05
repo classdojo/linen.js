@@ -20,6 +20,7 @@ describe("fetch", function() {
       })
     });
 
+
     it("works when explicitly called", function(next) {
       var p = linen.schema({
         name: "string",
