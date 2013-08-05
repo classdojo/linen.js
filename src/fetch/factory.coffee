@@ -7,5 +7,8 @@ module.exports = (field) ->
   if field.options.fetch
     return new FnFetch field
 
+  if field.options.ref
+    return new RefFetch field
+
   # nothing to fetch? bubble it back up
   return new InheritFetch field

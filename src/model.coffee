@@ -49,6 +49,11 @@ class Model extends bindable.Object
   ###
 
   loadField: (fieldName, next) -> @schema.loadField @, fieldName, next
+  
+  ###
+  ###
+
+  loadAllFields: (next) -> @schema.loadAll @, next
 
   ###
   ###
