@@ -30,12 +30,12 @@ linen.schema({
   //virtual property
   fullName: {
     $get: function() {
-      return @get("firstName") + " " + @get("lastName");
+      return this.get("firstName") + " " + this.get("lastName");
     },
     $set: function(value) {
       var nameParts = String(value).split(" ")
-      @set("firstName", nameParts.shift());
-      @set("lastName", nameParts.join(" "));
+      this.set("firstName", nameParts.shift());
+      this.set("lastName", nameParts.join(" "));
     },
     $bind: ["firstName", "lastName"]
   },
