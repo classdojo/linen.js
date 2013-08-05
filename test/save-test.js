@@ -271,6 +271,26 @@ describe("save", function() {
         next();
       })
     });
+
+
+    it("cannot send data that doesn't exist in the schema", function(next) {
+      var count = 0,
+      s = linen.schema({
+        name: "string",
+        $fetch: {
+          put: function(payload, next) {
+            count++;
+            next();
+          }
+        }
+      }), m = s.model("abba");
+      m.set("dsdfsfsd", "fdsf");
+
+      m.save(function() {
+        expect(count).to.be(0);
+        next();
+      })
+    })
   });
 
   describe("existing", function() {
