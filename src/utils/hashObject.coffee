@@ -14,6 +14,7 @@ each = (obj, fn) ->
 ###
 
 flattenObj = (obj, path, keys) ->
+  
   each obj, (k, v) ->
     pt = path.concat(k)
     if /array|object/.test type(v)

@@ -1,5 +1,8 @@
 class InheritFetch extends require("./base")
   
+
+  canFetch: () -> false
+  
   ###
   ###
 
@@ -7,7 +10,7 @@ class InheritFetch extends require("./base")
 
     # cannot POST a property that's inheriting 
     return next() if not @field.parent or payload.method isnt "get"
-    
+
     @field.parent.fetch payload, next
 
 

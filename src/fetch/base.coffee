@@ -16,5 +16,10 @@ class BaseFetcher
 
   toObject: (model, data) -> data
 
+  ###
+  ###
+
+  canFetch: () -> true
+
 
 module.exports = BaseFetcher

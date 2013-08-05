@@ -10,11 +10,36 @@ class FnFetch extends require("./base")
   fetch: (payload, next) ->
 
     if payload.body
-      payload.currentData = dref.get(payload.body, @field.path)
+      d = @_pluckOutFetchableFields payload
+      payload.currentData = d
+
+
 
     payload.field = @field
 
     @_fetch payload, next
+
+  ###
+  ###
+
+  _pluckOutFetchableFields: (payload) ->
+
+    unusableKeys = []
+
+    d = dref.get payload.body, @field.path
+
+    return d if type(d) isnt "object"
+
+    usable = {}
+
+    for field in @field.allFields
+      continue if field.canFetch(payload.model)
+      v = d[field.name]
+      continue unless v?
+      usable[field.name] = v
+
+    usable
+
 
 
   ###
@@ -25,7 +50,7 @@ class FnFetch extends require("./base")
     method = payload.method
 
     # make sure there's data actually being sent to the server
-    if /post|put/.test payload.method
+    if /put/.test payload.method
       if type(payload.currentData) is "object" and not Object.keys(payload.currentData or {}).length 
         return next()
 
@@ -33,7 +58,6 @@ class FnFetch extends require("./base")
     payload.model._memoizer.call currentHash = @_getPayloadHash(payload), @field.options.memoize ? { maxAge: 1000 * 5 }, next, (next) =>
       @_fetch payload, next
 
-      
       unless (fn = @field.options.fetch[method])
         return next(new Error("method \"#{method}\" on \"#{@field.path}\" doesn't exist"))
 
@@ -68,10 +92,8 @@ class FnFetch extends require("./base")
   ###
 
   _flattenModelValues: (model) ->
-    d = []
-    for field in @field.allFields
-      d.push model.get field.name
-    d
+    d = model.schema.toJSON model, { fields: @field.allFields }
+
 
 
 module.exports = FnFetch

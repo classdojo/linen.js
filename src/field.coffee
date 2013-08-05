@@ -38,7 +38,7 @@ class Field
 
   init: () ->
 
-    @_addAllFields @allFields = []
+    @_addAllFields @, @allFields = []
 
     # next, add the validator, and virtuals
     @validator = new Validator @
@@ -78,13 +78,13 @@ class Field
   ###
   ###
 
-  _addAllFields: (allFields = []) ->
-
-    if @parent
+  _addAllFields: (start, allFields = []) ->
+    
+    if start isnt @
       allFields.push @
 
     for field in @fields
-      field._addAllFields allFields
+      field._addAllFields start, allFields
 
   ###
    maps to the proper data type
@@ -132,6 +132,11 @@ class Field
 
   fetch: (payload, next) ->
     @fetcher.fetch payload, next
+
+  ###
+  ###
+
+  canFetch: (model) -> @fetcher.canFetch model
 
   ###
   ###
