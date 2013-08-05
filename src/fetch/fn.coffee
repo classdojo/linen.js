@@ -1,5 +1,6 @@
 dref = require "dref"
 hashObject = require "../utils/hashObject"
+type = require "type-component"
 
 class FnFetch extends require("./base")
 
@@ -25,7 +26,7 @@ class FnFetch extends require("./base")
 
     # make sure there's data actually being sent to the server
     if /post|put/.test payload.method
-      unless Object.keys(payload.currentData or {}).length 
+      if type(payload.currentData) is "object" and not Object.keys(payload.currentData or {}).length 
         return next()
 
     # make the request, but keep track of the data being sent to the server

@@ -4,7 +4,7 @@ expect    = require("expect.js");
 describe("save", function() {
   describe("new", function() {
 
-    /*
+    
     it("can properly save a new item", function(next) {
       var hitSaveCount = 0;
       var s = linen.schema({
@@ -172,6 +172,7 @@ describe("save", function() {
       }), m = s.model();
 
       m.save(function() {
+        m.set("name", "abbb");
         m.save(function() {
           expect(putCount).to.be(1);
           expect(postCount).to.be(1);
@@ -195,6 +196,9 @@ describe("save", function() {
         }
       }), m = s.model("abba");
 
+
+      m.set("name", "abbb");
+
       m.save(function() {
         m.save(function() {
           m.save(function() {
@@ -202,7 +206,7 @@ describe("save", function() {
           })
         })
       })
-    });*/
+    });
 
     it("only sends changed data", function(next) {
       var count = 0,
