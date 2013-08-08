@@ -1,5 +1,7 @@
-bindable = require "bindable"
-type     = require "type-component"
+bindable       = require "bindable"
+type           = require "type-component"
+ChangeWatcher  = require "./changeWatcher"
+MemoDictionary = require "./memoize/dictionary"
 
 class Model extends bindable.Object
   
@@ -12,15 +14,21 @@ class Model extends bindable.Object
   ###
 
   constructor: (@schema, data = {}) ->
-    super data
+    super()
+
+    # attach a model memoizer so that values are cached
+    # for a bit before being re-fetched
+    @_memoizer      = new MemoDictionary()
+    @_changeWatcher = new ChangeWatcher @
+
+    @reset data
 
   ###
   ###
 
   reset: (data) ->
-    @set data
-    @changed = []
-
+    @schema.reset @, data
+    
   ###
   ###
 

@@ -45,5 +45,7 @@ class Payload
 
   toObject: () -> @options
 
+###
+###
 
 exports.model = (model)  -> new Payload().model(model)

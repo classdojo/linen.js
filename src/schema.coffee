@@ -2,12 +2,20 @@
 Model          = require "./model"
 type           = require "type-component"
 Field          = require "./field"
-MemoDictionary = require "./memoize/dictionary"
 payload        = require "./payload"
-ChangeWatcher  = require "./changeWatcher"
 dref           = require "dref"
 
 class Schema extends Field
+
+  ###
+  ###
+
+  constructor: (options) ->
+    super options
+
+    @_modelClass  = options.modelClass or Model
+    @_createModel = options.createModel or @_defaultCreateModel
+
 
   ###
   ###
@@ -23,20 +31,10 @@ class Schema extends Field
     if type(data) is "string"
       data = { _id: data }
 
+
     # setup the model
     # TODO @map data
-    model = new Model @, { _id: data._id }
-
-    # attach a model memoizer so that values are cached
-    # for a bit before being re-fetched
-    model._memoizer      = new MemoDictionary()
-    model._changeWatcher = new ChangeWatcher model
-
-    @reset model, data
-
-    # attach the methods defined in this schema
-    for key of @_methods
-      model[key] = @_methods[key]
+    model = @_createModel @, data
 
     model
 
@@ -72,9 +70,16 @@ class Schema extends Field
     changedFields
 
 
+  ###
+  ###
+
+  _defaultCreateModel: (schema, data) -> new @_modelClass @, data
+
+
 
   
 
 
 module.exports = (options = {}, name = undefined, linen = undefined) ->
+  options._id = "string"
   new Schema(Field.parseOptions(options, name, linen)).init()
