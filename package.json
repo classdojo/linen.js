@@ -1,39 +1,28 @@
 {
   "name": "linen",
-  "version": "0.1.42",
-  "description": "```javascript",
+  "version": "0.3.0",
+  "description": "Linen (line-in) maps API's to [bindable](/classdojo/bindable.js) `objects`, and `collections`. At [classdojo](http://classdojo.com), we use `linen` to abstract our API from front-end, so we don't necessarily depend on any sort of API while developing new components. This allows us to rapidly build prototypes which can be wired up later.",
   "main": "./lib/index.js",
+  "directories": {
+    "doc": "doc",
+    "test": "test"
+  },
   "scripts": {
-    "test": "mocha --reporter min --ignore-leaks --timeout 500; karma start"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/classdojo/linen.js.git"
   },
-  "devDependencies": {
-    "mocha": "~1.11.0",
-    "expect.js": "~0.2.0",
-    "sift": "0.0.12",
-    "vine": "~0.1.1",
-    "beanpoll": "~0.2.19",
-    "outcome": "0.0.18",
-    "underscore": "~1.4.4"
-  },
   "author": "",
   "license": "BSD",
   "readmeFilename": "README.md",
-  "gitHead": "bcd19b040fe73382c64db3c81cc692d5bb948ffa",
+  "gitHead": "6d70af4f40bc26b101f7b9df6bc22731b59067c8",
+  "devDependencies": {
+    "expect.js": "~0.2.0",
+    "mocha": "~1.12.0"
+  },
   "dependencies": {
-    "comerr": "0.0.x",
-    "underscore": "1.4.x",
-    "hoist": "0.0.x",
-    "async": "~0.2.9",
-    "flatstack": "0.0.3",
-    "toarray": "0.0.x",
-    "bindable": "0.3.x",
-    "verify": "0.0.x",
-    "type-component": "0.0.1",
-    "dref": "0.0.6",
-    "outcome": "0.0.18"
+    "type-component": "0.0.1"
   }
 }
