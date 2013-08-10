@@ -1,6 +1,15 @@
 var linen = require("../.."),
 expect = require("expect.js");
 
+
+/*
+
+field: {
+  $ref: "schema"
+}
+
+*/
+
 describe("map/reference#", function() {
 
   var l = linen();
@@ -20,22 +29,32 @@ describe("map/reference#", function() {
   });
 
 
-  /*it("doesn't create a reference it doesn't exist", function() {
+  /**
+   */
+
+  it("doesn't create a reference it doesn't exist", function() {
     var m = l.model("person");
     expect(m.get("address")).to.be(undefined);
-  });*/
+  });
 
-
+  /**
+   */
+   
   it("creates a reference if a value exists", function() {
     var m = l.model("person", {address:"abba"});
     expect(m.get("address._id")).to.be("abba");
   });
 
+  /**
+   */
+   
   it("doesnt do anything to an explicit reference", function() {
     var m = l.model("person", { address: l.model("address", "abba") });
     expect(m.get("address._id")).to.be("abba");
   })
 
+  /**
+   */
 
   it("busts if the reference type is incorrect", function() {
     try {

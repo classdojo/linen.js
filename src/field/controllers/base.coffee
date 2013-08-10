@@ -25,7 +25,7 @@ class BaseFieldController
       throw new Error "cannot create field controller without a name"
 
     # setup all sub fields to contain a field decorator
-    @rootField.allFields.forEach (field) =>
+    @_decorators = @rootField.allFields.map (field) =>
       field["_" + @name] = @_createFieldDecorator field
 
   ###

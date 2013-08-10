@@ -9,11 +9,13 @@ class BaseMapper
   ###
   ###
 
-  map: (model, data) -> data
+  map: (model, data) -> 
+    data
 
   ###
   ###
 
-  initializeModel: (model, data) ->
+  prepareModel: (model, data) ->
+
     
 module.exports = BaseMapper

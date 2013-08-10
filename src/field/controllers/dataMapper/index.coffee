@@ -18,7 +18,7 @@ class DataMapFieldController extends require("../base")
 
   _mapField: (field, model, oldData) ->
 
-    newData = field._mapper.map model, oldData
+    newData = field._mapper.map model, oldData ? model.get(field.path)
 
     # if there are sub fields, then the data must be an object
     if field.numFields
@@ -42,6 +42,8 @@ class DataMapFieldController extends require("../base")
       newData = @map model, data
       model.set newData
 
+    for mapper in @_decorators
+      mapper.prepareModel model, data
 
     model.reset data
 

@@ -2,8 +2,18 @@ var linen = require("../../lib"),
 expect    = require("expect.js"),
 type      = require("type-component");
 
+/*
+
+field: {
+  $default: 0
+}
+
+*/
 
 describe("map/default#", function() {
+
+  /**
+   */
 
   it("can map many different types of values", function() {
 
@@ -37,6 +47,8 @@ describe("map/default#", function() {
     expect(m.get("strValue")).to.be("abba");
   });
 
+  /**
+   */
 
   it("can map sub default values propertly", function() {
     var m = linen.schema({
@@ -58,6 +70,8 @@ describe("map/default#", function() {
     expect(m.get("aa.bb")).to.be(undefined);
   });
 
+  /**
+   */
 
   it("doesn't override a value", function() {
     var m = linen.schema({

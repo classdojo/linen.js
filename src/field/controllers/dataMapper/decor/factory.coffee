@@ -4,5 +4,6 @@ module.exports = new AnyFactory [
   require("./default"),
   require("./fn"),
   require("./reference"),
+  require("./virtual"),
   require("./none")
 ]
