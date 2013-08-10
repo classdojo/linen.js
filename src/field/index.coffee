@@ -21,6 +21,9 @@ class Field
     # parent field
     @parent = @options.parent
 
+    # root field
+    @root   = @parent?.root or @
+
     # add the children
     @_setFields options.fields
 
@@ -30,20 +33,6 @@ class Field
   ###
 
   getField: (path, closest = false) -> @_getField path.split("."), 0, closest
-
-  ###
-    returns all fields
-  ###
-
-  flatten: () -> @_flatten []
-
-  ###
-  ###
-
-  _flatten: (fields) ->
-    fields.push @
-    field._flatten(fields) for field in @fields
-    fields
 
   ###
   ###
@@ -75,6 +64,18 @@ class Field
 
     for fieldName of fields
       @addField fieldName, fields[fieldName]
+
+
+    @numFields = @fields.length
+    @allFields = @_flatten []
+
+  ###
+  ###
+
+  _flatten: (fields) ->
+    fields.push @
+    field._flatten(fields) for field in @fields
+    fields
 
   ###
    adds a sub field to this field

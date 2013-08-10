@@ -55,10 +55,18 @@ describe("field/create#", function() {
      */
 
     it("can flatten all fields", function() {
-      var allFields = f.flatten();
+      var allFields = f.allFields;
       ["","friends", "friends.address", "friends.address.city", "friends.address.state"].forEach(function(path, index) {
         expect(allFields[index].path).to.be(path);
       });
     });
+
+    /**
+     */
+
+    it("has a reference to the root field", function() {
+      expect(f.getField("friends.address").root).to.be(f);
+      expect(f.getField("friends.address.city").root).to.be(f);
+    })
   });
 });

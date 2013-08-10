@@ -10,22 +10,23 @@ class Schema
   ###
   ###
 
-  constructor: (definition, @service) ->
+  constructor: (definition, @name, @service) ->
 
     # create the field
     @field = new Field definition
+    @field.schema  = @
+    @field.service = @service
 
     # only need to be concerned with the root controller, since this is the only entry
     # point
-    @_rootFieldController = controllers.initialize(@field, @_createFieldController)
-    @_rootFieldController = @field.controller
+    @_rootFieldController = controllers.transporter @field
 
   ###
   ###
 
   model: (data = {}, options = {}) ->
-    m = new Model()
-    @_rootFieldController.initializeModel m, data, options
+    m = new Model @
+    @_rootFieldController.prepareModel m, data, options
     m
 
   ###
@@ -33,12 +34,5 @@ class Schema
 
   collection: (data = {}, options = {}) ->
 
-  ###
-  ###
 
-  _createFieldController: (field) -> new controllers.Transporter field
-
-
-
-
-module.exports = (definition, service) -> new Schema(definition, service)
+module.exports = (definition, name, service) -> new Schema(definition, name, service)

@@ -13,19 +13,28 @@ class Service
   ###
 
   schema: (name, definition) ->
-    @_schemas[name] = schema(definition, name)
+    @_schemas[name] = schema(definition, name, @)
 
   ###
   ###
 
   model: (name, data, options) -> 
-    @_schemas[name].model(name)
+    @_schema(name).model(data, options)
 
   ###
   ###
 
   collection: (name, options) ->
-    @_schemas[name].collection(name)
+    @_schema(name).collection(options)
+
+  ###
+  ###
+
+  _schema: (name) -> 
+    unless s = @_schemas[name]
+      throw new Error "schema \"#{name}\" doesn't exist"
+    s
+
 
 ###
 ###
