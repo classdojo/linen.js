@@ -12,7 +12,9 @@ class Schema
 
   constructor: (definition, @name, @service) ->
 
-    # create the field
+    # create the field, and attach the schema / service
+    # so that sub fields have a reference to them by accessing
+    # field.root.schema, or field.root.service. 
     @field = new Field definition
     @field.schema  = @
     @field.service = @service
