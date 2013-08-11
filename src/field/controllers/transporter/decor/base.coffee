@@ -8,7 +8,14 @@ class BaseTransport
   ###
   ###
 
-  request: (payload, next) -> next()
+  request: (options, next) -> next()
+
+  ###
+  ###
+
+  watching: (options, next) -> next()
+
+
 
 module.exports = BaseTransport
 

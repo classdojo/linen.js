@@ -8,6 +8,16 @@ describe("transport/get reference#", function() {
     hobby: {
       $ref: "hobby"
     },
+    friends: [{
+      $ref: "person",
+      $request: {
+        get: function(payload, next) {
+          next(null, [{
+            name: "jake"
+          }])
+        }
+      }
+    }],
     $request: {
       get: function(payload, next) {
         next(null, {
@@ -46,5 +56,16 @@ describe("transport/get reference#", function() {
       expect(m.get("hobby.name")).to.be("cooking!")
       next();
     }).now();
+  });
+
+  it("GETS a reference when it already exists in a model", function(next) {
+    var m = l.model("person");
+    m.bind("friends").to(function() {
+    });
+
+    setTimeout(function() {
+      expect(m.get("friends").length()).to.be(1);
+      next();
+    }, 20)
   })
 });

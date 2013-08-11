@@ -10,8 +10,15 @@ class InheritTransport extends require("./base")
   ###
   ###
 
-  request: (payload, next) ->
-    @field.parent._transporter.request payload, next
+  request: (options, next) ->
+    @field.parent._transporter.request options, next
+
+  ###
+  ###
+
+  watching: (options) ->
+    return if options.model.get options.property
+    @request options
 
   ###
   ###

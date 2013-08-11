@@ -18,6 +18,11 @@ class Transport extends require("./base")
   ###
   ###
 
+  watching: (options) -> @request options, () ->
+
+  ###
+  ###
+
   request: (options, next) -> 
 
     payload = @_getPayload options

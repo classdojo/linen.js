@@ -50,10 +50,8 @@ class Transporter extends require("../base")
     # fetch a field if it's being watched
     model.on "watching", (property) =>
 
-      # ignore load if the value exists
-      return if model.get(property)?
-
-      @rootField.getField(property, true)?._transporter.request { model: model, method: "get" }, () ->
+      # defer to the field
+      @rootField.getField(property, true)?._transporter.watching { model: model, method: "get", property: property }, () ->
 
   ###
   ###
