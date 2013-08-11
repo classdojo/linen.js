@@ -41,6 +41,10 @@ class DataMapFieldController extends require("../base")
       else
         model.set path, newData
 
+    model.normalize = () =>
+      @rootField._mapper.normalize model
+
+
     for mapper in @_decorators
       mapper.prepareModel model, data
 

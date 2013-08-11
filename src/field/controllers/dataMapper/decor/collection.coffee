@@ -20,8 +20,7 @@ class CollectionMapper extends require("./base")
     c
 
   normalize: (source) -> 
-    
-
+    source
 
   ###
   ###

@@ -38,8 +38,9 @@ class CollectionMapper extends require("./base")
   normalize: (model) ->
     collection = model.get(@field.path)
     source = []
+    
     for item in collection.source()
-      source.push @_refMapper.normalize model
+      source.push item.normalize()
 
     source
 
