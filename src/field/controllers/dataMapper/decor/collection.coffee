@@ -15,8 +15,11 @@ class CollectionMapper extends require("./base")
       return source
 
     c = new bindable.Collection()
-    c.reset toarray source
+    c.reset toarray(source).map (item) => 
+      @_mapChildFields model, item
     c
+
+  normalize: (source) -> 
     
 
 

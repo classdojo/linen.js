@@ -75,6 +75,7 @@ describe("map/default#", function() {
 
   it("doesn't override a value", function() {
     var m = linen.schema({
+      aa: "string",
       a: {
         b: {
           c: {
@@ -87,8 +88,9 @@ describe("map/default#", function() {
         $type: "string",
         $default: "abba"
       }
-    }).model({ name: "baab", a:{b:{c:"ccc"}}});
+    }).model({ aa: "bb", name: "baab", a:{b:{c:"ccc"}}});
 
+    expect(m.get("aa")).to.be("bb");
     expect(m.get("a.b.c")).to.be("ccc");
     expect(m.get("name")).to.be("baab");
   })

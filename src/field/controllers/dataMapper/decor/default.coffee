@@ -13,13 +13,13 @@ class DefaultMapper extends require("./base")
 
   constructor: (field) ->
     super field
-
     @_default = @_createDefault field.options.default
 
   ###
   ###
 
-  map: (model, data) -> data ? @_default.call model
+  map: (model, data) -> 
+    data ? @_default.call model
 
   ###
   ###

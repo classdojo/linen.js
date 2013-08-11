@@ -25,10 +25,24 @@ class CollectionMapper extends require("./base")
       return source
 
     c = new bindable.Collection()
-    c.transform().map (v) => @_refMapper.map model, v
+
+    c.transform().map (v) => 
+      @_refMapper.map model, v
+
     c.reset toarray source
     c
-    
+      
+  ###
+  ###
+
+  normalize: (model) ->
+    collection = model.get(@field.path)
+    source = []
+    for item in collection.source()
+      source.push @_refMapper.normalize model
+
+    source
+
 
 
   ###

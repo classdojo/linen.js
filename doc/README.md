@@ -25,3 +25,8 @@ Contains the data mapped by each field controller - it might also contain method
 
 - REST + pubnub / firebase
 - Mongodb
+
+## Edges
+
+- saving collections / arrays to the database
+- loading referenced collections

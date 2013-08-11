@@ -8,7 +8,7 @@ class Validator extends require("../base")
   ###
   ###
 
-  validate: (model, next) ->
+  validate: (model, next) -> next()
 
   ###
   ###

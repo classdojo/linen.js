@@ -76,6 +76,24 @@ describe("transport/get field#", function() {
       next();
     }).now();
   });
-  
+
+  describe("doesn't load when", function() {
+
+    it("a shallow property exists", function(next) {
+      var m;
+      (m = s.model({name:"abba"})).bind("name").to(function() {
+        expect(m.get("name")).to.be("abba");
+        next();
+      }).now();
+    });
+
+    it("a virtual property exists", function(next) {
+      var m;
+      (m = s.model({last:"abba"})).bind("last").to(function() {
+        expect(m.get("last")).to.be("abba");
+        next();
+      }).now();
+    })
+  });
 
 });

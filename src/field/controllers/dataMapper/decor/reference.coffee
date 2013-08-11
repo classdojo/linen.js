@@ -22,6 +22,10 @@ class ReferenceMapper extends require("./base")
 
     refModel
 
+  ###
+  ###
+
+  normalize: (model) -> model.get(@field.path + "._id")
 
   ###
   ###

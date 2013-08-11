@@ -10,31 +10,8 @@ class DataMapFieldController extends require("../base")
   ###
   ###
 
-  map: (model, data) ->
-    @_mapField @rootField, model, data
+  map: (model, data) -> @rootField.map model, data
 
-  ###
-  ###
-
-  _mapField: (field, model, oldData) ->
-
-    newData = field._mapper.map model, oldData ? model.get(field.path)
-
-    # if there are sub fields, then the data must be an object
-    if field.numFields
-      hasData = newData
-      unless newData
-        newData = {}
-      unless oldData
-        oldData = {}
-    else
-      hasData = true
-
-    for childField in field.fields
-      d = newData[childField.name] = @_mapField childField, model, oldData[childField.name]
-      hasData = hasData or d?
-
-    if hasData then newData else undefined
 
   ###
   ###
@@ -46,7 +23,7 @@ class DataMapFieldController extends require("../base")
     else
       field = @rootField.getField path
 
-    @_mapField field, model, oldData
+    field._mapper.map model, oldData
 
 
   

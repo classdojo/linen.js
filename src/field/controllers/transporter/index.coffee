@@ -2,7 +2,6 @@ validator      = require "../validator"
 dataMapper     = require "../dataMapper"
 type           = require "type-component"
 async          = require "async"
-payload        = require "./payload"
 MemoDictionary = require "./memoize/dictionary"
 transporterFactory = require "./decor/factory"
 
@@ -46,8 +45,7 @@ class Transporter extends require("../base")
       # ignore load if the value exists
       return if model.get(property)?
 
-      
-      @rootField.getField(property, true)?._transporter.request payload.model(model).method("get").options, () ->
+      @rootField.getField(property, true)?._transporter.request { model: model, method: "get" }, () ->
 
   ###
   ###
@@ -58,21 +56,22 @@ class Transporter extends require("../base")
   ###
 
   load: (model, next) -> 
-    @_request payload.model(model).method("get"), next
+    @_request { model: model, method: "get" }, next
 
   ###
   ###
 
   save: (model, next) -> 
-    @validate model, (err, next) ->
-      # TODO
-
+    @validate model, (err) =>
+      return next(err) if err?
+      @_request { model: model, method: "set" }, next
+      
   ###
   ###
 
-  _request: (payload, next) ->
+  _request: (options, next) ->
     async.forEach @_decorators, ((decor, next) ->
-      decor.request payload.options, next 
+      decor.request options, next 
     ), next
 
   ###
