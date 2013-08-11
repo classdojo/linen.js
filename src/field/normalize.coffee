@@ -5,22 +5,25 @@ type = require "type-component"
 # in this bit.
 
 module.exports = normalize = (options) -> 
-  
-  # this happens when the field option is a string - which denotes
-  # its a type
-  if (t = type(options)) is "string"
-    return {
-      type: options
-    }
-
-  # is it an array? field type is a collection
-  else if t is "array"
-    options = options[0]
-    options.$collection = true
 
   normalizedOptions = {
     fields: {}
   }
+  
+  # is it an array? field type is a collection
+  if type(options) is "array"
+    options = options[0]
+    normalizedOptions.collection = true
+
+
+  # this happens when the field option is a string - which denotes
+  # its a type
+  if type(options) is "string"
+    normalizedOptions.type = options
+    options = {}
+
+
+  
 
   # go through all the options, and parse options, from fields
   for optionName of options

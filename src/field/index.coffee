@@ -32,7 +32,8 @@ class Field
    that's a bit more
   ###
 
-  getField: (path, closest = false) -> @_getField path.split("."), 0, closest
+  getField: (path, closest = false) -> 
+    @_getField path.split("."), 0, closest
 
   ###
   ###
@@ -61,10 +62,10 @@ class Field
 
     @fields        = []
     @_fieldsByName = {}
+    @_allFieldsByPath = {}
 
     for fieldName of fields
       @addField fieldName, fields[fieldName]
-
 
     @numFields = @fields.length
     @allFields = @_flatten []

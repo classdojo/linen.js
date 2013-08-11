@@ -45,6 +45,18 @@ describe("field/normalize#", function() {
   /**
    */
 
+  it("allows types with collections", function() {
+    var definition = normalizeDefinition({
+      tags: ["string"]
+    });
+
+    expect(definition.fields.tags.collection).to.be(true);
+    expect(definition.fields.tags.type).to.be("string");
+  })
+
+  /**
+   */
+
   it("properly parses deeply nested fields", function() {
 
     var definition = normalizeDefinition({
