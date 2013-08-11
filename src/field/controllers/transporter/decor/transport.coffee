@@ -28,9 +28,10 @@ class Transport extends require("./base")
       method = @_request[payload.method]
 
       unless method
-        return next(new Error("cannot \"#{options.method.toUpperCase()}\" \"#{@field.path}\""))
+        return next(new Error("cannot \"#{payload.method.toUpperCase()}\" \"#{@field.path}\""))
 
-      method options, (err, result = {}) =>
+
+      method payload, (err, result = {}) =>
 
         # enforce asynchronous behavior - fetch might not be async - if it isn't,
         # it might break data-bindings
@@ -55,9 +56,12 @@ class Transport extends require("./base")
       method: @_getMethod(options)
     }
 
+
     # grab the data the server expects
     if /post|put/.test payload.method
       payload.data = @_getPayloadData payload
+      # TODO - this should be a field option not to normalize data
+      delete payload.data._id
 
     # pluck out anything that hasn't changed
     #if payload.method is "put"
@@ -76,7 +80,7 @@ class Transport extends require("./base")
     d = {}
     for field in dataFields
       dref.set d, field.path, field._mapper.normalize model, model.get(field.path)
-
+    d
 
   ###
   ###

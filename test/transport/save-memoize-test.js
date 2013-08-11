@@ -25,13 +25,16 @@ describe("transport/save memoize#", function() {
         put: function(payload, next) {  
           expect(payload.data.name).to.be("abba");
           expect(Object.keys(payload.data).length).to.be(1);
-          next();
+          next(null, {
+            name: "bdda"
+          });
         }
       }
     }).model({_id: "craig", name: "abba" });
 
-    m.save(function() {
 
+    m.save(function() {
+      expect(m.get("name")).to.be("bdda");
       next();
     });
   });
