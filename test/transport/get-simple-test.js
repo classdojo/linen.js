@@ -107,5 +107,6 @@ describe("transport/get simple#", function() {
         next();
       }).now();
     })
-  })
+  });
+
 });
