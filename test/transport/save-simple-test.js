@@ -32,6 +32,7 @@ describe("transport/save simple#", function() {
 
   it("calls PUT when a model isn't new", function(next) {
     var m = s.model("aba");
+    m.set("name", "bb");
     m.save(function() {
       expect(m.get("puted")).to.be(true);
       next()
@@ -44,11 +45,21 @@ describe("transport/save simple#", function() {
       expect(m.get("posted")).to.be(true);
       expect(m.get("puted")).to.be(undefined);
       expect(m.get("_id")).to.be("abba");
+      m.set("name", "dd");
       m.save(function() {
         expect(m.get("puted")).to.be(true);
         next()
       })
     });
-  })
+  });
+
+
+  it("doesn't save if there's nothing to save", function(next) {
+    var m = s.model({_id:"abb"})
+    m.save(function() {
+      expect(m.get("puted")).to.be(undefined);
+      next();
+    })
+  });
 
 })

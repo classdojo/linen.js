@@ -1,5 +1,6 @@
 hashObject = require "../memoize/hashObject"
 dref = require "dref"
+type = require "type-component"
 
 class Transport extends require("./base")
 
@@ -27,6 +28,10 @@ class Transport extends require("./base")
 
     payload = @_getPayload options
     model = payload.model
+
+    # nothing to save.
+    if payload.method is "put" and type(payload.data) is "object" and Object.keys(payload.data).length is 0
+      return next()
 
     # memoize the payload so that we don't call more times than needed
     options.model._memos.call currentHash = @_payloadHash(options), @_memoOps, next, (next) =>  

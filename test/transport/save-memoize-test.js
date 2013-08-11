@@ -69,7 +69,7 @@ describe("transport/save memoize#", function() {
     }).model({_id: "craig", blah: "fdsfds" });
 
     m.save(function() {
-      expect(putCount).to.be(1);
+      expect(putCount).to.be(0);
       next();
     });
   });
