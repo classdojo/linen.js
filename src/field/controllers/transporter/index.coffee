@@ -43,6 +43,10 @@ class Transporter extends require("../base")
     model.load   = (next) => @load model, next
     model.save   = (next) => @save model, next
 
+    # cache the data so it doesn't get persisted to the server. 
+    # an explicit reference might be defined, so convert to an object
+    model._cache.store JSON.parse JSON.stringify data
+
     # fetch a field if it's being watched
     model.on "watching", (property) =>
 
@@ -55,6 +59,11 @@ class Transporter extends require("../base")
   ###
 
   map: (model, data) -> @_dataMapper.map model, data
+
+  ###
+  ###
+
+  normalize: (model, data) -> @_dataMapper.normalize model, data
 
   ###
   ###

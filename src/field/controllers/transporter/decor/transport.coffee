@@ -70,7 +70,7 @@ class Transport extends require("./base")
 
     # grab the data the server expects
     if /post|put/.test payload.method
-      payload.data = @_getPayloadData payload
+      payload.data = @_getPayloadData payload, payload.method isnt "post"
       # TODO - this should be a field option not to normalize data
       if payload.data
         delete payload.data._id
@@ -87,7 +87,7 @@ class Transport extends require("./base")
   ###
   ###
 
-  _getPayloadData: (payload) ->
+  _getPayloadData: (payload, pluck = true) ->
 
     model = payload.model
     dataFields = @_getDataFields @field
@@ -98,11 +98,12 @@ class Transport extends require("./base")
       dref.set d, field.path, newData
 
     if @field.parent
-      return dref.get d, @field.path
+      d = dref.get(d, @field.path) or {}
 
-    nd = model._cache.pluck d, true
+    if pluck 
+      d = model._cache.pluck d, true
 
-    nd ? {}
+    d ? {}
 
   ###
   ###
