@@ -17,7 +17,10 @@ describe("map/reference#", function() {
   l.schema("person", {
     address: {
       $ref: "address"
-    }
+    },
+    friends: [{
+      $ref: "person"
+    }]
   });
 
   l.schema("address", {
@@ -62,5 +65,23 @@ describe("map/reference#", function() {
     } catch(e) {
       expect(e.message).to.be('cannot assign model type "country" to field "address" type "address"')
     }
+  });
+
+  /**
+   */
+
+  it("maintains a reference to the owner model", function() {
+    var m = l.model("person", {
+      name: "craig",
+      friends:[{
+        name: "john",
+        friends: [{
+          name: "sam"
+        }]
+      }]
+    });
+
+    expect(m.get("friends").at(0).owner).to.be(m);
+    expect(m.get("friends").at(0).get("friends").at(0).owner).to.be(m.get("friends").at(0));
   })
 });

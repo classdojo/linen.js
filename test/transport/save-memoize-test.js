@@ -51,5 +51,23 @@ describe("transport/save memoize#", function() {
     });
   });
 
-  it("doesn't send data that's not specified int the schema", function() {});
+  it("doesn't send data that's not specified int the schema", function(next) {
+    var putCount = 0;
+    var m = linen.schema({
+      name: "string",
+      age: "number",
+      $request: {
+        put: function(payload, next) {  
+          putCount++;
+          expect(payload.data.blah).to.be(undefined);
+          next();
+        }
+      }
+    }).model({_id: "craig", blah: "fdsfds" });
+
+    m.save(function() {
+      expect(putCount).to.be(1);
+      next();
+    });
+  });
 })

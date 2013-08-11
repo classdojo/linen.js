@@ -39,6 +39,7 @@ class Transport extends require("./base")
         setTimeout (() =>
           return next(err) if err?
 
+          # ignore changes here so the don't get re-persisted to the server
           model._changeWatcher.stop()
           options.model.reset result, @field.path
           model._changeWatcher.start()
