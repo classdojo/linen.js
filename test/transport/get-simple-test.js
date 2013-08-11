@@ -90,4 +90,18 @@ describe("transport/get simple#", function() {
   });
 
 
+  describe("doesn't load when", function() {
+    it("a property doesn't exist", function(next) {
+      var m = s.model();
+
+      (m = s.model()).bind("blah.length").to(function(len) {
+      }).now();
+
+      setTimeout(function() {
+        expect(m.get("name")).to.be(undefined);
+        next();
+      }, 20);
+    });
+  })
+
 });

@@ -68,5 +68,19 @@ describe("field/create#", function() {
       expect(f.getField("friends.address").root).to.be(f);
       expect(f.getField("friends.address.city").root).to.be(f);
     })
+
+    /**
+     */
+
+    it("can fetch the closest field to a property", function() {
+      expect(f.getField("friends.fds.fsd.fsd.fsd", true)).to.be(f.getField("friends"));
+    });
+
+    /**
+     */
+
+    it("cannot fetch the closest field if no parts exist", function() {
+      expect(f.getField("fdf.fds.fsd.fsd.fsd", true)).to.be(undefined);
+    })
   });
 });

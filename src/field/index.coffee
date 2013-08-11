@@ -46,14 +46,14 @@ class Field
     name = path[index]
     field = @_fieldsByName[name]
 
-    if !field
-      if closest
-        return @
-      else
-        return undefined
+    return undefined unless field
 
+    subField = field._getField(path, index + 1, closest)
 
-    field._getField(path, index + 1, closest)
+    if not subField and closest
+      subField = field
+
+    subField
 
   ###
   ###
