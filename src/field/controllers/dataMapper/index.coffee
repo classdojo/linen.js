@@ -22,15 +22,32 @@ class DataMapFieldController extends require("../base")
 
     # if there are sub fields, then the data must be an object
     if field.numFields
+      hasData = newData
       unless newData
         newData = {}
       unless oldData
         oldData = {}
+    else
+      hasData = true
 
     for childField in field.fields
-      newData[childField.name] = @_mapField childField, model, oldData[childField.name]
+      d = newData[childField.name] = @_mapField childField, model, oldData[childField.name]
+      hasData = hasData or d?
 
-    newData
+    if hasData then newData else undefined
+
+  ###
+  ###
+
+  _mapPath: (path, model, oldData) ->
+
+    if not path or path.length is 0
+      field = @rootField
+    else
+      field = @rootField.getField path
+
+    @_mapField field, model, oldData
+
 
   
   ###
@@ -38,9 +55,14 @@ class DataMapFieldController extends require("../base")
 
   prepareModel: (model, data) ->
 
-    model.reset = (data) =>
-      newData = @map model, data
-      model.set newData
+    model.reset = (data, path = "") =>
+
+      newData = @_mapPath path, model, data
+
+      if path is ""
+        model.set newData or {}
+      else
+        model.set path, newData
 
     for mapper in @_decorators
       mapper.prepareModel model, data

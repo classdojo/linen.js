@@ -66,7 +66,7 @@ describe("map/default#", function() {
     }).model();
 
     expect(m.get("a.b.c")).to.be("d");
-    expect(type(m.get("aa"))).to.be("object");
+    expect(type(m.get("aa"))).to.be("undefined");
     expect(m.get("aa.bb")).to.be(undefined);
   });
 

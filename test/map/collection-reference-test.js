@@ -1,6 +1,14 @@
 var linen = require("../.."),
 expect = require("expect.js");
 
+/*
+
+field: [{
+  $ref: "person"
+}]
+
+*/
+
 describe("map/reference collection#", function() {
   
   var l = linen();
@@ -10,15 +18,7 @@ describe("map/reference collection#", function() {
     lastName: "string",
     friends: [{
       $ref: "person"
-    }],
-    hobbies: [{
-      $ref: "hobby"
     }]
-  });
-
-  l.schema("hobby", {
-    name: "string",
-    desc: "string"
   });
 
   /**
@@ -29,12 +29,13 @@ describe("map/reference collection#", function() {
     var m = l.model("person", {
       firstName: "string",
       friends: [{
-        name: "frank"
+        firstName: "frank"
       },{
-        name: "sam"
+        firstName: "sam"
       }]
     });
 
     expect(m.get("friends").at(0).schema.name).to.be("person");
+    expect(m.get("friends").at(0).get("firstName")).to.be("frank");
   });
 });

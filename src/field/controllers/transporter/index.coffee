@@ -1,6 +1,10 @@
-validator  = require "../validator"
-dataMapper = require "../dataMapper"
-type       = require "type-component"
+validator      = require "../validator"
+dataMapper     = require "../dataMapper"
+type           = require "type-component"
+async          = require "async"
+payload        = require "./payload"
+MemoDictionary = require "./memoize/dictionary"
+transporterFactory = require "./decor/factory"
 
 ###
  transports the model data to / from a server - restful
@@ -32,6 +36,19 @@ class Transporter extends require("../base")
     @_validator.prepareModel model, data
     @_dataMapper.prepareModel model, data
 
+    model._memos = new MemoDictionary()
+    model.load   = (next) => @load model, next
+    model.save   = (next) => @save model, next
+
+    # fetch a field if it's being watched
+    model.on "watching", (property) =>
+
+      # ignore load if the value exists
+      return if model.get(property)?
+
+      
+      @rootField.getField(property, true)?._transporter.request payload.model(model).method("get").options, () ->
+
   ###
   ###
 
@@ -40,18 +57,33 @@ class Transporter extends require("../base")
   ###
   ###
 
-  load: (model, next) ->
+  load: (model, next) -> 
+    @_request payload.model(model).method("get"), next
 
   ###
   ###
 
   save: (model, next) -> 
     @validate model, (err, next) ->
+      # TODO
+
+  ###
+  ###
+
+  _request: (payload, next) ->
+    async.forEach @_decorators, ((decor, next) ->
+      decor.request payload.options, next 
+    ), next
 
   ###
   ###
 
   validate: (model, next) -> @_validator.validate model, next
+
+  ###
+  ###
+
+  _createFieldDecorator: (field) -> transporterFactory.create field
 
 
 module.exports = (field) -> new Transporter field
