@@ -21,6 +21,7 @@ class Transport extends require("./base")
   request: (options, next) -> 
 
     payload = @_getPayload options
+    model = payload.model
 
     # memoize the payload so that we don't call more times than needed
     options.model._memos.call currentHash = @_payloadHash(options), @_memoOps, next, (next) =>  
@@ -38,7 +39,9 @@ class Transport extends require("./base")
         setTimeout (() =>
           return next(err) if err?
 
+          model._changeWatcher.stop()
           options.model.reset result, @field.path
+          model._changeWatcher.start()
 
           # replace the old memo hash with the current one from the server
           options.model._memos.replaceHash currentHash, @_payloadHash(payload)
@@ -62,6 +65,7 @@ class Transport extends require("./base")
       payload.data = @_getPayloadData payload
       # TODO - this should be a field option not to normalize data
       delete payload.data._id
+      payload.model._changeWatcher.purge()
 
     # pluck out anything that hasn't changed
     #if payload.method is "put"
@@ -79,7 +83,13 @@ class Transport extends require("./base")
     dataFields = @_getDataFields @field
     d = {}
     for field in dataFields
-      dref.set d, field.path, field._mapper.normalize model, model.get(field.path)
+      newData = field._mapper.normalize model, model.get(field.path)
+      if model._changeWatcher.changed(field.path)
+        dref.set d, field.path, newData
+
+    if @field.parent
+      return dref.get d, @field.path
+
     d
 
   ###

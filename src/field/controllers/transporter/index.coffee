@@ -4,6 +4,7 @@ type           = require "type-component"
 async          = require "async"
 MemoDictionary = require "./memoize/dictionary"
 transporterFactory = require "./decor/factory"
+ChangeWatcher = require "./changeWatcher"
 
 ###
  transports the model data to / from a server - restful
@@ -32,10 +33,12 @@ class Transporter extends require("../base")
     if type(data) is "string"
       data = { _id: data }
 
+    model._memos         = new MemoDictionary()
+    model._changeWatcher = new ChangeWatcher model
+
     @_validator.prepareModel model, data
     @_dataMapper.prepareModel model, data
 
-    model._memos = new MemoDictionary()
     model.load   = (next) => @load model, next
     model.save   = (next) => @save model, next
 
