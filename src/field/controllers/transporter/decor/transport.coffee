@@ -76,11 +76,6 @@ class Transport extends require("./base")
         delete payload.data._id
 
 
-    # pluck out anything that hasn't changed
-    #if payload.method is "put"
-    #  console.log "UT"
-
-
 
     payload
 
@@ -93,15 +88,23 @@ class Transport extends require("./base")
     dataFields = @_getDataFields @field
     d = {}
 
+    fieldData = @field._mapper.normalize model, model.get(@field.path)
+
+    if @field.parent
+      dref.set d, @field.path, fieldData
+    else
+      d = fieldData
+
     for field in dataFields
       newData = field._mapper.normalize model, model.get(field.path)
       dref.set d, field.path, newData
 
+    if pluck 
+      d = model._cache.pluck d, true
+
     if @field.parent
       d = dref.get(d, @field.path) or {}
 
-    if pluck 
-      d = model._cache.pluck d, true
 
     d ? {}
 
