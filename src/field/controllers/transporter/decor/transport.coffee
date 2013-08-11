@@ -88,13 +88,9 @@ class Transport extends require("./base")
     dataFields = @_getDataFields @field
     d = {}
 
-    fieldData = @field._mapper.normalize model, model.get(@field.path)
-
     if @field.parent
-      dref.set d, @field.path, fieldData
-    else
-      d = fieldData
-
+      dref.set d, @field.path, @field._mapper.normalize model, model.get(@field.path)
+    
     for field in dataFields
       newData = field._mapper.normalize model, model.get(field.path)
       dref.set d, field.path, newData
