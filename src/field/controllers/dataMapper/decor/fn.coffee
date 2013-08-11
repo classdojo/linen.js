@@ -19,6 +19,8 @@ class FnMapper extends require("./base")
 
   map: (model, data) -> 
     data = @_map.call model, data
+    @_mapChildFields model, data
+    data
     
 
   ###

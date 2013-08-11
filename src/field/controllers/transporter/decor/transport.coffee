@@ -98,7 +98,7 @@ class Transport extends require("./base")
     if pluck 
       d = model._cache.pluck d, true
 
-    if @field.parent
+    if d and @field.parent
       d = dref.get(d, @field.path) or {}
 
 
