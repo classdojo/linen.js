@@ -39,7 +39,7 @@ describe("transport/save memoize#", function() {
           });
         }
       }
-    }).model({_id: "craig", name: "abba" });
+    }).model({ _id: "craig", name: "abba" });
 
     m.load(function() {
       expect(m.get("age")).to.be(99);

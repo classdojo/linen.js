@@ -40,9 +40,16 @@ class Transport extends require("./base")
           return next(err) if err?
 
           # ignore changes here so the don't get re-persisted to the server
-          model._changeWatcher.stop()
           options.model.reset result, @field.path
-          model._changeWatcher.start()
+
+          cache = {}
+
+          if @field.parent
+            dref.set cache, @field.path, result
+          else
+            cache = result
+
+          model._cache.store cache
 
           # replace the old memo hash with the current one from the server
           options.model._memos.replaceHash currentHash, @_payloadHash(payload)
@@ -65,8 +72,9 @@ class Transport extends require("./base")
     if /post|put/.test payload.method
       payload.data = @_getPayloadData payload
       # TODO - this should be a field option not to normalize data
-      delete payload.data._id
-      payload.model._changeWatcher.purge()
+      if payload.data
+        delete payload.data._id
+
 
     # pluck out anything that hasn't changed
     #if payload.method is "put"
@@ -80,18 +88,21 @@ class Transport extends require("./base")
   ###
 
   _getPayloadData: (payload) ->
+
     model = payload.model
     dataFields = @_getDataFields @field
     d = {}
+
     for field in dataFields
       newData = field._mapper.normalize model, model.get(field.path)
-      if model._changeWatcher.changed(field.path)
-        dref.set d, field.path, newData
+      dref.set d, field.path, newData
 
     if @field.parent
       return dref.get d, @field.path
 
-    d
+    nd = model._cache.pluck d, true
+
+    nd ? {}
 
   ###
   ###
