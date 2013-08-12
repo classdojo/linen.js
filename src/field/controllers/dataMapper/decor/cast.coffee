@@ -21,7 +21,6 @@ class CastMapper extends require("./base")
     return undefined unless data?
     @_cast data
 
-
   ###
   ###
 
