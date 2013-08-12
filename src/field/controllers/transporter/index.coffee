@@ -42,6 +42,7 @@ class Transporter extends require("../base")
 
     model.load   = (next) => @load model, next
     model.save   = (next) => @save model, next
+    model.remove = (next) => @remove model, next
 
     # fetch a field if it's being watched
     model._watching = (property) =>
@@ -75,6 +76,15 @@ class Transporter extends require("../base")
         return next(err) if err?
         model.emit "save"
         next()
+
+  ###
+  ###
+
+  remove: (model, next = () ->) ->
+     @_request { model: model, method: "del" }, (err) ->
+      return next(err) if err?
+      model.emit "remove"
+      next()
       
   ###
   ###
