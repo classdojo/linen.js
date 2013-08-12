@@ -17,7 +17,7 @@ class InheritTransport extends require("./base")
   ###
 
   watching: (options) ->
-    return if options.model.get options.property
+    return if options.model.get(options.property)?
     @request options
 
   ###
