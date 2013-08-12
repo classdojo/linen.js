@@ -26,4 +26,23 @@ describe("map/cast#", function() {
   it("can cast to a string value", function() {
     expect(s.model({"str":0}).get("str")).to.be("0")
   });
+
+
+  it("can cast fields with a map", function() {
+    var m = linen.schema({
+      "bool": "boolean",
+      "str": "string",
+      "num": "number",
+      $map: function() {
+        return {
+          bool: 0,
+          str: 0,
+          num: "0"
+        }
+      }
+    }).model();
+    expect(m.get("bool")).to.be(false)
+    expect(m.get("str")).to.be("0")
+    expect(m.get("num")).to.be(0);
+  })
 })
