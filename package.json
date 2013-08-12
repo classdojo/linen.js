@@ -20,7 +20,8 @@
   "gitHead": "6d70af4f40bc26b101f7b9df6bc22731b59067c8",
   "devDependencies": {
     "expect.js": "~0.2.0",
-    "mocha": "~1.12.0"
+    "mocha": "~1.12.0",
+    "benchmark": "~1.0.0"
   },
   "dependencies": {
     "type-component": "0.0.1",
