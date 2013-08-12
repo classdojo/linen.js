@@ -75,7 +75,10 @@ class Transporter extends require("../base")
   save: (model, next) -> 
     @validate model, (err) =>
       return next(err) if err?
-      @_request { model: model, method: "set" }, next
+      @_request { model: model, method: "set" }, (err) ->
+        return next(err) if err?
+        model.emit "save"
+        next()
       
   ###
   ###
