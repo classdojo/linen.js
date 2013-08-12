@@ -11,8 +11,8 @@ describe("map/virtual#", function() {
       $get: function() {
         return [this.get("firstName"), this.get("lastName")].join(" ");
       },
-      $set: function() {
-        var nameParts = String(this.get("fullName") || "").split(" ");
+      $set: function(fullName) {
+        var nameParts = String(fullName || "").split(" ");
         this.set("firstName", nameParts.shift());
         this.set("lastName", nameParts.join(" "));
       },
