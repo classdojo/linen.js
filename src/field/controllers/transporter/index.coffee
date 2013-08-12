@@ -36,19 +36,15 @@ class Transporter extends require("../base")
 
     @_validator.prepareModel model, data
     @_dataMapper.prepareModel model, data
-    
+
     model._memos = new MemoDictionary()
-    model._cache = new Cache()
+    model._cache = new Cache model, data
 
     model.load   = (next) => @load model, next
     model.save   = (next) => @save model, next
 
-    # cache the data so it doesn't get persisted to the server. 
-    # an explicit reference might be defined, so convert to an object
-    model._cache.store JSON.parse JSON.stringify data
-
     # fetch a field if it's being watched
-    model.on "watching", (property) =>
+    model._watching = (property) =>
 
       # defer to the field
       @rootField.getField(property, true)?._transporter.watching { model: model, method: "get", property: property }, () ->

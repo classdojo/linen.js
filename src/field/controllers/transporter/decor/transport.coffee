@@ -26,6 +26,9 @@ class Transport extends require("./base")
 
   request: (options, next) -> 
 
+    # prepare the cache - might be the first time it's being used
+    options.model._cache.prepare()
+
     payload = @_getPayload options
     model = payload.model
 

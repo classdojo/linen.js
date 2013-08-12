@@ -6,8 +6,21 @@ class Cache
   ###
   ###
 
-  constructor: () ->
+  constructor: (@model, @_prepData) ->
     @_data = {}
+
+  ###
+   this is more of an optimization - primes the 
+   caches before persisting - only necessary if the model
+   is being fetched a remote service
+  ###
+
+  prepare: () ->
+    return if @_prepared
+
+    # cache the data so it doesn't get persisted to the server. 
+    # an explicit reference might be defined, so convert to an object
+    @store JSON.parse JSON.stringify @_prepData
 
   ###
   ###
