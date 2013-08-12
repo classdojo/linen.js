@@ -41,5 +41,12 @@ describe("map/virtual#", function() {
     expect(m.get("fullName")).to.be("AA Condon");
     m.set("lastName", "BB");
     expect(m.get("fullName")).to.be("AA BB");
+  });
+
+  it("handled fullName if defined in the model", function() {
+    var m = s.model({ fullName: "AA BB" });
+    expect(m.get("fullName")).to.be("AA BB");
+    expect(m.get("firstName")).to.be("AA");
+    expect(m.get("lastName")).to.be("BB");
   })
 });
