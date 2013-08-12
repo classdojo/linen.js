@@ -1,6 +1,6 @@
 {
   "name": "linen",
-  "version": "0.3.19",
+  "version": "0.3.20",
   "description": "Linen (line-in) maps API's to [bindable](/classdojo/bindable.js) `objects`, and `collections`. At [classdojo](http://classdojo.com), we use `linen` to abstract our API from front-end, so we don't necessarily depend on any sort of API while developing new components. This allows us to rapidly build prototypes which can be wired up later.",
   "main": "./lib/index.js",
   "directories": {
@@ -21,7 +21,18 @@
   "devDependencies": {
     "expect.js": "~0.2.0",
     "mocha": "~1.12.0",
-    "benchmark": "~1.0.0"
+    "benchmark": "~1.0.0",
+    "browserify": "~2.26.0",
+    "karma-script-launcher": "~0.1.0",
+    "karma-chrome-launcher": "~0.1.0",
+    "karma-firefox-launcher": "~0.1.0",
+    "karma-html2js-preprocessor": "~0.1.0",
+    "karma-jasmine": "~0.1.0",
+    "karma-requirejs": "~0.1.0",
+    "karma-coffee-preprocessor": "~0.1.0",
+    "karma-phantomjs-launcher": "~0.1.0",
+    "karma": "~0.10.0",
+    "karma-mocha": "~0.1.0"
   },
   "dependencies": {
     "type-component": "0.0.1",

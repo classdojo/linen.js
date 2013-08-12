@@ -8,10 +8,13 @@ clean:
 	rm -rf lib
 	rm -rf test-web;
 
-test-web:
+clean-tests: 
+	rm -rf test-web;
+
+test-web: clean-tests
 	rm -rf test-web;
 	cp -r test test-web;
-	for F in `ls test-web | grep test`; do ./node_modules/.bin/sardines "test-web/$$F" -o "test-web/$$F" -p browser; done
+	for F in `find ./test-web -name "*test.js"`; do echo $$F; ./node_modules/.bin/browserify "$$F" -o `echo "$$F" | sed 's/js/min.js/g'` -p browser; rm $$F; done
 
 
 
