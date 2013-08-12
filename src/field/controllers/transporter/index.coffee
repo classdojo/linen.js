@@ -45,6 +45,10 @@ class Transporter extends require("../base")
     model.save   = (next) => @save model, next
     model.remove = (next) => @remove model, next
 
+    if @rootField.options.methods
+      for methodName of @rootField.options.methods
+        model[methodName] = @rootField.options.methods[methodName]
+
     # fetch a field if it's being watched
     model._watching = (property) =>
 
