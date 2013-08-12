@@ -44,11 +44,11 @@ class DataMapFieldController extends require("../base")
     model.normalize = () =>
       @rootField._mapper.normalize model
 
+    model.reset data
 
     for mapper in @_decorators
       mapper.prepareModel model, data
 
-    model.reset data
 
 
   ###

@@ -17,7 +17,7 @@ class VirtualMapper extends require("./base")
 
     @_get  = field.options.get
     @_set  = field.options.set  or () ->
-    @_bind = (field.options.bind or []).join(", ");
+    @_bind = field.options.bind
 
   ###
   ###
@@ -35,8 +35,12 @@ class VirtualMapper extends require("./base")
       return if ignoreChange or not @_get
       @_set.call model, @field.path, @_get.call model
 
-    model.bind(@_bind).delay(0).to(onChange).now()
-    model.bind(@field.path).delay(0).to(onFieldChange).now()
+    for prop in @_bind
+      model.bind(prop).to(onChange)
+
+    onChange()
+    
+    model.bind(@field.path).delay(-1).to(onFieldChange)
 
   ###
   ###

@@ -20,12 +20,26 @@ describe("map/virtual#", function() {
     }
   });
 
-  /*it("can bind two properties together", function(next) {
+  it("can get a virtual field", function() {
     var m = s.model({ firstName: "Craig", lastName: "Condon" })
-    setTimeout(function() {
-      console.log(m.data)
-      next();
-    }, 2);
+    expect(m.get("firstName")).to.be("Craig");
+    expect(m.get("lastName")).to.be("Condon");
+    expect(m.get("fullName")).to.be("Craig Condon");
+  });
 
-  })*/
+  it("can set a virtual field", function() {
+    var m = s.model({ firstName: "Craig", lastName: "Condon" });
+    m.set("fullName", "A B");
+    expect(m.get("firstName")).to.be("A");
+    expect(m.get("lastName")).to.be("B");
+    expect(m.get("fullName")).to.be("A B");
+  });
+
+  it("listens when either bindings change", function() {
+    var m = s.model({ firstName: "Craig", lastName: "Condon" });
+    m.set("firstName", "AA");
+    expect(m.get("fullName")).to.be("AA Condon");
+    m.set("lastName", "BB");
+    expect(m.get("fullName")).to.be("AA BB");
+  })
 });
