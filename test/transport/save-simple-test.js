@@ -62,4 +62,11 @@ describe("transport/save simple#", function() {
     })
   });
 
+
+  it("emits save on save", function(next) {
+    var m = s.model({});
+    m.once("save", next);
+    m.save(function(){})
+  });
+
 })
