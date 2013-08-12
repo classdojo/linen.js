@@ -33,13 +33,16 @@ class Transport extends require("./base")
     if payload.method is "put" and type(payload.data) is "object" and Object.keys(payload.data).length is 0
       return next()
 
+
+    method = @_request[payload.method]
+
+    unless method
+      return next()
+
     # memoize the payload so that we don't call more times than needed
     options.model._memos.call currentHash = @_payloadHash(options), @_memoOps, next, (next) =>  
 
       method = @_request[payload.method]
-
-      unless method
-        return next(new Error("cannot \"#{payload.method.toUpperCase()}\" \"#{@field.path}\""))
 
 
       method payload, (err, result = {}) =>
