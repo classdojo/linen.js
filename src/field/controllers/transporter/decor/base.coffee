@@ -8,12 +8,12 @@ class BaseTransport
   ###
   ###
 
-  request: (options, next) -> next()
+  request: (options, next = () ->) -> next()
 
   ###
   ###
 
-  watching: (options, next) -> next()
+  watching: (options, next = () ->) -> next()
 
 
 
