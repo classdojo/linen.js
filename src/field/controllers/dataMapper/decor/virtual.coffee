@@ -27,13 +27,16 @@ class VirtualMapper extends require("./base")
     ignoreChange = false
 
     onChange = () =>
+      return if ignoreChange
       ignoreChange = true
       model.set @field.path, @_get.call model
       ignoreChange = false
 
     onFieldChange = (value) =>
       return if ignoreChange or not @_get
+      ignoreChange = true
       @_set.call model, value
+      ignoreChange = false
 
     for prop in @_bind
       model.bind(prop).to(onChange)
