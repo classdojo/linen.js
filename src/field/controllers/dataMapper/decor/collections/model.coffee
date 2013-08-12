@@ -16,7 +16,7 @@ class ModelCollection extends bindable.Collection
 
   model: (data = {}) ->
     model = @field._refMapper.map data, data
-    model.owner = @
+    model.owner = @owner
     model.once "save", () => @push model
     model
 
