@@ -2,6 +2,7 @@ bindable = require "bindable"
 toarray  = require "toarray"
 hoist    = require "hoist"
 ReferenceMapper = require "./reference"
+ModelCollection = require "./collections/model"
 
 class CollectionMapper extends require("./base")
 
@@ -24,11 +25,7 @@ class CollectionMapper extends require("./base")
     if source.__isCollection
       return source
 
-    c = new bindable.Collection()
-
-    c.transform().map (v) => 
-      @_refMapper.map model, v
-
+    c = new ModelCollection @, model
     c.reset toarray source
     c
       
