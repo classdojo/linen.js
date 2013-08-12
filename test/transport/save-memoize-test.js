@@ -41,10 +41,10 @@ describe("transport/save memoize#", function() {
       }
     }).model({ _id: "craig" });
 
-    //trigger change
-    m.set("name", "abba");
-
     m.load(function() {
+      //trigger change
+      m.set("name", "abba");
+
       expect(m.get("age")).to.be(99);
       m.save(function() {
         expect(putCount).to.be(1);

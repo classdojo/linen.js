@@ -55,20 +55,16 @@ class Transport extends require("./base")
         setTimeout (() =>
           return next(err) if err?
 
-
           # ignore changes here so the don't get re-persisted to the server
           # also - copy the result incase anything gets added to it - don't want
           # new data to get cached
           options.model.reset JSON.parse(JSON.stringify(result)), @field.path
 
-          cache = {}
+          newData = {}
+          for newKey of result
+            newData[newKey] = model.get(newKey)
 
-          if @field.parent
-            dref.set cache, @field.path, result
-          else
-            cache = result
-
-          model._cache.store cache
+          model._cache.store @_getPayloadData(payload)
 
           # replace the old memo hash with the current one from the server
           options.model._memos.replaceHash currentHash, @_payloadHash(payload)
