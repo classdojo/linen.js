@@ -18,6 +18,13 @@ class ModelCollection extends bindable.Collection
   ###
   ###
 
+  clear: () ->
+    for item in @source().concat()
+      @remove item
+
+  ###
+  ###
+
   model: (data = {}) ->
     model = @field._refMapper.map data, data
     model.owner = @owner
