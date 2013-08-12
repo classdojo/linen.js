@@ -43,9 +43,15 @@ class Transport extends require("./base")
     unless method
       return next()
 
-    # memoize the payload so that we don't call more times than needed
-    options.model._memos.call currentHash = @_payloadHash(options), @_memoOps, next, (next) =>  
+    currentHash = @_payloadHash(options)
+    fieldHash   = @_fieldHash(payload)
 
+    # memoize the payload so that we don't call more times than needed
+
+    if options.hard
+      return load next
+
+    options.model._memos.call fieldHash, currentHash, @_memoOps, next, (next) =>
       method = @_request[payload.method]
 
 
@@ -63,11 +69,10 @@ class Transport extends require("./base")
 
           model._cache.store @_getPayloadData(payload, false)
 
-          # replace the old memo hash with the current one from the server
-          options.model._memos.replaceHash currentHash, @_payloadHash(payload)
-
           next()
-        ), 0
+        ), 0 
+
+      
 
   ###
   ###
@@ -146,18 +151,24 @@ class Transport extends require("./base")
     paths
 
 
-
   ###
   ###
 
-  _payloadHash: (payload) ->
-
-    hash = {
-      method: payload.method,
+  _fieldHash: (options) ->
+    hashObject {
+      method: options.method,
       path: @field.path
     }
 
-    hashObject hash
+  ###
+  ###
+
+  _payloadHash: (options) ->
+    hashObject {
+      method: options.method,
+      path: @field.path,
+      hash: options.hash
+    }
   
   ###
   ###

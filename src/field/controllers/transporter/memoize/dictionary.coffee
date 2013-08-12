@@ -11,27 +11,24 @@ class MemoDictionary
   ###
   ###
 
-  call: (key, options, next, fn) ->
+  call: (key, hash, options, next, fn) ->
 
 
     memo = @_memos[key]
 
+    if memo
+      if memo.hash isnt hash
+        memo = undefined
+
     unless memo
-      memo = @_memos[key] = memoize ((next) =>
-        fn next
-      ), options or {}
+      memo = @_memos[key] = {
+        hash: hash
+        fn: memoize ((next) =>
+          fn next
+        ), options or {}
+      }
 
-    memo next
-
-  ###
-  ###
-
-  replaceHash: (oldKey, newKey) -> 
-    @_memos[newKey] = @_memos[oldKey]
-
-    if oldKey isnt newKey
-      delete @_memos[oldKey]
-
+    memo.fn next
 
 
 module.exports = MemoDictionary

@@ -41,6 +41,7 @@ class Transporter extends require("../base")
     model._cache = new Cache model, data
 
     model.load   = (next) => @load model, next
+    model.reload = (next) => @reload model, next
     model.save   = (next) => @save model, next
     model.remove = (next) => @remove model, next
 
@@ -65,6 +66,12 @@ class Transporter extends require("../base")
 
   load: (model, next) -> 
     @_request { model: model, method: "get" }, next
+
+  ###
+  ###
+
+  reload: (model, next) ->
+    @_request { model: model, method: "get", hash: Date.now() }, next
 
   ###
   ###
