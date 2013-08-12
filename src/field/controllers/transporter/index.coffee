@@ -72,7 +72,7 @@ class Transporter extends require("../base")
   ###
   ###
 
-  save: (model, next) -> 
+  save: (model, next = () ->) -> 
     @validate model, (err) =>
       return next(err) if err?
       @_request { model: model, method: "set" }, (err) ->
@@ -83,7 +83,7 @@ class Transporter extends require("../base")
   ###
   ###
 
-  _request: (options, next) ->
+  _request: (options, next = () ->) ->
     async.forEach @_decorators, ((decor, next) ->
       decor.request options, next 
     ), next
@@ -91,7 +91,7 @@ class Transporter extends require("../base")
   ###
   ###
 
-  validate: (model, next) -> @_validator.validate model, next
+  validate: (model, next = () ->) -> @_validator.validate model, next
 
   ###
   ###
