@@ -60,7 +60,7 @@ class Transport extends require("./base")
           # new data to get cached
           options.model.reset JSON.parse(JSON.stringify(result)), @field.path
 
-          model._cache.store @_getPayloadData(payload)
+          model._cache.store @_getPayloadData(payload, false)
 
           # replace the old memo hash with the current one from the server
           options.model._memos.replaceHash currentHash, @_payloadHash(payload)
