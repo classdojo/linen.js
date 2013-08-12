@@ -20,7 +20,7 @@ class ModelCollection extends bindable.Collection
 
   clear: () ->
     for item in @source().concat()
-      @remove item
+      item.remove()
 
   ###
   ###
