@@ -139,7 +139,7 @@ class Transport extends require("./base")
     paths = []
 
     for field in startField.fields
-      continue if field.options.request
+      continue if field.options.request or field.options.persist is false
       paths.push field
       paths = paths.concat @_getDataFields field
 

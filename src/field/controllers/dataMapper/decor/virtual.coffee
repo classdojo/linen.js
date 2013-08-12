@@ -15,6 +15,8 @@ class VirtualMapper extends require("./base")
   constructor: (field) ->
     super field
 
+    field.options.persist = false
+
     @_get  = field.options.get
     @_set  = field.options.set  or () ->
     @_bind = field.options.bind
