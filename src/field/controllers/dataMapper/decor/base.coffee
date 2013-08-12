@@ -1,3 +1,5 @@
+type = require "type-component"
+
 class BaseMapper 
   
   ###
@@ -16,9 +18,15 @@ class BaseMapper
   ###
 
   normalize: (model) -> 
+
     if @field.parent
-      return model.get(@field.path)
-    return model.data
+      data = model.get(@field.path)
+    else
+      data = model.data
+
+    return data unless type(data) is "object"
+
+    JSON.parse JSON.stringify data
 
   ###
   ###
