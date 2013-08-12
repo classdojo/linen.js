@@ -41,8 +41,6 @@ class CollectionMapper extends require("./base")
 
     source
 
-
-
   ###
   ###
 

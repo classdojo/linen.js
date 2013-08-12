@@ -19,7 +19,7 @@ describe("map/default#", function() {
 
     var m = linen.schema({
       zeroValue: {
-        $type: "string",
+        $type: "number",
         $default: 0
       },
       dateValue: {

@@ -52,8 +52,11 @@ class Transport extends require("./base")
         setTimeout (() =>
           return next(err) if err?
 
+
           # ignore changes here so the don't get re-persisted to the server
-          options.model.reset result, @field.path
+          # also - copy the result incase anything gets added to it - don't want
+          # new data to get cached
+          options.model.reset JSON.parse(JSON.stringify(result)), @field.path
 
           cache = {}
 

@@ -1,7 +1,15 @@
 bindable = require "bindable"
 toarray  = require "toarray"
+SubMapper = require "./sub"
 
 class CollectionMapper extends require("./base")
+
+  ###
+  ###
+
+  constructor: (field) ->
+    super field
+    @_subMapper = new SubMapper field
 
   ###
   ###
@@ -16,7 +24,7 @@ class CollectionMapper extends require("./base")
 
     c = new bindable.Collection()
     c.reset toarray(source).map (item) => 
-      @_mapChildFields model, item
+      @_subMapper.map model, item
     c
 
   normalize: (source) -> 
@@ -25,6 +33,7 @@ class CollectionMapper extends require("./base")
   ###
   ###
 
-  @test: (field) -> field.options.collection is true
+  @test: (field) -> 
+    field.options.collection is true
 
 module.exports = CollectionMapper
