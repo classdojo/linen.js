@@ -58,7 +58,7 @@ class Transport extends require("./base")
           # ignore changes here so the don't get re-persisted to the server
           # also - copy the result incase anything gets added to it - don't want
           # new data to get cached
-          options.model.reset JSON.parse(JSON.stringify(result)), @field.path
+          options.model.reset result, @field.path
 
           model._cache.store @_getPayloadData(payload, false)
 
