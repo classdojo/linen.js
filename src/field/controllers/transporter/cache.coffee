@@ -17,6 +17,7 @@ class Cache
 
   prepare: () ->
     return if @_prepared
+    @_prepared = true
 
     # cache the data so it doesn't get persisted to the server. 
     # an explicit reference might be defined, so convert to an object
