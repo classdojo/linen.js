@@ -59,6 +59,26 @@ describe("transport/get simple#", function() {
     })
   });
 
+  it("maintains a memo if the returned data is different", function(next) {
+    var putCount = 0;
+    var m = linen.schema({
+      age: "number",
+      $request: {
+        put: function(payload, next) {
+          putCount++;
+          next(null, { age: String(payload.data.age) })
+        }
+      }
+    }).model({_id: 'abba'});
+    m.set("age", 0);
+    m.save(function() {
+      m.save(function() {
+        expect(putCount).to.be(1);
+        next();
+      });
+    })
+  });
+
   describe("loads a model when", function() {
 
     it("binding to a shallow property", function(next) {
