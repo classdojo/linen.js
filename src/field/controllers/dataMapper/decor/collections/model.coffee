@@ -9,7 +9,7 @@ class ModelCollection extends bindable.Collection
     super()
 
     @transform().map (v) => 
-      @field._refMapper.map @, v
+      @field._refMapper.map @owner, v
 
     @on 
       insert: @_onInsert

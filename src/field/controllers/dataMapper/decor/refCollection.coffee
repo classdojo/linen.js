@@ -11,7 +11,7 @@ class CollectionMapper extends require("./base")
 
   constructor: (field) ->
     super field
-    @_refMapper = new ReferenceMapper field
+    @_refMapper = new ReferenceMapper field, true
 
   ###
   ###

@@ -5,6 +5,12 @@
 ###
 
 class ReferenceMapper extends require("./base")
+
+  ###
+  ###
+
+  constructor: (field, @_partOfCollection = false) ->
+    super field
     
   ###
   ###
@@ -17,6 +23,10 @@ class ReferenceMapper extends require("./base")
         throw new Error "cannot assign model type \"#{data.schema.name}\" to field \"#{@field.path}\" type \"#{@field.options.ref}\""
 
       refModel = data
+
+    # bleh - this is kind of nasty - there shouldn't be a check like this..
+    else if not @_partOfCollection and (refModel = model.get(@field.path))
+      refModel.reset data
     else
       refModel = @field.root.service.model(@field.options.ref, data, { owner: model })
 
