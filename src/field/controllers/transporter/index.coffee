@@ -41,6 +41,9 @@ class Transporter extends require("../base")
     model._cache = new Cache model, data
 
     model.load   = (next) => @load model, next
+
+    # support for old libs
+    model.fetch   = (next) => @load model, next
     model.reload = (next) => @reload model, next
     model.save   = (next) => @save model, next
     model.remove = (next) => @remove model, next
