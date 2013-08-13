@@ -9,7 +9,7 @@ class ModelCollection extends bindable.Collection
     super()
 
     @transform().map (v) => 
-      @field._refMapper.map @owner, v
+      @field._refMapper.map @, v
 
     @on 
       insert: @_onInsert
@@ -42,9 +42,8 @@ class ModelCollection extends bindable.Collection
     for existingItem in esrc
       for newItem, i in src
         if @_compare existingItem, newItem
-          if @field.options.ref
-            existingItem.set newItem
-            src.splice i, 1
+          existingItem.reset newItem
+          src.splice i, 1
           break
 
     # remove old item
@@ -58,7 +57,7 @@ class ModelCollection extends bindable.Collection
       unless found
         @splice i, 1
 
-        
+
     # insert the reset
     @push(item) for item in src
 
