@@ -73,4 +73,60 @@ describe("transport/save memoize#", function() {
       next();
     });
   });
+
+
+  it("doesn't send data if a field is a reference", function(next) {
+    var getCount = 0,
+    putModelCount = 0,
+    putCount = 0,
+    l = linen();
+    l.schema("person", {
+      name: "string",
+      changed: {
+        $request: {
+          put: function(payload, next) {
+            putCount++;
+            next();
+          }
+        }
+      },
+      address: {
+        $ref: "address"
+      },
+      $request: {
+        get: function(payload, next) {
+          getCount++;
+          next();
+        },
+        put: function(payload, next) {
+          putModelCount++;
+          next();
+        }
+      }
+    });
+    l.schema("address", {
+      name: "string",
+      address: {
+        $ref: "address"
+      },
+      $request: {
+        get: function(payload, next) {
+          next();
+        }
+      }
+    });
+
+    var m = l.model("person", { _id: "adda", address: "abba" });
+
+    m.load(function() {
+      expect(getCount).to.be(1);
+      m.set("changed", true);
+      m.save(function() {
+        expect(putCount).to.be(1);
+        expect(putModelCount).to.be(0);
+        next();
+      });
+
+    })
+  });
 })

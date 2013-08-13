@@ -47,6 +47,7 @@ class Transporter extends require("../base")
     model.reload = (next) => @reload model, next
     model.save   = (next) => @save model, next
     model.remove = (next) => @remove model, next
+    model.cache  = () -> model._cache.storeModel()
 
     if @rootField.options.methods
       for methodName of @rootField.options.methods

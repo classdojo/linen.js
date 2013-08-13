@@ -30,6 +30,7 @@ class ReferenceMapper extends require("./base")
     else
       refModel = @field.root.service.model(@field.options.ref, data, { owner: model })
 
+    refModel.cache()
     refModel
 
   ###

@@ -6,7 +6,7 @@ class Cache
   ###
   ###
 
-  constructor: (@model, @_prepData) ->
+  constructor: (@model) ->
     @_data = {}
 
   ###
@@ -15,13 +15,13 @@ class Cache
    is being fetched a remote service
   ###
 
-  prepare: () ->
+  storeModel: () ->
     return if @_prepared
     @_prepared = true
 
     # cache the data so it doesn't get persisted to the server. 
     # an explicit reference might be defined, so convert to an object
-    @store JSON.parse JSON.stringify @_prepData
+    @store @model.normalize()
 
   ###
   ###
