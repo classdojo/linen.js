@@ -40,14 +40,10 @@ class Transport extends require("./base")
     unless method
       return next()
 
-    currentHash = @_payloadHash(options)
+    currentHash = @_payloadHash(payload)
     fieldHash   = @_fieldHash(payload)
 
     # memoize the payload so that we don't call more times than needed
-
-    if options.hard
-      return load next
-
     options.model._memos.call fieldHash, currentHash, @_memoOps, next, (next) =>
       method = @_request[payload.method]
 
@@ -78,7 +74,8 @@ class Transport extends require("./base")
 
     payload = {
       model: options.model,
-      method: @_getMethod(options)
+      method: @_getMethod(options),
+      hash: options.hash
     }
 
 
@@ -151,20 +148,22 @@ class Transport extends require("./base")
   ###
   ###
 
-  _fieldHash: (options) ->
+  _fieldHash: (payload) ->
     hashObject {
-      method: options.method,
-      path: @field.path
+      method: payload.method,
+      path: @field.path,
+      pash: payload.hash
     }
 
   ###
   ###
 
-  _payloadHash: (options) ->
+  _payloadHash: (payload) ->
     hashObject {
-      method: options.method,
+      method: payload.method,
       path: @field.path,
-      hash: options.hash
+      hash: payload.hash,
+      data: payload.data or {}
     }
   
   ###

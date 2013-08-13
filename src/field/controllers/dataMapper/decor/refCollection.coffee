@@ -26,7 +26,7 @@ class CollectionMapper extends require("./base")
       return source
 
     c = model.get(@field.path) or new ModelCollection @, model
-    c.reset toarray source
+    c.resetModels toarray source
     c
       
   ###

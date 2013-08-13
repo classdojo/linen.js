@@ -33,7 +33,7 @@ class ModelCollection extends bindable.Collection
   ###
   ###
 
-  reset: (src) ->
+  resetModels: (src) ->
 
     src2 = src.concat()
     esrc = @source().concat()
