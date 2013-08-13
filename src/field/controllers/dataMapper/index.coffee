@@ -30,7 +30,9 @@ class DataMapFieldController extends require("../base")
   ###
   ###
 
-  prepareModel: (model, data) ->
+  prepareModel: (model, data, options = {}) ->
+
+    model.owner = options.owner
 
     model.reset = (data, path = "") =>
 

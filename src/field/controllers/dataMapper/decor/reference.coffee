@@ -18,9 +18,7 @@ class ReferenceMapper extends require("./base")
 
       refModel = data
     else
-      refModel = @field.root.service.model(@field.options.ref, data)
-
-    refModel.owner = model
+      refModel = @field.root.service.model(@field.options.ref, data, { owner: model })
 
     refModel
 

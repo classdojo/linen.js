@@ -28,14 +28,14 @@ class Transporter extends require("../base")
   ###
   ###
 
-  prepareModel: (model, data) ->
+  prepareModel: (model, data, options = {}) ->
 
     if type(data) is "string"
       data = { _id: data }
 
 
-    @_validator.prepareModel model, data
-    @_dataMapper.prepareModel model, data
+    @_validator.prepareModel model, data, options
+    @_dataMapper.prepareModel model, data, options
 
     model._memos = new MemoDictionary()
     model._cache = new Cache model, data
