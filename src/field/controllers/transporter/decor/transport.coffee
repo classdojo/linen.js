@@ -48,20 +48,18 @@ class Transport extends require("./base")
       method = @_request[payload.method]
 
 
-      method payload, (err, result = {}) =>
+      method payload, (err, result) =>
 
         # enforce asynchronous behavior - fetch might not be async - if it isn't,
         # it might break data-bindings
         setTimeout (() =>
-          return next(err) if err?
+          return next(err, result) if err
 
           # ignore changes here so the don't get re-persisted to the server
           # also - copy the result incase anything gets added to it - don't want
           # new data to get cached
           options.model.reset @_map.call(model, result), @field.path
-
           model._cache.store @_getPayloadData(payload, false)
-
           next()
         ), 0 
 
