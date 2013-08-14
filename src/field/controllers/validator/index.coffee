@@ -1,3 +1,5 @@
+factory = require "./decor/factory"
+
 class Validator extends require("../base")
   
   ###
@@ -8,7 +10,8 @@ class Validator extends require("../base")
   ###
   ###
 
-  validate: (model, next) -> next()
+  validate: (model, next) -> 
+    @rootField._validator.validate model, next
 
   ###
   ###
@@ -22,7 +25,7 @@ class Validator extends require("../base")
   ###
   ###
 
-  _createFieldDecorator: (field) ->
+  _createFieldDecorator: (field) -> factory.create field
 
 
 module.exports = (rootField) -> new Validator rootField
