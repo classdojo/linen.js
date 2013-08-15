@@ -40,10 +40,11 @@ class Transporter extends require("../base")
     model._memos = new MemoDictionary()
     model._cache = new Cache model, data
 
-    model.load   = (next) => @load model, next
+    model.load        = (next) => @load model, next
+    model.loadFields  = (fields, next) => @loadFields model, fields, next
 
     # support for old libs
-    model.fetch   = (next) => @load model, next
+    model.fetch  = (next) => @load model, next
     model.reload = (next) => @reload model, next
     model.save   = (next) => @save model, next
     model.remove = (next) => @remove model, next
@@ -78,6 +79,12 @@ class Transporter extends require("../base")
   ###
   ###
 
+  loadFields: (model, fields, next) ->
+    @_request { model: model, method: "get", fields: fields }, next
+
+  ###
+  ###
+
   reload: (model, next) ->
     @_request { model: model, method: "get", hash: Date.now() }, next
 
@@ -105,7 +112,15 @@ class Transporter extends require("../base")
   ###
 
   _request: (options, next = () ->) ->
-    async.forEach @_decorators, ((decor, next) ->
+
+    if options.fields
+      fields = options.fields.map (fieldName) => @rootField.getField(fieldName)
+    else
+      fields = @rootField.allFields
+
+    decor = fields.map (field) -> field._transporter
+
+    async.forEach decor, ((decor, next) ->
       decor.request options, next 
     ), next
 

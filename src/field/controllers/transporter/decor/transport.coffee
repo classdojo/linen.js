@@ -81,15 +81,12 @@ class Transport extends require("./base")
       hash: options.hash
     }
 
-
     # grab the data the server expects
     if /post|put/.test payload.method
       payload.data = @_getPayloadData payload, payload.method isnt "post"
       # TODO - this should be a field option not to normalize data
       if payload.data
         delete payload.data._id
-
-
 
     payload
 

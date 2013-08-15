@@ -77,6 +77,15 @@ describe("transport/get field#", function() {
     }).now();
   });
 
+  it("can explicitly load fields", function(next) {
+    var m = s.model();
+    m.loadFields(["last"], function() {
+      expect(m.get("name")).to.be(undefined);
+      expect(m.get("last")).to.be("abba");
+      next();
+    })
+  });
+
   describe("doesn't load when", function() {
 
     it("a shallow property exists", function(next) {
