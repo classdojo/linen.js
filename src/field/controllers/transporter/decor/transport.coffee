@@ -43,6 +43,7 @@ class Transport extends require("./base")
     currentHash = @_payloadHash(payload)
     fieldHash   = @_fieldHash(payload)
 
+
     # memoize the payload so that we don't call more times than needed
     options.model._memos.call fieldHash, currentHash, @_memoOps, next, (next) =>
       method = @_request[payload.method]
@@ -54,6 +55,10 @@ class Transport extends require("./base")
         # it might break data-bindings
         setTimeout (() =>
           return next(err, result) if err
+
+          # no data? reset the memo
+          unless result
+            options.model._memos.replace fieldHash, undefined 
 
           # ignore changes here so the don't get re-persisted to the server
           # also - copy the result incase anything gets added to it - don't want

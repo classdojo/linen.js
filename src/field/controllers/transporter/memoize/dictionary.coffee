@@ -31,4 +31,12 @@ class MemoDictionary
     memo.fn next
 
 
+  ###
+  ###
+
+  replace: (key, hash) ->
+    return unless @_memos[key]
+    @_memos[key] = hash
+
+
 module.exports = MemoDictionary
