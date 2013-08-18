@@ -34,10 +34,9 @@ class Transport extends require("./base")
     if payload.method is "put" and type(payload.data) is "object" and Object.keys(payload.data).length is 0
       return next()
 
-
     method = @_request[payload.method]
 
-    unless method
+    unless method or (payload.method is "get" and !model.get("_id"))
       return next()
 
     currentHash = @_payloadHash(payload)
