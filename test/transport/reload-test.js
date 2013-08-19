@@ -15,7 +15,7 @@ describe("transport/reload#", function() {
           })
         }
       }
-    }).model();
+    }).model({_id:"abba"});
 
     m.reload(function() {
       m.reload(function() {

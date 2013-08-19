@@ -36,7 +36,7 @@ class Transport extends require("./base")
 
     method = @_request[payload.method]
 
-    unless method or (payload.method is "get" and !model.get("_id"))
+    if not method or (payload.method is "get" and !model.get("_id"))
       return next()
 
     currentHash = @_payloadHash(payload)

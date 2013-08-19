@@ -43,7 +43,7 @@ describe("transport/get reference#", function() {
 
   it("doesn't GET reference if no sub property is bound", function(next) {
     var m;
-    (m = l.model("person")).bind("hobby").to(function() {
+    (m = l.model("person","abba")).bind("hobby").to(function() {
       expect(m.get("hobby._id")).to.be("cooking")
       expect(m.get("hobby.name")).to.be(undefined)
       next();
@@ -52,14 +52,14 @@ describe("transport/get reference#", function() {
 
   it("GETs a reference if a sub property is bound", function(next) {
     var m;
-    (m = l.model("person")).bind("hobby.name").to(function() {
+    (m = l.model("person","abba")).bind("hobby.name").to(function() {
       expect(m.get("hobby.name")).to.be("cooking!")
       next();
     }).now();
   });
 
   it("GETS a reference when it already exists in a model", function(next) {
-    var m = l.model("person");
+    var m = l.model("person", { _id: "abba" });
     m.bind("friends").to(function() {
     });
 

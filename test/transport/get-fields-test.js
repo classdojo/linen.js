@@ -56,7 +56,7 @@ describe("transport/get field#", function() {
    */
 
   it("can fetch an individual field without loading others", function(next) {
-    var m = s.model();
+    var m = s.model({_id:"ab"});
     m.bind("address").to(function(v) {
       expect(m.get("address.city")).to.be("San Francisco");
       expect(m.get("counts.address")).to.be(1);
@@ -69,7 +69,7 @@ describe("transport/get field#", function() {
    */
 
   it("can fetch a remote, simple data type", function(next) {
-    var m = s.model();
+    var m = s.model({_id:"abba"});
     m.bind("last").to(function(v) {
       expect(m.get("name")).to.be(undefined);
       expect(m.get("last")).to.be("abba");
@@ -78,7 +78,7 @@ describe("transport/get field#", function() {
   });
 
   it("can explicitly load fields", function(next) {
-    var m = s.model();
+    var m = s.model({_id:"abba"});
     m.loadFields(["last"], function() {
       expect(m.get("name")).to.be(undefined);
       expect(m.get("last")).to.be("abba");
@@ -90,7 +90,7 @@ describe("transport/get field#", function() {
 
     it("a shallow property exists", function(next) {
       var m;
-      (m = s.model({name:"abba"})).bind("name").to(function() {
+      (m = s.model({name:"abba",_id:"abba"})).bind("name").to(function() {
         expect(m.get("name")).to.be("abba");
         next();
       }).now();
@@ -98,7 +98,7 @@ describe("transport/get field#", function() {
 
     it("a virtual property exists", function(next) {
       var m;
-      (m = s.model({last:"abba"})).bind("last").to(function() {
+      (m = s.model({last:"abba",_id:"abba"})).bind("last").to(function() {
         expect(m.get("last")).to.be("abba");
         next();
       }).now();

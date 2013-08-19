@@ -17,7 +17,7 @@ describe("transport/get memoize#", function() {
           next();
         }
       }
-    }).model();
+    }).model({_id:"abba"});
 
     m.load(function() {
       m.load(function() {

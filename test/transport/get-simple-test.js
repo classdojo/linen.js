@@ -39,7 +39,7 @@ describe("transport/get simple#", function() {
 
   it("can request data", function(next) {
 
-    var m = s.model();
+    var m = s.model({_id:"abba"});
 
     m.load(function() {
       expect(m.get("name")).to.be("Craig");
@@ -50,7 +50,7 @@ describe("transport/get simple#", function() {
   });
 
   it("cannot reload a model", function(next) {
-    var m = s.model();
+    var m = s.model({_id:"abba"});
     m.load(function() {
       m.load(function() {
         expect(m.get("requestCount")).to.be(1);
@@ -83,7 +83,7 @@ describe("transport/get simple#", function() {
 
     it("binding to a shallow property", function(next) {
       var m;
-      (m = s.model()).bind("name").to(function() {
+      (m = s.model({_id:"abba"})).bind("name").to(function() {
         expect(m.get("name")).to.be("Craig");
         next();
       }).now();
@@ -91,7 +91,7 @@ describe("transport/get simple#", function() {
 
     it("binding to a deep property", function(next) {
       var m;
-      (m = s.model()).bind("address").to(function(address) {
+      (m = s.model({_id:"abba"})).bind("address").to(function(address) {
         expect(m.get("address")).to.be(address);
         expect(m.get("address.city")).to.be("San Francisco");
         expect(m.get("name")).to.be("Craig");
@@ -101,7 +101,7 @@ describe("transport/get simple#", function() {
 
     it("binding to a property of a field", function(next) {
       var m;
-      (m = s.model()).bind("name.length").to(function(len) {
+      (m = s.model({_id:"abba"})).bind("name.length").to(function(len) {
         expect(m.get("name")).to.be("Craig");
         expect(m.get("name").length).to.be(len);
         next();
@@ -112,9 +112,9 @@ describe("transport/get simple#", function() {
 
   describe("doesn't load when", function() {
     it("a property doesn't exist", function(next) {
-      var m = s.model();
+      var m = s.model({_id:"abba"});
 
-      (m = s.model()).bind("blah.length").to(function(len) {
+      (m = s.model({_id:"abba"})).bind("blah.length").to(function(len) {
       }).now();
 
       setTimeout(function() {
