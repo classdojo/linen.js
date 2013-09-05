@@ -1,0 +1,754 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@1.2.18
+3 info using node@v0.10.5
+4 verbose publish [ '.' ]
+5 verbose read json /Users/craig/Developer/Public/linen.js/package.json
+6 verbose cache add [ '.', null ]
+7 verbose cache add name=undefined spec="." args=[".",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: '.',
+8 verbose parsed url   path: '.',
+8 verbose parsed url   href: '.' }
+9 silly lockFile 3a52ce78- .
+10 verbose lock . /Users/craig/.npm/3a52ce78-.lock
+11 verbose read json package.json
+12 verbose tar pack [ '/var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/tmp.tgz',
+12 verbose tar pack   '.' ]
+13 verbose tarball /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/tmp.tgz
+14 verbose folder .
+15 info prepublish linen@0.3.35
+16 silly lockFile 3a52ce78- .
+17 verbose lock . /Users/craig/.npm/3a52ce78-.lock
+18 silly lockFile 6856ae93-3595-0-06626796396449208-tmp-tgz /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/tmp.tgz
+19 verbose lock /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/tmp.tgz /Users/craig/.npm/6856ae93-3595-0-06626796396449208-tmp-tgz.lock
+20 silly lockFile 3a52ce78- .
+21 silly lockFile 3a52ce78- .
+22 silly lockFile 6856ae93-3595-0-06626796396449208-tmp-tgz /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/tmp.tgz
+23 silly lockFile 6856ae93-3595-0-06626796396449208-tmp-tgz /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/tmp.tgz
+24 verbose tar unpack /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/tmp.tgz
+25 silly lockFile a5795eec-3595-0-06626796396449208-package /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/package
+26 verbose lock /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/package /Users/craig/.npm/a5795eec-3595-0-06626796396449208-package.lock
+27 silly lockFile 6856ae93-3595-0-06626796396449208-tmp-tgz /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/tmp.tgz
+28 verbose lock /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/tmp.tgz /Users/craig/.npm/6856ae93-3595-0-06626796396449208-tmp-tgz.lock
+29 silly gunzTarPerm modes [ '755', '644' ]
+30 silly gunzTarPerm extractEntry package.json
+31 silly gunzTarPerm modified mode [ 'package.json', 511, 493 ]
+32 silly gunzTarPerm extractEntry .npmignore
+33 silly gunzTarPerm modified mode [ '.npmignore', 511, 493 ]
+34 silly gunzTarPerm extractEntry README.md
+35 silly gunzTarPerm modified mode [ 'README.md', 511, 493 ]
+36 silly gunzTarPerm extractEntry .browsers.js
+37 silly gunzTarPerm modified mode [ '.browsers.js', 511, 493 ]
+38 silly gunzTarPerm extractEntry karma.conf.js
+39 silly gunzTarPerm modified mode [ 'karma.conf.js', 511, 493 ]
+40 silly gunzTarPerm extractEntry doc/README.md
+41 silly gunzTarPerm modified mode [ 'doc/README.md', 511, 493 ]
+42 silly gunzTarPerm extractEntry doc/brainstorming/urlMapping.md
+43 silly gunzTarPerm modified mode [ 'doc/brainstorming/urlMapping.md', 511, 493 ]
+44 silly gunzTarPerm extractEntry doc/pseudo.coffee
+45 silly gunzTarPerm modified mode [ 'doc/pseudo.coffee', 511, 493 ]
+46 silly gunzTarPerm extractEntry inc/es5-sham.min.js
+47 silly gunzTarPerm modified mode [ 'inc/es5-sham.min.js', 511, 493 ]
+48 silly gunzTarPerm extractEntry inc/es5-shim.min.js
+49 silly gunzTarPerm modified mode [ 'inc/es5-shim.min.js', 511, 493 ]
+50 silly gunzTarPerm extractEntry test3/transport/memoize/memoize-test.js
+51 silly gunzTarPerm modified mode [ 'test3/transport/memoize/memoize-test.js', 511, 493 ]
+52 silly gunzTarPerm extractEntry lib/index.js
+53 silly gunzTarPerm modified mode [ 'lib/index.js', 511, 493 ]
+54 silly gunzTarPerm extractEntry lib/model.js
+55 silly gunzTarPerm modified mode [ 'lib/model.js', 511, 493 ]
+56 silly gunzTarPerm extractEntry lib/schema.js
+57 silly gunzTarPerm modified mode [ 'lib/schema.js', 511, 493 ]
+58 silly gunzTarPerm extractEntry lib/collections/primitive.js
+59 silly gunzTarPerm modified mode [ 'lib/collections/primitive.js', 511, 493 ]
+60 silly gunzTarPerm extractEntry lib/factory/any.js
+61 silly gunzTarPerm modified mode [ 'lib/factory/any.js', 511, 493 ]
+62 silly gunzTarPerm extractEntry lib/factory/base.js
+63 silly gunzTarPerm modified mode [ 'lib/factory/base.js', 511, 493 ]
+64 silly gunzTarPerm extractEntry lib/factory/class.js
+65 silly gunzTarPerm modified mode [ 'lib/factory/class.js', 511, 493 ]
+66 silly gunzTarPerm extractEntry lib/factory/factory.js
+67 silly gunzTarPerm modified mode [ 'lib/factory/factory.js', 511, 493 ]
+68 silly gunzTarPerm extractEntry lib/factory/fn.js
+69 silly gunzTarPerm modified mode [ 'lib/factory/fn.js', 511, 493 ]
+70 silly gunzTarPerm extractEntry lib/factory/group.js
+71 silly gunzTarPerm modified mode [ 'lib/factory/group.js', 511, 493 ]
+72 silly gunzTarPerm extractEntry lib/field/index.js
+73 silly gunzTarPerm modified mode [ 'lib/field/index.js', 511, 493 ]
+74 silly gunzTarPerm extractEntry lib/field/normalize.js
+75 silly gunzTarPerm modified mode [ 'lib/field/normalize.js', 511, 493 ]
+76 silly gunzTarPerm extractEntry lib/field/controllers/base.js
+77 silly gunzTarPerm modified mode [ 'lib/field/controllers/base.js', 511, 493 ]
+78 silly gunzTarPerm extractEntry lib/field/controllers/index.js
+79 silly gunzTarPerm modified mode [ 'lib/field/controllers/index.js', 511, 493 ]
+80 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/index.js
+81 silly gunzTarPerm modified mode [ 'lib/field/controllers/dataMapper/index.js', 511, 493 ]
+82 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/base.js
+83 silly gunzTarPerm modified mode [ 'lib/field/controllers/dataMapper/decor/base.js', 511, 493 ]
+84 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/collection.js
+85 silly gunzTarPerm modified mode [ 'lib/field/controllers/dataMapper/decor/collection.js',
+85 silly gunzTarPerm   511,
+85 silly gunzTarPerm   493 ]
+86 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/sub.js
+87 silly gunzTarPerm modified mode [ 'lib/field/controllers/dataMapper/decor/sub.js', 511, 493 ]
+88 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/default.js
+89 silly gunzTarPerm modified mode [ 'lib/field/controllers/dataMapper/decor/default.js', 511, 493 ]
+90 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/factory.js
+91 silly gunzTarPerm modified mode [ 'lib/field/controllers/dataMapper/decor/factory.js', 511, 493 ]
+92 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/cast.js
+93 silly gunzTarPerm modified mode [ 'lib/field/controllers/dataMapper/decor/cast.js', 511, 493 ]
+94 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/group.js
+95 silly gunzTarPerm modified mode [ 'lib/field/controllers/dataMapper/decor/group.js', 511, 493 ]
+96 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/none.js
+97 silly gunzTarPerm modified mode [ 'lib/field/controllers/dataMapper/decor/none.js', 511, 493 ]
+98 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/refCollection.js
+99 silly gunzTarPerm modified mode [ 'lib/field/controllers/dataMapper/decor/refCollection.js',
+99 silly gunzTarPerm   511,
+99 silly gunzTarPerm   493 ]
+100 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/reference.js
+101 silly gunzTarPerm modified mode [ 'lib/field/controllers/dataMapper/decor/reference.js',
+101 silly gunzTarPerm   511,
+101 silly gunzTarPerm   493 ]
+102 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/virtual.js
+103 silly gunzTarPerm modified mode [ 'lib/field/controllers/dataMapper/decor/virtual.js', 511, 493 ]
+104 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/fn.js
+105 silly gunzTarPerm modified mode [ 'lib/field/controllers/dataMapper/decor/fn.js', 511, 493 ]
+106 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/collections/model.js
+107 silly gunzTarPerm modified mode [ 'lib/field/controllers/dataMapper/decor/collections/model.js',
+107 silly gunzTarPerm   511,
+107 silly gunzTarPerm   493 ]
+108 silly gunzTarPerm extractEntry lib/field/controllers/transporter/cache.js
+109 silly gunzTarPerm modified mode [ 'lib/field/controllers/transporter/cache.js', 511, 493 ]
+110 silly gunzTarPerm extractEntry lib/field/controllers/transporter/index.js
+111 silly gunzTarPerm modified mode [ 'lib/field/controllers/transporter/index.js', 511, 493 ]
+112 silly gunzTarPerm extractEntry lib/field/controllers/transporter/decor/base.js
+113 silly gunzTarPerm modified mode [ 'lib/field/controllers/transporter/decor/base.js', 511, 493 ]
+114 silly gunzTarPerm extractEntry lib/field/controllers/transporter/decor/factory.js
+115 silly gunzTarPerm modified mode [ 'lib/field/controllers/transporter/decor/factory.js',
+115 silly gunzTarPerm   511,
+115 silly gunzTarPerm   493 ]
+116 silly gunzTarPerm extractEntry lib/field/controllers/transporter/decor/inherit.js
+117 silly gunzTarPerm modified mode [ 'lib/field/controllers/transporter/decor/inherit.js',
+117 silly gunzTarPerm   511,
+117 silly gunzTarPerm   493 ]
+118 silly gunzTarPerm extractEntry lib/field/controllers/transporter/decor/none.js
+119 silly gunzTarPerm modified mode [ 'lib/field/controllers/transporter/decor/none.js', 511, 493 ]
+120 silly gunzTarPerm extractEntry lib/field/controllers/transporter/decor/transport.js
+121 silly gunzTarPerm modified mode [ 'lib/field/controllers/transporter/decor/transport.js',
+121 silly gunzTarPerm   511,
+121 silly gunzTarPerm   493 ]
+122 silly gunzTarPerm extractEntry lib/field/controllers/transporter/memoize/dictionary.js
+123 silly gunzTarPerm modified mode [ 'lib/field/controllers/transporter/memoize/dictionary.js',
+123 silly gunzTarPerm   511,
+123 silly gunzTarPerm   493 ]
+124 silly gunzTarPerm extractEntry lib/field/controllers/transporter/memoize/fn.js
+125 silly gunzTarPerm modified mode [ 'lib/field/controllers/transporter/memoize/fn.js', 511, 493 ]
+126 silly gunzTarPerm extractEntry lib/field/controllers/transporter/memoize/hashObject.js
+127 silly gunzTarPerm modified mode [ 'lib/field/controllers/transporter/memoize/hashObject.js',
+127 silly gunzTarPerm   511,
+127 silly gunzTarPerm   493 ]
+128 silly gunzTarPerm extractEntry lib/field/controllers/transporter/utils/flattenObject.js
+129 silly gunzTarPerm modified mode [ 'lib/field/controllers/transporter/utils/flattenObject.js',
+129 silly gunzTarPerm   511,
+129 silly gunzTarPerm   493 ]
+130 silly gunzTarPerm extractEntry lib/field/controllers/transporter/utils/hashObject.js
+131 silly gunzTarPerm modified mode [ 'lib/field/controllers/transporter/utils/hashObject.js',
+131 silly gunzTarPerm   511,
+131 silly gunzTarPerm   493 ]
+132 silly gunzTarPerm extractEntry lib/field/controllers/transporter/utils/unflattenObject.js
+133 silly gunzTarPerm modified mode [ 'lib/field/controllers/transporter/utils/unflattenObject.js',
+133 silly gunzTarPerm   511,
+133 silly gunzTarPerm   493 ]
+134 silly gunzTarPerm extractEntry lib/field/controllers/validator/index.js
+135 silly gunzTarPerm modified mode [ 'lib/field/controllers/validator/index.js', 511, 493 ]
+136 silly gunzTarPerm extractEntry lib/field/controllers/validator/decor/base.js
+137 silly gunzTarPerm modified mode [ 'lib/field/controllers/validator/decor/base.js', 511, 493 ]
+138 silly gunzTarPerm extractEntry lib/field/controllers/validator/decor/factory.js
+139 silly gunzTarPerm modified mode [ 'lib/field/controllers/validator/decor/factory.js', 511, 493 ]
+140 silly gunzTarPerm extractEntry lib/field/controllers/validator/decor/group.js
+141 silly gunzTarPerm modified mode [ 'lib/field/controllers/validator/decor/group.js', 511, 493 ]
+142 silly gunzTarPerm extractEntry lib/field/controllers/validator/decor/none.js
+143 silly gunzTarPerm modified mode [ 'lib/field/controllers/validator/decor/none.js', 511, 493 ]
+144 silly gunzTarPerm extractEntry lib/field/controllers/validator/decor/required.js
+145 silly gunzTarPerm modified mode [ 'lib/field/controllers/validator/decor/required.js', 511, 493 ]
+146 silly gunzTarPerm extractEntry lib/field/controllers/validator/decor/sub.js
+147 silly gunzTarPerm modified mode [ 'lib/field/controllers/validator/decor/sub.js', 511, 493 ]
+148 silly gunzTarPerm extractEntry lib/field/controllers/validator/decor/type.js
+149 silly gunzTarPerm modified mode [ 'lib/field/controllers/validator/decor/type.js', 511, 493 ]
+150 silly gunzTarPerm extractEntry lib/transports/index.js
+151 silly gunzTarPerm modified mode [ 'lib/transports/index.js', 511, 493 ]
+152 silly gunzTarPerm extractEntry lib/transports/restful.js
+153 silly gunzTarPerm modified mode [ 'lib/transports/restful.js', 511, 493 ]
+154 silly gunzTarPerm extractEntry benchmark/index.js
+155 silly gunzTarPerm modified mode [ 'benchmark/index.js', 511, 493 ]
+156 silly gunzTarPerm extractEntry makefile
+157 silly gunzTarPerm modified mode [ 'makefile', 511, 493 ]
+158 silly gunzTarPerm extractEntry test.sh
+159 silly gunzTarPerm modified mode [ 'test.sh', 511, 493 ]
+160 silly gunzTarPerm extractEntry src/factory/any.coffee
+161 silly gunzTarPerm modified mode [ 'src/factory/any.coffee', 511, 493 ]
+162 silly gunzTarPerm extractEntry src/factory/base.coffee
+163 silly gunzTarPerm modified mode [ 'src/factory/base.coffee', 511, 493 ]
+164 silly gunzTarPerm extractEntry src/factory/class.coffee
+165 silly gunzTarPerm modified mode [ 'src/factory/class.coffee', 511, 493 ]
+166 silly gunzTarPerm extractEntry src/factory/factory.coffee
+167 silly gunzTarPerm modified mode [ 'src/factory/factory.coffee', 511, 493 ]
+168 silly gunzTarPerm extractEntry src/factory/fn.coffee
+169 silly gunzTarPerm modified mode [ 'src/factory/fn.coffee', 511, 493 ]
+170 silly gunzTarPerm extractEntry src/factory/group.coffee
+171 silly gunzTarPerm modified mode [ 'src/factory/group.coffee', 511, 493 ]
+172 silly gunzTarPerm extractEntry src/field/controllers/base.coffee
+173 silly gunzTarPerm modified mode [ 'src/field/controllers/base.coffee', 511, 493 ]
+174 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/fn.coffee
+175 silly gunzTarPerm modified mode [ 'src/field/controllers/dataMapper/decor/fn.coffee', 511, 493 ]
+176 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/base.coffee
+177 silly gunzTarPerm modified mode [ 'src/field/controllers/dataMapper/decor/base.coffee',
+177 silly gunzTarPerm   511,
+177 silly gunzTarPerm   493 ]
+178 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/collection.coffee
+179 silly gunzTarPerm modified mode [ 'src/field/controllers/dataMapper/decor/collection.coffee',
+179 silly gunzTarPerm   511,
+179 silly gunzTarPerm   493 ]
+180 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/collections/model.coffee
+181 silly gunzTarPerm modified mode [ 'src/field/controllers/dataMapper/decor/collections/model.coffee',
+181 silly gunzTarPerm   511,
+181 silly gunzTarPerm   493 ]
+182 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/default.coffee
+183 silly gunzTarPerm modified mode [ 'src/field/controllers/dataMapper/decor/default.coffee',
+183 silly gunzTarPerm   511,
+183 silly gunzTarPerm   493 ]
+184 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/factory.coffee
+185 silly gunzTarPerm modified mode [ 'src/field/controllers/dataMapper/decor/factory.coffee',
+185 silly gunzTarPerm   511,
+185 silly gunzTarPerm   493 ]
+186 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/cast.coffee
+187 silly gunzTarPerm modified mode [ 'src/field/controllers/dataMapper/decor/cast.coffee',
+187 silly gunzTarPerm   511,
+187 silly gunzTarPerm   493 ]
+188 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/group.coffee
+189 silly gunzTarPerm modified mode [ 'src/field/controllers/dataMapper/decor/group.coffee',
+189 silly gunzTarPerm   511,
+189 silly gunzTarPerm   493 ]
+190 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/none.coffee
+191 silly gunzTarPerm modified mode [ 'src/field/controllers/dataMapper/decor/none.coffee',
+191 silly gunzTarPerm   511,
+191 silly gunzTarPerm   493 ]
+192 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/refCollection.coffee
+193 silly gunzTarPerm modified mode [ 'src/field/controllers/dataMapper/decor/refCollection.coffee',
+193 silly gunzTarPerm   511,
+193 silly gunzTarPerm   493 ]
+194 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/reference.coffee
+195 silly gunzTarPerm modified mode [ 'src/field/controllers/dataMapper/decor/reference.coffee',
+195 silly gunzTarPerm   511,
+195 silly gunzTarPerm   493 ]
+196 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/sub.coffee
+197 silly gunzTarPerm modified mode [ 'src/field/controllers/dataMapper/decor/sub.coffee', 511, 493 ]
+198 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/virtual.coffee
+199 silly gunzTarPerm modified mode [ 'src/field/controllers/dataMapper/decor/virtual.coffee',
+199 silly gunzTarPerm   511,
+199 silly gunzTarPerm   493 ]
+200 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/index.coffee
+201 silly gunzTarPerm modified mode [ 'src/field/controllers/dataMapper/index.coffee', 511, 493 ]
+202 silly gunzTarPerm extractEntry src/field/controllers/index.coffee
+203 silly gunzTarPerm modified mode [ 'src/field/controllers/index.coffee', 511, 493 ]
+204 silly gunzTarPerm extractEntry src/field/controllers/transporter/cache.coffee
+205 silly gunzTarPerm modified mode [ 'src/field/controllers/transporter/cache.coffee', 511, 493 ]
+206 silly gunzTarPerm extractEntry src/field/controllers/transporter/decor/base.coffee
+207 silly gunzTarPerm modified mode [ 'src/field/controllers/transporter/decor/base.coffee',
+207 silly gunzTarPerm   511,
+207 silly gunzTarPerm   493 ]
+208 silly gunzTarPerm extractEntry src/field/controllers/transporter/decor/factory.coffee
+209 silly gunzTarPerm modified mode [ 'src/field/controllers/transporter/decor/factory.coffee',
+209 silly gunzTarPerm   511,
+209 silly gunzTarPerm   493 ]
+210 silly gunzTarPerm extractEntry src/field/controllers/transporter/decor/inherit.coffee
+211 silly gunzTarPerm modified mode [ 'src/field/controllers/transporter/decor/inherit.coffee',
+211 silly gunzTarPerm   511,
+211 silly gunzTarPerm   493 ]
+212 silly gunzTarPerm extractEntry src/field/controllers/transporter/decor/none.coffee
+213 silly gunzTarPerm modified mode [ 'src/field/controllers/transporter/decor/none.coffee',
+213 silly gunzTarPerm   511,
+213 silly gunzTarPerm   493 ]
+214 silly gunzTarPerm extractEntry src/field/controllers/transporter/decor/transport.coffee
+215 silly gunzTarPerm modified mode [ 'src/field/controllers/transporter/decor/transport.coffee',
+215 silly gunzTarPerm   511,
+215 silly gunzTarPerm   493 ]
+216 silly gunzTarPerm extractEntry src/field/controllers/transporter/index.coffee
+217 silly gunzTarPerm modified mode [ 'src/field/controllers/transporter/index.coffee', 511, 493 ]
+218 silly gunzTarPerm extractEntry src/field/controllers/transporter/memoize/dictionary.coffee
+219 silly gunzTarPerm modified mode [ 'src/field/controllers/transporter/memoize/dictionary.coffee',
+219 silly gunzTarPerm   511,
+219 silly gunzTarPerm   493 ]
+220 silly gunzTarPerm extractEntry src/field/controllers/transporter/memoize/fn.coffee
+221 silly gunzTarPerm modified mode [ 'src/field/controllers/transporter/memoize/fn.coffee',
+221 silly gunzTarPerm   511,
+221 silly gunzTarPerm   493 ]
+222 silly gunzTarPerm extractEntry src/field/controllers/transporter/memoize/hashObject.coffee
+223 silly gunzTarPerm modified mode [ 'src/field/controllers/transporter/memoize/hashObject.coffee',
+223 silly gunzTarPerm   511,
+223 silly gunzTarPerm   493 ]
+224 silly gunzTarPerm extractEntry src/field/controllers/transporter/utils/flattenObject.coffee
+225 silly gunzTarPerm modified mode [ 'src/field/controllers/transporter/utils/flattenObject.coffee',
+225 silly gunzTarPerm   511,
+225 silly gunzTarPerm   493 ]
+226 silly gunzTarPerm extractEntry src/field/controllers/transporter/utils/unflattenObject.coffee
+227 silly gunzTarPerm modified mode [ 'src/field/controllers/transporter/utils/unflattenObject.coffee',
+227 silly gunzTarPerm   511,
+227 silly gunzTarPerm   493 ]
+228 silly gunzTarPerm extractEntry src/field/controllers/validator/decor/base.coffee
+229 silly gunzTarPerm modified mode [ 'src/field/controllers/validator/decor/base.coffee', 511, 493 ]
+230 silly gunzTarPerm extractEntry src/field/controllers/validator/decor/factory.coffee
+231 silly gunzTarPerm modified mode [ 'src/field/controllers/validator/decor/factory.coffee',
+231 silly gunzTarPerm   511,
+231 silly gunzTarPerm   493 ]
+232 silly gunzTarPerm extractEntry src/field/controllers/validator/decor/group.coffee
+233 silly gunzTarPerm modified mode [ 'src/field/controllers/validator/decor/group.coffee',
+233 silly gunzTarPerm   511,
+233 silly gunzTarPerm   493 ]
+234 silly gunzTarPerm extractEntry src/field/controllers/validator/decor/none.coffee
+235 silly gunzTarPerm modified mode [ 'src/field/controllers/validator/decor/none.coffee', 511, 493 ]
+236 silly gunzTarPerm extractEntry src/field/controllers/validator/decor/required.coffee
+237 silly gunzTarPerm modified mode [ 'src/field/controllers/validator/decor/required.coffee',
+237 silly gunzTarPerm   511,
+237 silly gunzTarPerm   493 ]
+238 silly gunzTarPerm extractEntry src/field/controllers/validator/decor/sub.coffee
+239 silly gunzTarPerm modified mode [ 'src/field/controllers/validator/decor/sub.coffee', 511, 493 ]
+240 silly gunzTarPerm extractEntry src/field/controllers/validator/decor/type.coffee
+241 silly gunzTarPerm modified mode [ 'src/field/controllers/validator/decor/type.coffee', 511, 493 ]
+242 silly gunzTarPerm extractEntry src/field/controllers/validator/index.coffee
+243 silly gunzTarPerm modified mode [ 'src/field/controllers/validator/index.coffee', 511, 493 ]
+244 silly gunzTarPerm extractEntry src/field/index.coffee
+245 silly gunzTarPerm modified mode [ 'src/field/index.coffee', 511, 493 ]
+246 silly gunzTarPerm extractEntry src/field/normalize.coffee
+247 silly gunzTarPerm modified mode [ 'src/field/normalize.coffee', 511, 493 ]
+248 silly gunzTarPerm extractEntry src/index.coffee
+249 silly gunzTarPerm modified mode [ 'src/index.coffee', 511, 493 ]
+250 silly gunzTarPerm extractEntry src/model.coffee
+251 silly gunzTarPerm modified mode [ 'src/model.coffee', 511, 493 ]
+252 silly gunzTarPerm extractEntry src/schema.coffee
+253 silly gunzTarPerm modified mode [ 'src/schema.coffee', 511, 493 ]
+254 silly gunzTarPerm extractEntry src/transports/index.coffee
+255 silly gunzTarPerm modified mode [ 'src/transports/index.coffee', 511, 493 ]
+256 silly gunzTarPerm extractEntry src/transports/restful.coffee
+257 silly gunzTarPerm modified mode [ 'src/transports/restful.coffee', 511, 493 ]
+258 silly gunzTarPerm extractEntry test/ran-test.js
+259 silly gunzTarPerm extractEntry test/field/create-test.js
+260 silly gunzTarPerm modified mode [ 'test/field/create-test.js', 511, 493 ]
+261 silly gunzTarPerm extractEntry test/field/normalize-test.js
+262 silly gunzTarPerm modified mode [ 'test/field/normalize-test.js', 511, 493 ]
+263 silly gunzTarPerm extractEntry test/helpers/api.js
+264 silly gunzTarPerm modified mode [ 'test/helpers/api.js', 511, 493 ]
+265 silly gunzTarPerm extractEntry test/helpers/data.js
+266 silly gunzTarPerm modified mode [ 'test/helpers/data.js', 511, 493 ]
+267 silly gunzTarPerm extractEntry test/helpers/routes.js
+268 silly gunzTarPerm modified mode [ 'test/helpers/routes.js', 511, 493 ]
+269 silly gunzTarPerm extractEntry test/helpers/schemas.js
+270 silly gunzTarPerm modified mode [ 'test/helpers/schemas.js', 511, 493 ]
+271 silly gunzTarPerm extractEntry test/map/cast-test.js
+272 silly gunzTarPerm modified mode [ 'test/map/cast-test.js', 511, 493 ]
+273 silly gunzTarPerm extractEntry test/map/collection-complex-test.js
+274 silly gunzTarPerm modified mode [ 'test/map/collection-complex-test.js', 511, 493 ]
+275 silly gunzTarPerm extractEntry test/map/collection-reference-test.js
+276 silly gunzTarPerm modified mode [ 'test/map/collection-reference-test.js', 511, 493 ]
+277 silly gunzTarPerm extractEntry test/map/collection-simple-test.js
+278 silly gunzTarPerm modified mode [ 'test/map/collection-simple-test.js', 511, 493 ]
+279 silly gunzTarPerm extractEntry test/map/default-test.js
+280 silly gunzTarPerm modified mode [ 'test/map/default-test.js', 511, 493 ]
+281 silly gunzTarPerm extractEntry test/map/fn-test.js
+282 silly gunzTarPerm modified mode [ 'test/map/fn-test.js', 511, 493 ]
+283 silly gunzTarPerm extractEntry test/map/normalize-test.js
+284 silly gunzTarPerm modified mode [ 'test/map/normalize-test.js', 511, 493 ]
+285 silly gunzTarPerm extractEntry test/map/reference-test.js
+286 silly gunzTarPerm modified mode [ 'test/map/reference-test.js', 511, 493 ]
+287 silly gunzTarPerm extractEntry test/map/test.js
+288 silly gunzTarPerm modified mode [ 'test/map/test.js', 511, 493 ]
+289 silly gunzTarPerm extractEntry test/map/virtual-test.js
+290 silly gunzTarPerm modified mode [ 'test/map/virtual-test.js', 511, 493 ]
+291 silly gunzTarPerm extractEntry test/reuse/reuse-collection-item-test.js
+292 silly gunzTarPerm modified mode [ 'test/reuse/reuse-collection-item-test.js', 511, 493 ]
+293 silly gunzTarPerm extractEntry test/reuse/reuse-reference-test.js
+294 silly gunzTarPerm modified mode [ 'test/reuse/reuse-reference-test.js', 511, 493 ]
+295 silly gunzTarPerm extractEntry test/transport/cache-test.js
+296 silly gunzTarPerm modified mode [ 'test/transport/cache-test.js', 511, 493 ]
+297 silly gunzTarPerm extractEntry test/transport/get-memoize-test.js
+298 silly gunzTarPerm modified mode [ 'test/transport/get-memoize-test.js', 511, 493 ]
+299 silly gunzTarPerm extractEntry test/transport/get-reference-test.js
+300 silly gunzTarPerm modified mode [ 'test/transport/get-reference-test.js', 511, 493 ]
+301 silly gunzTarPerm extractEntry test/transport/get-simple-test.js
+302 silly gunzTarPerm modified mode [ 'test/transport/get-simple-test.js', 511, 493 ]
+303 silly gunzTarPerm extractEntry test/transport/get-fields-test.js
+304 silly gunzTarPerm modified mode [ 'test/transport/get-fields-test.js', 511, 493 ]
+305 silly gunzTarPerm extractEntry test/transport/ref-test.js
+306 silly gunzTarPerm modified mode [ 'test/transport/ref-test.js', 511, 493 ]
+307 silly gunzTarPerm extractEntry test/transport/reload-test.js
+308 silly gunzTarPerm modified mode [ 'test/transport/reload-test.js', 511, 493 ]
+309 silly gunzTarPerm extractEntry test/transport/save-field-test.js
+310 silly gunzTarPerm modified mode [ 'test/transport/save-field-test.js', 511, 493 ]
+311 silly gunzTarPerm extractEntry test/transport/save-memoize-test.js
+312 silly gunzTarPerm modified mode [ 'test/transport/save-memoize-test.js', 511, 493 ]
+313 silly gunzTarPerm extractEntry test/transport/save-simple-test.js
+314 silly gunzTarPerm modified mode [ 'test/transport/save-simple-test.js', 511, 493 ]
+315 silly gunzTarPerm extractEntry test/transport/memoize/hash-test.js
+316 silly gunzTarPerm modified mode [ 'test/transport/memoize/hash-test.js', 511, 493 ]
+317 silly gunzTarPerm extractEntry test/transport/memoize/memoize-test.js
+318 silly gunzTarPerm modified mode [ 'test/transport/memoize/memoize-test.js', 511, 493 ]
+319 silly gunzTarPerm extractEntry test/validate/required-test.js
+320 silly gunzTarPerm modified mode [ 'test/validate/required-test.js', 511, 493 ]
+321 silly gunzTarPerm extractEntry test/validate/type-test.js
+322 silly gunzTarPerm modified mode [ 'test/validate/type-test.js', 511, 493 ]
+323 silly gunzTarPerm extractEntry test-web/field/create-test.min.js
+324 silly gunzTarPerm modified mode [ 'test-web/field/create-test.min.js', 511, 493 ]
+325 silly gunzTarPerm extractEntry test-web/field/normalize-test.min.js
+326 silly gunzTarPerm modified mode [ 'test-web/field/normalize-test.min.js', 511, 493 ]
+327 silly gunzTarPerm extractEntry test-web/map/cast-test.min.js
+328 silly gunzTarPerm modified mode [ 'test-web/map/cast-test.min.js', 511, 493 ]
+329 silly gunzTarPerm extractEntry test-web/map/collection-complex-test.min.js
+330 silly gunzTarPerm modified mode [ 'test-web/map/collection-complex-test.min.js', 511, 493 ]
+331 silly gunzTarPerm extractEntry test-web/map/collection-reference-test.min.js
+332 silly gunzTarPerm modified mode [ 'test-web/map/collection-reference-test.min.js', 511, 493 ]
+333 silly gunzTarPerm extractEntry test-web/map/collection-simple-test.min.js
+334 silly gunzTarPerm modified mode [ 'test-web/map/collection-simple-test.min.js', 511, 493 ]
+335 silly gunzTarPerm extractEntry test-web/map/default-test.min.js
+336 silly gunzTarPerm modified mode [ 'test-web/map/default-test.min.js', 511, 493 ]
+337 silly gunzTarPerm extractEntry test-web/map/fn-test.min.js
+338 silly gunzTarPerm modified mode [ 'test-web/map/fn-test.min.js', 511, 493 ]
+339 silly gunzTarPerm extractEntry test-web/map/normalize-test.min.js
+340 silly gunzTarPerm modified mode [ 'test-web/map/normalize-test.min.js', 511, 493 ]
+341 silly gunzTarPerm extractEntry test-web/map/reference-test.min.js
+342 silly gunzTarPerm modified mode [ 'test-web/map/reference-test.min.js', 511, 493 ]
+343 silly gunzTarPerm extractEntry test-web/map/test.min.js
+344 silly gunzTarPerm modified mode [ 'test-web/map/test.min.js', 511, 493 ]
+345 silly gunzTarPerm extractEntry test-web/map/virtual-test.min.js
+346 silly gunzTarPerm modified mode [ 'test-web/map/virtual-test.min.js', 511, 493 ]
+347 silly gunzTarPerm extractEntry test-web/transport/cache-test.min.js
+348 silly gunzTarPerm modified mode [ 'test-web/transport/cache-test.min.js', 511, 493 ]
+349 silly gunzTarPerm extractEntry test-web/transport/get-fields-test.min.js
+350 silly gunzTarPerm modified mode [ 'test-web/transport/get-fields-test.min.js', 511, 493 ]
+351 silly gunzTarPerm extractEntry test-web/transport/get-reference-test.min.js
+352 silly gunzTarPerm modified mode [ 'test-web/transport/get-reference-test.min.js', 511, 493 ]
+353 silly gunzTarPerm extractEntry test-web/transport/get-simple-test.min.js
+354 silly gunzTarPerm modified mode [ 'test-web/transport/get-simple-test.min.js', 511, 493 ]
+355 silly gunzTarPerm extractEntry test-web/transport/reload-test.min.js
+356 silly gunzTarPerm modified mode [ 'test-web/transport/reload-test.min.js', 511, 493 ]
+357 silly gunzTarPerm extractEntry test-web/transport/save-field-test.min.js
+358 silly gunzTarPerm modified mode [ 'test-web/transport/save-field-test.min.js', 511, 493 ]
+359 silly gunzTarPerm extractEntry test-web/transport/save-memoize-test.min.js
+360 silly gunzTarPerm modified mode [ 'test-web/transport/save-memoize-test.min.js', 511, 493 ]
+361 silly gunzTarPerm extractEntry test-web/transport/save-simple-test.min.js
+362 silly gunzTarPerm modified mode [ 'test-web/transport/save-simple-test.min.js', 511, 493 ]
+363 silly gunzTarPerm extractEntry test-web/transport/memoize/hash-test.min.js
+364 silly gunzTarPerm modified mode [ 'test-web/transport/memoize/hash-test.min.js', 511, 493 ]
+365 silly gunzTarPerm extractEntry test-web/transport/memoize/memoize-test.min.js
+366 silly gunzTarPerm modified mode [ 'test-web/transport/memoize/memoize-test.min.js', 511, 493 ]
+367 silly gunzTarPerm extractEntry libpeerconnection.log
+368 silly gunzTarPerm modified mode [ 'libpeerconnection.log', 511, 493 ]
+369 verbose read json /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/package/package.json
+370 silly lockFile a5795eec-3595-0-06626796396449208-package /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/package
+371 silly lockFile a5795eec-3595-0-06626796396449208-package /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/package
+372 silly lockFile 6856ae93-3595-0-06626796396449208-tmp-tgz /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/tmp.tgz
+373 silly lockFile 6856ae93-3595-0-06626796396449208-tmp-tgz /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/tmp.tgz
+374 verbose from cache /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/package/package.json
+375 verbose tar pack [ '/Users/craig/.npm/linen/0.3.35/package.tgz',
+375 verbose tar pack   '/var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/package' ]
+376 verbose tarball /Users/craig/.npm/linen/0.3.35/package.tgz
+377 verbose folder /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/package
+378 silly lockFile a5795eec-3595-0-06626796396449208-package /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/package
+379 verbose lock /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/package /Users/craig/.npm/a5795eec-3595-0-06626796396449208-package.lock
+380 silly lockFile 722a5665-aig-npm-linen-0-3-35-package-tgz /Users/craig/.npm/linen/0.3.35/package.tgz
+381 verbose lock /Users/craig/.npm/linen/0.3.35/package.tgz /Users/craig/.npm/722a5665-aig-npm-linen-0-3-35-package-tgz.lock
+382 silly lockFile a5795eec-3595-0-06626796396449208-package /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/package
+383 silly lockFile a5795eec-3595-0-06626796396449208-package /var/folders/n1/r96x64mx6jzcbzkbz1ddrw6r0000gn/T/npm-24261/1378413123595-0.06626796396449208/package
+384 silly lockFile 722a5665-aig-npm-linen-0-3-35-package-tgz /Users/craig/.npm/linen/0.3.35/package.tgz
+385 silly lockFile 722a5665-aig-npm-linen-0-3-35-package-tgz /Users/craig/.npm/linen/0.3.35/package.tgz
+386 silly lockFile e909861b-s-craig-npm-linen-0-3-35-package /Users/craig/.npm/linen/0.3.35/package
+387 verbose lock /Users/craig/.npm/linen/0.3.35/package /Users/craig/.npm/e909861b-s-craig-npm-linen-0-3-35-package.lock
+388 silly lockFile e909861b-s-craig-npm-linen-0-3-35-package /Users/craig/.npm/linen/0.3.35/package
+389 silly lockFile e909861b-s-craig-npm-linen-0-3-35-package /Users/craig/.npm/linen/0.3.35/package
+390 verbose tar unpack /Users/craig/.npm/linen/0.3.35/package.tgz
+391 silly lockFile e909861b-s-craig-npm-linen-0-3-35-package /Users/craig/.npm/linen/0.3.35/package
+392 verbose lock /Users/craig/.npm/linen/0.3.35/package /Users/craig/.npm/e909861b-s-craig-npm-linen-0-3-35-package.lock
+393 silly lockFile 722a5665-aig-npm-linen-0-3-35-package-tgz /Users/craig/.npm/linen/0.3.35/package.tgz
+394 verbose lock /Users/craig/.npm/linen/0.3.35/package.tgz /Users/craig/.npm/722a5665-aig-npm-linen-0-3-35-package-tgz.lock
+395 silly gunzTarPerm modes [ '755', '644' ]
+396 silly gunzTarPerm extractEntry package.json
+397 silly gunzTarPerm extractEntry .npmignore
+398 silly gunzTarPerm extractEntry README.md
+399 silly gunzTarPerm extractEntry .browsers.js
+400 silly gunzTarPerm extractEntry karma.conf.js
+401 silly gunzTarPerm extractEntry inc/es5-sham.min.js
+402 silly gunzTarPerm extractEntry inc/es5-shim.min.js
+403 silly gunzTarPerm extractEntry test3/transport/memoize/memoize-test.js
+404 silly gunzTarPerm extractEntry lib/index.js
+405 silly gunzTarPerm extractEntry lib/model.js
+406 silly gunzTarPerm extractEntry lib/schema.js
+407 silly gunzTarPerm extractEntry lib/collections/primitive.js
+408 silly gunzTarPerm extractEntry lib/factory/any.js
+409 silly gunzTarPerm extractEntry lib/factory/base.js
+410 silly gunzTarPerm extractEntry lib/factory/class.js
+411 silly gunzTarPerm extractEntry lib/factory/factory.js
+412 silly gunzTarPerm extractEntry lib/factory/fn.js
+413 silly gunzTarPerm extractEntry lib/factory/group.js
+414 silly gunzTarPerm extractEntry lib/field/index.js
+415 silly gunzTarPerm extractEntry lib/field/normalize.js
+416 silly gunzTarPerm extractEntry lib/field/controllers/base.js
+417 silly gunzTarPerm extractEntry lib/field/controllers/index.js
+418 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/index.js
+419 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/base.js
+420 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/collection.js
+421 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/sub.js
+422 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/default.js
+423 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/factory.js
+424 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/cast.js
+425 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/group.js
+426 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/none.js
+427 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/refCollection.js
+428 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/reference.js
+429 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/virtual.js
+430 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/fn.js
+431 silly gunzTarPerm extractEntry lib/field/controllers/dataMapper/decor/collections/model.js
+432 silly gunzTarPerm extractEntry lib/field/controllers/transporter/cache.js
+433 silly gunzTarPerm extractEntry lib/field/controllers/transporter/index.js
+434 silly gunzTarPerm extractEntry lib/field/controllers/transporter/decor/base.js
+435 silly gunzTarPerm extractEntry lib/field/controllers/transporter/decor/factory.js
+436 silly gunzTarPerm extractEntry lib/field/controllers/transporter/decor/inherit.js
+437 silly gunzTarPerm extractEntry lib/field/controllers/transporter/decor/none.js
+438 silly gunzTarPerm extractEntry lib/field/controllers/transporter/decor/transport.js
+439 silly gunzTarPerm extractEntry lib/field/controllers/transporter/memoize/dictionary.js
+440 silly gunzTarPerm extractEntry lib/field/controllers/transporter/memoize/fn.js
+441 silly gunzTarPerm extractEntry lib/field/controllers/transporter/memoize/hashObject.js
+442 silly gunzTarPerm extractEntry lib/field/controllers/transporter/utils/flattenObject.js
+443 silly gunzTarPerm extractEntry lib/field/controllers/transporter/utils/hashObject.js
+444 silly gunzTarPerm extractEntry lib/field/controllers/transporter/utils/unflattenObject.js
+445 silly gunzTarPerm extractEntry lib/field/controllers/validator/index.js
+446 silly gunzTarPerm extractEntry lib/field/controllers/validator/decor/base.js
+447 silly gunzTarPerm extractEntry lib/field/controllers/validator/decor/factory.js
+448 silly gunzTarPerm extractEntry lib/field/controllers/validator/decor/group.js
+449 silly gunzTarPerm extractEntry lib/field/controllers/validator/decor/none.js
+450 silly gunzTarPerm extractEntry lib/field/controllers/validator/decor/required.js
+451 silly gunzTarPerm extractEntry lib/field/controllers/validator/decor/sub.js
+452 silly gunzTarPerm extractEntry lib/field/controllers/validator/decor/type.js
+453 silly gunzTarPerm extractEntry lib/transports/index.js
+454 silly gunzTarPerm extractEntry lib/transports/restful.js
+455 silly gunzTarPerm extractEntry benchmark/index.js
+456 silly gunzTarPerm extractEntry makefile
+457 silly gunzTarPerm extractEntry doc/README.md
+458 silly gunzTarPerm extractEntry doc/brainstorming/urlMapping.md
+459 silly gunzTarPerm extractEntry doc/pseudo.coffee
+460 silly gunzTarPerm extractEntry src/factory/any.coffee
+461 silly gunzTarPerm extractEntry src/factory/base.coffee
+462 silly gunzTarPerm extractEntry src/factory/class.coffee
+463 silly gunzTarPerm extractEntry src/factory/factory.coffee
+464 silly gunzTarPerm extractEntry src/factory/fn.coffee
+465 silly gunzTarPerm extractEntry src/factory/group.coffee
+466 silly gunzTarPerm extractEntry src/field/controllers/base.coffee
+467 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/fn.coffee
+468 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/base.coffee
+469 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/collection.coffee
+470 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/collections/model.coffee
+471 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/default.coffee
+472 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/factory.coffee
+473 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/cast.coffee
+474 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/group.coffee
+475 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/none.coffee
+476 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/refCollection.coffee
+477 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/reference.coffee
+478 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/sub.coffee
+479 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/decor/virtual.coffee
+480 silly gunzTarPerm extractEntry src/field/controllers/dataMapper/index.coffee
+481 silly gunzTarPerm extractEntry src/field/controllers/index.coffee
+482 silly gunzTarPerm extractEntry src/field/controllers/transporter/cache.coffee
+483 silly gunzTarPerm extractEntry src/field/controllers/transporter/decor/base.coffee
+484 silly gunzTarPerm extractEntry src/field/controllers/transporter/decor/factory.coffee
+485 silly gunzTarPerm extractEntry src/field/controllers/transporter/decor/inherit.coffee
+486 silly gunzTarPerm extractEntry src/field/controllers/transporter/decor/none.coffee
+487 silly gunzTarPerm extractEntry src/field/controllers/transporter/decor/transport.coffee
+488 silly gunzTarPerm extractEntry src/field/controllers/transporter/index.coffee
+489 silly gunzTarPerm extractEntry src/field/controllers/transporter/memoize/dictionary.coffee
+490 silly gunzTarPerm extractEntry src/field/controllers/transporter/memoize/fn.coffee
+491 silly gunzTarPerm extractEntry src/field/controllers/transporter/memoize/hashObject.coffee
+492 silly gunzTarPerm extractEntry src/field/controllers/transporter/utils/flattenObject.coffee
+493 silly gunzTarPerm extractEntry src/field/controllers/transporter/utils/unflattenObject.coffee
+494 silly gunzTarPerm extractEntry src/field/controllers/validator/decor/base.coffee
+495 silly gunzTarPerm extractEntry src/field/controllers/validator/decor/factory.coffee
+496 silly gunzTarPerm extractEntry src/field/controllers/validator/decor/group.coffee
+497 silly gunzTarPerm extractEntry src/field/controllers/validator/decor/none.coffee
+498 silly gunzTarPerm extractEntry src/field/controllers/validator/decor/required.coffee
+499 silly gunzTarPerm extractEntry src/field/controllers/validator/decor/sub.coffee
+500 silly gunzTarPerm extractEntry src/field/controllers/validator/decor/type.coffee
+501 silly gunzTarPerm extractEntry src/field/controllers/validator/index.coffee
+502 silly gunzTarPerm extractEntry src/field/index.coffee
+503 silly gunzTarPerm extractEntry src/field/normalize.coffee
+504 silly gunzTarPerm extractEntry src/index.coffee
+505 silly gunzTarPerm extractEntry src/model.coffee
+506 silly gunzTarPerm extractEntry src/schema.coffee
+507 silly gunzTarPerm extractEntry src/transports/index.coffee
+508 silly gunzTarPerm extractEntry src/transports/restful.coffee
+509 silly gunzTarPerm extractEntry test/ran-test.js
+510 silly gunzTarPerm extractEntry test/field/create-test.js
+511 silly gunzTarPerm extractEntry test/field/normalize-test.js
+512 silly gunzTarPerm extractEntry test/helpers/api.js
+513 silly gunzTarPerm extractEntry test/helpers/data.js
+514 silly gunzTarPerm extractEntry test/helpers/routes.js
+515 silly gunzTarPerm extractEntry test/helpers/schemas.js
+516 silly gunzTarPerm extractEntry test/map/cast-test.js
+517 silly gunzTarPerm extractEntry test/map/collection-complex-test.js
+518 silly gunzTarPerm extractEntry test/map/collection-reference-test.js
+519 silly gunzTarPerm extractEntry test/map/collection-simple-test.js
+520 silly gunzTarPerm extractEntry test/map/default-test.js
+521 silly gunzTarPerm extractEntry test/map/fn-test.js
+522 silly gunzTarPerm extractEntry test/map/normalize-test.js
+523 silly gunzTarPerm extractEntry test/map/reference-test.js
+524 silly gunzTarPerm extractEntry test/map/test.js
+525 silly gunzTarPerm extractEntry test/map/virtual-test.js
+526 silly gunzTarPerm extractEntry test/reuse/reuse-collection-item-test.js
+527 silly gunzTarPerm extractEntry test/reuse/reuse-reference-test.js
+528 silly gunzTarPerm extractEntry test/transport/cache-test.js
+529 silly gunzTarPerm extractEntry test/transport/get-memoize-test.js
+530 silly gunzTarPerm extractEntry test/transport/get-reference-test.js
+531 silly gunzTarPerm extractEntry test/transport/get-simple-test.js
+532 silly gunzTarPerm extractEntry test/transport/get-fields-test.js
+533 silly gunzTarPerm extractEntry test/transport/ref-test.js
+534 silly gunzTarPerm extractEntry test/transport/reload-test.js
+535 silly gunzTarPerm extractEntry test/transport/save-field-test.js
+536 silly gunzTarPerm extractEntry test/transport/save-memoize-test.js
+537 silly gunzTarPerm extractEntry test/transport/save-simple-test.js
+538 silly gunzTarPerm extractEntry test/transport/memoize/hash-test.js
+539 silly gunzTarPerm extractEntry test/transport/memoize/memoize-test.js
+540 silly gunzTarPerm extractEntry test/validate/required-test.js
+541 silly gunzTarPerm extractEntry test/validate/type-test.js
+542 silly gunzTarPerm extractEntry test-web/field/create-test.min.js
+543 silly gunzTarPerm extractEntry test-web/field/normalize-test.min.js
+544 silly gunzTarPerm extractEntry test-web/map/cast-test.min.js
+545 silly gunzTarPerm extractEntry test-web/map/collection-complex-test.min.js
+546 silly gunzTarPerm extractEntry test-web/map/collection-reference-test.min.js
+547 silly gunzTarPerm extractEntry test-web/map/collection-simple-test.min.js
+548 silly gunzTarPerm extractEntry test-web/map/default-test.min.js
+549 silly gunzTarPerm extractEntry test-web/map/fn-test.min.js
+550 silly gunzTarPerm extractEntry test-web/map/normalize-test.min.js
+551 silly gunzTarPerm extractEntry test-web/map/reference-test.min.js
+552 silly gunzTarPerm extractEntry test-web/map/test.min.js
+553 silly gunzTarPerm extractEntry test-web/map/virtual-test.min.js
+554 silly gunzTarPerm extractEntry test-web/transport/cache-test.min.js
+555 silly gunzTarPerm extractEntry test-web/transport/get-fields-test.min.js
+556 silly gunzTarPerm extractEntry test-web/transport/get-reference-test.min.js
+557 silly gunzTarPerm extractEntry test-web/transport/get-simple-test.min.js
+558 silly gunzTarPerm extractEntry test-web/transport/reload-test.min.js
+559 silly gunzTarPerm extractEntry test-web/transport/save-field-test.min.js
+560 silly gunzTarPerm extractEntry test-web/transport/save-memoize-test.min.js
+561 silly gunzTarPerm extractEntry test-web/transport/save-simple-test.min.js
+562 silly gunzTarPerm extractEntry test-web/transport/memoize/hash-test.min.js
+563 silly gunzTarPerm extractEntry test-web/transport/memoize/memoize-test.min.js
+564 silly gunzTarPerm extractEntry test.sh
+565 silly gunzTarPerm extractEntry libpeerconnection.log
+566 verbose read json /Users/craig/.npm/linen/0.3.35/package/package.json
+567 silly lockFile e909861b-s-craig-npm-linen-0-3-35-package /Users/craig/.npm/linen/0.3.35/package
+568 silly lockFile e909861b-s-craig-npm-linen-0-3-35-package /Users/craig/.npm/linen/0.3.35/package
+569 silly lockFile 722a5665-aig-npm-linen-0-3-35-package-tgz /Users/craig/.npm/linen/0.3.35/package.tgz
+570 silly lockFile 722a5665-aig-npm-linen-0-3-35-package-tgz /Users/craig/.npm/linen/0.3.35/package.tgz
+571 silly shasum updated bytes 65536
+572 silly shasum updated bytes 65536
+573 silly shasum updated bytes 65536
+574 silly shasum updated bytes 65536
+575 silly shasum updated bytes 65536
+576 silly shasum updated bytes 65536
+577 silly shasum updated bytes 65536
+578 silly shasum updated bytes 65536
+579 silly shasum updated bytes 65536
+580 silly shasum updated bytes 65536
+581 silly shasum updated bytes 65536
+582 silly shasum updated bytes 65536
+583 silly shasum updated bytes 65536
+584 silly shasum updated bytes 65536
+585 silly shasum updated bytes 65536
+586 silly shasum updated bytes 65536
+587 silly shasum updated bytes 65536
+588 silly shasum updated bytes 65536
+589 silly shasum updated bytes 65536
+590 silly shasum updated bytes 65536
+591 silly shasum updated bytes 65536
+592 silly shasum updated bytes 65536
+593 silly shasum updated bytes 65536
+594 silly shasum updated bytes 65536
+595 silly shasum updated bytes 65536
+596 silly shasum updated bytes 44327
+597 info shasum 5bbc246dd88305cd4f5cefbfe58a95671e8bbd57
+597 info shasum /Users/craig/.npm/linen/0.3.35/package.tgz
+598 verbose from cache /Users/craig/.npm/linen/0.3.35/package/package.json
+599 verbose chmod /Users/craig/.npm/linen/0.3.35/package.tgz 644
+600 verbose chown /Users/craig/.npm/linen/0.3.35/package.tgz [ 501, 20 ]
+601 silly lockFile 3a52ce78- .
+602 silly publish { name: 'linen',
+602 silly publish   version: '0.3.35',
+602 silly publish   description: 'Linen (line-in) maps API\'s to [bindable](/classdojo/bindable.js) `objects`, and `collections`. At [classdojo](http://classdojo.com), we use `linen` to abstract our API from front-end, so we don\'t necessarily depend on any sort of API while developing new components. This allows us to rapidly build prototypes which can be wired up later.',
+602 silly publish   main: './lib/index.js',
+602 silly publish   directories: { doc: 'doc', test: 'test' },
+602 silly publish   scripts: { test: 'echo "Error: no test specified" && exit 1' },
+602 silly publish   repository: { type: 'git', url: 'git://github.com/classdojo/linen.js.git' },
+602 silly publish   author: '',
+602 silly publish   license: 'BSD',
+602 silly publish   readmeFilename: 'README.md',
+602 silly publish   gitHead: '6d70af4f40bc26b101f7b9df6bc22731b59067c8',
+602 silly publish   devDependencies:
+602 silly publish    { 'expect.js': '~0.2.0',
+602 silly publish      mocha: '~1.12.0',
+602 silly publish      benchmark: '~1.0.0',
+602 silly publish      browserify: '~2.26.0',
+602 silly publish      'karma-script-launcher': '~0.1.0',
+602 silly publish      'karma-chrome-launcher': '~0.1.0',
+602 silly publish      'karma-firefox-launcher': '~0.1.0',
+602 silly publish      'karma-html2js-preprocessor': '~0.1.0',
+602 silly publish      'karma-jasmine': '~0.1.0',
+602 silly publish      'karma-requirejs': '~0.1.0',
+602 silly publish      'karma-coffee-preprocessor': '~0.1.0',
+602 silly publish      'karma-phantomjs-launcher': '~0.1.0',
+602 silly publish      karma: '~0.10.0',
+602 silly publish      'karma-mocha': '~0.1.0' },
+602 silly publish   dependencies:
+602 silly publish    { 'type-component': '0.0.1',
+602 silly publish      underscore: '~1.5.1',
+602 silly publish      async: '~0.2.9',
+602 silly publish      toarray: '0.0.1',
+602 silly publish      dref: '0.0.6',
+602 silly publish      hoist: '0.0.6',
+602 silly publish      outcome: '0.0.18',
+602 silly publish      comerr: '0.0.6' },
+602 silly publish   readme: 'Linen (line-in) maps API\'s to [bindable](/classdojo/bindable.js) `objects`, and `collections`. At [classdojo](http://classdojo.com), we use `linen` to abstract our API from front-end, so we don\'t necessarily depend on any sort of API while developing new components. This allows us to rapidly build prototypes which can be wired up later. \n\n\nHere\'s an example person schema:\n\n```javascript\nvar linen = require("linen")();\n\nlinen.addSchema({\n\n  // name of the schema - gets referenced by \n  // linen.model("person")\n  name: "person",\n\n  //fields for the person. Keep in mind that model properties\n  //get *validated* against their coresponding field. \n  fields: {\n    firstName: "string",\n    lastName: "string",\n\n    // virtual value - doesn\'t actually exist in the API\n    fullName: {\n      $get: function(model) {\n        return model.get("first_name") + " " + model.get("last_name");\n      },\n      $set: function(model, value) {\n        var nameParts = String(value).split(" ")\n        model.set("first_name", nameParts.shift());\n        model.set("last_name", nameParts.join(" "));\n      },\n      $bind: ["first_name", "last_name"]\n    },\n\n    // fetches GET /people/:personId/friends when\n    // person.bind("friends").to(fn) is called\n    friends: [{\n      $ref: "person",\n      $fetch: function(payload, next) {\n        transport.fetch(payload.method, "/people/" + payload.model.get("_id") + "/friends", next);\n      }\n    }]\n  },\n\n  //fetches GET /people/:personId when\n  //person.bind(property).to(fn) is valled\n  fetch: function(payload, next) {\n    transport.fetch(payload.method, "/people/" + (payload.model.get("_id") || ""), next);\n  }\n});\n```\n\nTo use the schema, simply call the following:\n\n```javascript\nvar person  = linen.model("person"),  //creates a new person\nexistingPerson = linen.model("person", "someId"); //some ID\n```\n\nLinen works by overriding the `bind` method to fetch from any API you have setup, so when you call:\n\n```javascript\n\n//calls GET /people/someId\nexistingPerson.bind("firstName").to(function(name) {\n  console.log(name); \n}).now();\n```\n\nThe `existingPerson` will asynchronously call `.to(fn)` when it\'s been loaded from the server. This is useful when data-binding to any sort of UI component, such as [rivets.js](http://rivetsjs.com/), or [paperclip.js](classdojo/paperclip.js).\n\nHere\'s another example of data-binding to `linen` models:\n\n```javascript\n\n// GET /people/someId/friends\nexistingPerson.bind("friends").to(function(friends) {\n\n  // GET /people/friendId\n  friends.at(0).bind("firstName").once().to(function(name) {\n  }).now();\n}).now();\n```\n\nThe above examples make it easy to abstract models from any API. To demonstrate this, here\'s an example of using `dummy data`:\n\n\n```javascript\nvar existingPerson = new bindable.Object({\n  firstName: "Ron",\n  lastName: "Burgundy",\n  friends: [\n    new bindable.Object({\n      firstName: "Brian",\n      lastName: "Fontana"\n    }),\n    new bindable.Object({\n      firstName: "Brick",\n      lastName: "Tamland"\n    }),\n    new bindable.Object({\n      firstName: "Champ",\n      lastName: "Kind"\n    })\n  ]\n});\n\n\nexistingPerson.bind("firstName").to(function(name) {\n  console.log(name); //Ron \n}).now();\n\nexistingPerson.bind("friends").to(function(friends) {\n  friends.at(0).bind("firstName").once().to(function(name) {\n    console.log(name); //Brian\n  }).now();\n}).now();\n```\n\n\n### API\n\n#### linen()\n\nReturns a new linen instance\n\n#### linen.addSchema(definition)\n\nadds a new schema\n\n#### definition\n\nInspired by [mongoose](http://mongoosejs.com/):\n\n```javascript\nlinen.addSchema({\n  firstName: {\n\n  }\n});\n```\n\n#### linen.model(schemaName[, modelId ])\n\nreturns a new, or existing model\n\n\n\n\n',
+602 silly publish   _id: 'linen@0.3.35',
+602 silly publish   dist: { shasum: '5bbc246dd88305cd4f5cefbfe58a95671e8bbd57' },
+602 silly publish   _from: '.' }
+603 verbose url raw linen
+604 verbose url resolving [ 'http://registry.npmjs.org/', './linen' ]
+605 verbose url resolved http://registry.npmjs.org/linen
+606 info trying registry request attempt 1 at 13:32:17
+607 http PUT http://registry.npmjs.org/linen
+608 http 409 http://registry.npmjs.org/linen
+609 verbose url raw linen
+610 verbose url resolving [ 'http://registry.npmjs.org/', './linen' ]
+611 verbose url resolved http://registry.npmjs.org/linen
+612 info trying registry request attempt 1 at 13:32:17
+613 http GET http://registry.npmjs.org/linen
+614 http 200 http://registry.npmjs.org/linen
+615 error publish fail Cannot publish over existing version.
+615 error publish fail Update the 'version' field in package.json and try again.
+615 error publish fail
+615 error publish fail If the previous version was published in error, see:
+615 error publish fail     npm help unpublish
+615 error publish fail
+615 error publish fail To automatically increment version numbers, see:
+615 error publish fail     npm help version
+616 error System Darwin 12.4.0
+617 error command "node" "/usr/local/bin/npm" "publish"
+618 error cwd /Users/craig/Developer/Public/linen.js
+619 error node -v v0.10.5
+620 error npm -v 1.2.18
+621 error code EPUBLISHCONFLICT
+622 verbose exit [ 1, true ]
