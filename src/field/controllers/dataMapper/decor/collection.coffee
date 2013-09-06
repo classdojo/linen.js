@@ -28,7 +28,7 @@ class CollectionMapper extends require("./base")
     c
 
   normalize: (model) ->
-    model.get(@field.path)
+    model.get(@field.path)?.source()
 
   ###
   ###
