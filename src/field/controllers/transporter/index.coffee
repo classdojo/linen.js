@@ -80,7 +80,7 @@ class Transporter extends require("../base")
   ###
 
   loadFields: (model, fields, next) ->
-    @_request { model: model, method: "get", fields: fields }, next
+    @_request { model: model, method: "get", fields: fields, hash: Date.now() }, next
 
   ###
   ###
