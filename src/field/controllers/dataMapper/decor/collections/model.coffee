@@ -33,6 +33,12 @@ class ModelCollection extends bindable.Collection
   ###
   ###
 
+  reload: (next = () ->) ->
+    @owner.loadFields [@field.field.path], next
+
+  ###
+  ###
+
   resetModels: (src) ->
 
     src2 = src.concat()
