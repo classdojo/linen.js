@@ -1,6 +1,6 @@
-AnyFactory = require "../../../../factory/any"
+factories = require "factories"
 
-module.exports = new AnyFactory [
+module.exports = factories.any [
   require("./transport"),
   require("./inherit"),
   require("./none")

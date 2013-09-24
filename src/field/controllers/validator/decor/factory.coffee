@@ -1,8 +1,7 @@
-AnyFactory = require "../../../../factory/any"
-GroupFactory = require "../../../../factory/group"
+factories = require "factories"
 
-module.exports = new AnyFactory [ 
-  new GroupFactory([
+module.exports = factories.any [ 
+  factories.group([
     require("./type"),
     require("./required"),
     require("./sub"),

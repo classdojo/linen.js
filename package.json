@@ -1,6 +1,6 @@
 {
   "name": "linen",
-  "version": "0.3.39",
+  "version": "0.3.40",
   "description": "Linen (line-in) maps API's to [bindable](/classdojo/bindable.js) `objects`, and `collections`. At [classdojo](http://classdojo.com), we use `linen` to abstract our API from front-end, so we don't necessarily depend on any sort of API while developing new components. This allows us to rapidly build prototypes which can be wired up later.",
   "main": "./lib/index.js",
   "directories": {
@@ -42,6 +42,7 @@
     "dref": "0.0.6",
     "hoist": "0.0.6",
     "outcome": "0.0.18",
-    "comerr": "0.0.6"
+    "comerr": "0.0.6",
+    "factories": "0.0.3"
   }
 }
